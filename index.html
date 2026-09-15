@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuiz Sejarah KSSM — Tingkatan 4 &amp; 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#10203A; --indigo-2:#1B3055;
+  --paper:#F5EEE1; --paper-2:#EFE5D3;
+  --ink:#1B1B18; --muted:#6E6A5F;
+  --gold:#B8862B; --red:#A32A32; --green:#2F6B4F;
+  --rule:#D8CBB4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--indigo);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding:0 0 70px}
+
+header{background:var(--indigo);color:var(--paper);padding:22px 20px 0;border-bottom:1px solid rgba(245,238,225,.14)}
+h1{font-family:Bitter,Georgia,serif;font-weight:700;font-size:23px;line-height:1.2;margin:0 0 3px;letter-spacing:-.01em}
+.sub{font-size:13px;color:#A9B6CB;margin:0 0 16px}
+.tabs{display:flex}
+.tab{flex:1;background:none;border:none;border-bottom:3px solid transparent;color:#93A2BA;
+  font-family:inherit;font-size:14.5px;font-weight:500;padding:11px 6px;cursor:pointer}
+.tab.on{color:var(--paper);border-bottom-color:var(--gold)}
+.tab:focus-visible{outline:2px solid var(--gold);outline-offset:-3px}
+.tab.lock,.mode.lock{opacity:.35;cursor:not-allowed}
+
+/* sticky exam bar */
+.exambar{position:sticky;top:0;z-index:30;background:var(--indigo);color:var(--paper);
+  display:none;align-items:center;justify-content:space-between;gap:12px;
+  padding:9px 18px;border-bottom:1px solid rgba(245,238,225,.2);font-size:13px}
+.exambar.on{display:flex}
+.clock{font-family:Bitter,serif;font-weight:700;font-size:21px;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.clock.warn{color:#E7A33C}
+.clock.crit{color:#E8767C}
+.exambar .lbl{color:#A9B6CB}
+.exambar button{background:none;border:1px solid rgba(245,238,225,.4);color:var(--paper);
+  font-family:inherit;font-size:13px;padding:6px 11px;border-radius:2px;cursor:pointer}
+.exambar button:hover{background:rgba(245,238,225,.12)}
+
+.sheet{background:var(--paper);padding:22px 20px 26px 34px;position:relative;min-height:60vh}
+.sheet::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:1.5px;background:rgba(163,42,50,.38)}
+
+.modes{display:flex;gap:0;border:1px solid var(--rule);margin-bottom:18px}
+.mode{flex:1;background:#FBF7EE;border:none;border-right:1px solid var(--rule);
+  font-family:inherit;font-size:13.5px;font-weight:500;color:var(--muted);padding:10px 8px;cursor:pointer}
+.mode:last-child{border-right:none}
+.mode.on{background:var(--indigo);color:var(--paper)}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px}
+.field{flex:1 1 140px;min-width:0}
+label{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px}
+select,button.act,input.mk{width:100%;font-family:inherit;font-size:14.5px;padding:9px 10px;
+  border:1px solid var(--rule);background:#FBF7EE;color:var(--ink);border-radius:2px}
+select:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+button.act{background:var(--indigo);color:var(--paper);border-color:var(--indigo);font-weight:600;cursor:pointer}
+button.act:hover{background:var(--indigo-2)}
+button.ghost{background:none;border:1px solid var(--rule);color:var(--indigo);font-family:inherit;
+  font-size:13.5px;padding:7px 12px;border-radius:2px;cursor:pointer}
+button.ghost:hover{background:var(--paper-2)}
+
+.brief{background:#FBF7EE;border:1px solid var(--rule);padding:13px 15px;margin-bottom:16px;font-size:14px;line-height:1.6}
+.brief b{font-family:Bitter,serif;font-size:14.5px;color:var(--indigo)}
+.brief ul{margin:7px 0 0;padding-left:19px}
+.brief li{margin-bottom:3px}
+
+.metabar{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--muted);margin:2px 0 10px;gap:12px}
+.metabar b{font-family:Bitter,serif;color:var(--indigo);font-size:14px}
+.bar{height:3px;background:var(--rule);margin-bottom:20px}
+.bar > i{display:block;height:100%;background:var(--gold);width:0;transition:width .25s ease}
+
+.qhead{display:flex;gap:10px;align-items:baseline;margin-bottom:4px}
+.qnum{font-family:Bitter,serif;font-weight:700;font-size:19px;color:var(--red);min-width:26px}
+.tagline{font-size:11.5px;color:var(--muted);margin:0 0 12px 36px}
+.tagline.flush{margin-left:0}
+.stim{background:#FBF7EE;border:1px solid var(--rule);padding:13px 15px;margin:0 0 14px 36px;font-size:14.5px;line-height:1.6}
+.stim.flush{margin-left:0}
+.stim .src{display:block;margin-top:7px;font-size:12px;color:var(--muted)}
+.qtext{font-size:17px;font-weight:500;margin:0 0 16px;line-height:1.45}
+
+.opts{list-style:none;margin:0 0 4px;padding:0}
+.opts li{margin-bottom:9px}
+.opt{display:flex;gap:11px;width:100%;text-align:left;background:#FBF7EE;border:1px solid var(--rule);
+  font-family:inherit;font-size:15.5px;line-height:1.45;padding:11px 13px;border-radius:2px;cursor:pointer;
+  color:var(--ink);transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--indigo)}
+.opt:disabled{cursor:default}
+.opt .ltr{font-family:Bitter,serif;font-weight:600;color:var(--muted);flex:0 0 14px}
+.opt.sel{background:var(--paper-2);border-color:var(--indigo);border-width:1.5px}
+.opt.sel .ltr{color:var(--indigo)}
+.opt.right{background:#E9F1EA;border-color:var(--green);border-width:1.5px}
+.opt.right .ltr{color:var(--green)}
+.opt.wrong{background:#F7E9E9;border-color:var(--red);border-width:1.5px}
+.opt.wrong .ltr{color:var(--red)}
+.opt.dim{opacity:.55}
+
+.verdict{margin-top:16px;padding-left:14px;border-left:3px solid var(--gold);font-size:14.5px}
+.verdict b{font-family:Bitter,serif;font-size:15px}
+.verdict .ok{color:var(--green)}
+.verdict .no{color:var(--red)}
+.nav{display:flex;gap:10px;margin-top:22px}
+.nav button{flex:1}
+
+/* question grid navigator */
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:18px 0 6px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(10,1fr)}}
+.gcell{aspect-ratio:1;background:#FBF7EE;border:1px solid var(--rule);font-family:inherit;font-size:12.5px;
+  color:var(--muted);cursor:pointer;padding:0;border-radius:2px}
+.gcell.ans{background:var(--indigo);color:var(--paper);border-color:var(--indigo)}
+.gcell.now{outline:2px solid var(--gold);outline-offset:-2px}
+
+.score{font-family:Bitter,serif;font-size:56px;font-weight:700;line-height:1;color:var(--indigo);margin:6px 0 0}
+.score small{font-size:20px;color:var(--muted);font-weight:500}
+.grade{font-size:15px;color:var(--red);font-weight:600;margin:6px 0 20px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:22px}
+th,td{text-align:left;padding:7px 4px;border-bottom:1px solid var(--rule)}
+th{font-size:11.5px;color:var(--muted);font-weight:500}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+h2{font-family:Bitter,serif;font-size:17px;margin:26px 0 10px;color:var(--indigo)}
+h3.sec{font-family:Bitter,serif;font-size:15px;margin:30px 0 4px;color:var(--red);
+  border-bottom:1.5px solid var(--red);padding-bottom:4px}
+.secnote{font-size:12.5px;color:var(--muted);margin:5px 0 18px}
+.review{border-top:1px solid var(--rule);padding-top:12px;margin-bottom:14px;font-size:14.5px}
+.review .qq{font-weight:500;margin-bottom:6px}
+.review .ln{margin:3px 0}
+.review .ln span{color:var(--muted);font-size:12.5px}
+
+.scard{border-top:2px solid var(--indigo);padding-top:14px;margin-bottom:34px}
+.scard h4{font-family:Bitter,serif;font-size:16.5px;margin:0 0 3px;color:var(--indigo);font-weight:600}
+.part{margin:0 0 16px}
+.part .pq{display:flex;gap:9px;font-size:15.5px;margin-bottom:7px}
+.part .pl{font-weight:600;flex:0 0 26px}
+.part .mk{color:var(--red);font-size:13px;white-space:nowrap}
+textarea{width:100%;font-family:inherit;font-size:15px;line-height:1.6;border:1px solid var(--rule);
+  background:#FBF7EE;padding:9px 11px;border-radius:2px;resize:vertical;min-height:74px;color:var(--ink)}
+.skema{margin-top:9px;background:#EDF1EC;border:1px solid #C6D4C7;padding:11px 13px;font-size:14.5px}
+.skema ul{margin:6px 0 0;padding-left:20px}
+.skema li{margin-bottom:4px}
+.skema .lab{font-family:Bitter,serif;font-weight:600;font-size:13.5px;color:var(--green)}
+.rangka{margin-top:9px;background:#F2EEE3;border:1px solid var(--rule);border-left:3px solid var(--gold);padding:11px 13px;font-size:14.5px}
+.rangka .lab{font-family:Bitter,serif;font-weight:600;font-size:13.5px;color:var(--gold)}
+.rangka p{margin:6px 0 0}
+.rangka ol{margin:6px 0 0;padding-left:20px}
+.rangka li{margin-bottom:3px}
+.selfmark{display:flex;align-items:center;gap:9px;margin-top:11px;font-size:13.5px;color:var(--muted)}
+.selfmark input.mk{width:70px;text-align:center}
+.hidden{display:none}
+.empty{color:var(--muted);font-size:15px;padding:30px 0}
+
+footer{padding:20px 22px 0;color:#8494AC;font-size:12.5px;line-height:1.6}
+footer b{color:#C3CEDE;font-weight:600}
+@media (min-width:700px){
+  .sheet{padding:26px 34px 34px 52px}
+  .sheet::before{left:38px}
+  .stim,.tagline{margin-left:38px}
+  .stim.flush,.tagline.flush{margin-left:0}
+  h1{font-size:27px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Kuiz Sejarah KSSM</h1>
+  <p class="sub">Tingkatan 4 &amp; 5 — 20 bab, mengikut format pentaksiran 1249</p>
+  <div class="tabs" role="tablist">
+    <button class="tab on" id="tab-k1" role="tab">Kertas 1</button>
+    <button class="tab" id="tab-k2" role="tab">Kertas 2</button>
+  </div>
+</header>
+
+<div class="exambar" id="exambar">
+  <div><span class="lbl" id="ex-name">Kertas 1</span> <span class="clock" id="ex-clock">60:00</span></div>
+  <div id="ex-right"><button id="ex-quit">Tamatkan kertas</button></div>
+</div>
+
+<main class="sheet">
+
+<!-- ================= KERTAS 1 ================= -->
+<section id="pane-k1">
+  <div class="modes">
+    <button class="mode on" id="m1-lat">Latihan ikut bab</button>
+    <button class="mode" id="m1-uji">Kertas penuh · 40 soalan · 1 jam</button>
+  </div>
+
+  <!-- practice setup -->
+  <div id="k1-lat">
+    <div id="k1-setup">
+      <div class="controls">
+        <div class="field"><label for="o-form">Tingkatan</label>
+          <select id="o-form"><option value="0">Semua</option><option value="4">Tingkatan 4</option><option value="5">Tingkatan 5</option></select></div>
+        <div class="field"><label for="o-bab">Bab</label><select id="o-bab"></select></div>
+        <div class="field"><label for="o-len">Bilangan soalan</label>
+          <select id="o-len"><option value="10">10 soalan</option><option value="20" selected>20 soalan</option><option value="40">40 soalan</option><option value="999">Semua</option></select></div>
+      </div>
+      <div class="controls" style="margin-top:10px">
+        <div class="field"><label for="o-mins">Had masa</label>
+          <select id="o-mins">
+            <option value="0" selected>Tiada had masa</option>
+            <option value="auto">Ikut kadar SPM (1.5 minit sesoalan)</option>
+            <option value="10">10 minit</option>
+            <option value="15">15 minit</option>
+            <option value="20">20 minit</option>
+            <option value="30">30 minit</option>
+            <option value="45">45 minit</option>
+            <option value="60">1 jam</option>
+            <option value="75">1 jam 15 minit</option>
+            <option value="90">1 jam 30 minit</option>
+            <option value="105">1 jam 45 minit</option>
+            <option value="120">2 jam</option>
+            <option value="135">2 jam 15 minit</option>
+            <option value="150">2 jam 30 minit</option>
+            <option value="165">2 jam 45 minit</option>
+            <option value="180">3 jam</option>
+          </select></div>
+      </div>
+      <div class="controls" style="margin-top:12px"><div class="field"><button class="act" id="o-start">Mula latihan</button></div></div>
+      <p id="o-count" class="tagline flush"></p>
+    </div>
+    <div id="k1-run" class="hidden">
+      <div class="metabar"><span>Soalan <b id="o-pos">1</b> / <span id="o-total">20</span></span><span>Betul <b id="o-sc">0</b> · <span id="o-time">0:00</span></span></div>
+      <div class="bar"><i id="o-prog"></i></div>
+      <div id="o-body"></div>
+    </div>
+    <div id="k1-done" class="hidden"></div>
+  </div>
+
+  <!-- full paper -->
+  <div id="k1-uji" class="hidden">
+    <div id="k1e-setup">
+      <div class="brief">
+        <b>Kertas 1 (1249/1) — Arahan</b>
+        <ul>
+          <li>Kertas ini mengandungi 40 soalan objektif. Jawab semua soalan.</li>
+          <li>Masa: satu jam. Jam mula berdetik sebaik sahaja anda menekan butang di bawah.</li>
+          <li>Setiap soalan diikuti empat pilihan jawapan. Pilih satu jawapan sahaja.</li>
+          <li>Soalan diambil dua daripada setiap satu 20 bab Tingkatan 4 dan 5.</li>
+          <li>Jawapan dan skema tidak akan dipaparkan sehingga kertas dihantar.</li>
+          <li>Anda tidak boleh meninggalkan kertas ini atau membuka bahagian lain selagi masa berjalan.</li>
+        </ul>
+      </div>
+      <p class="tagline flush">Soalan belum dipaparkan. Sediakan kertas dan pen, kemudian mulakan.</p>
+      <button class="act" id="k1e-start">Mulakan masa dan paparkan soalan</button>
+    </div>
+    <div id="k1e-run" class="hidden">
+      <div id="k1e-body"></div>
+      <div class="grid" id="k1e-grid"></div>
+      <p class="tagline flush" id="k1e-left"></p>
+      <div class="nav"><button class="ghost" id="k1e-prev" style="flex:1">Sebelum</button><button class="ghost" id="k1e-next" style="flex:1">Seterusnya</button></div>
+      <div class="nav"><button class="act" id="k1e-submit">Hantar kertas</button></div>
+    </div>
+    <div id="k1e-done" class="hidden"></div>
+  </div>
+</section>
+
+<!-- ================= KERTAS 2 ================= -->
+<section id="pane-k2" class="hidden">
+  <div class="modes">
+    <button class="mode on" id="m2-lat">Latihan ikut bab</button>
+    <button class="mode" id="m2-uji">Kertas penuh · 2 jam 30 minit</button>
+  </div>
+
+  <div id="k2-lat">
+    <div id="k2l-setup">
+      <div class="controls">
+        <div class="field"><label for="s-form">Tingkatan</label>
+          <select id="s-form"><option value="0">Semua</option><option value="4">Tingkatan 4</option><option value="5">Tingkatan 5</option></select></div>
+        <div class="field"><label for="s-bab">Bab</label><select id="s-bab"></select></div>
+        <div class="field"><label for="s-type">Jenis soalan</label>
+          <select id="s-type"><option value="all">Struktur dan esei</option><option value="str">Struktur sahaja</option><option value="esei">Esei sahaja</option></select></div>
+      </div>
+      <div class="controls" style="margin-top:10px">
+        <div class="field"><label for="s-mins">Had masa</label>
+          <select id="s-mins">
+            <option value="0" selected>Tiada had masa</option>
+            <option value="auto">Ikut kadar SPM (15 minit struktur, 30 minit esei)</option>
+            <option value="10">10 minit</option>
+            <option value="15">15 minit</option>
+            <option value="20">20 minit</option>
+            <option value="30">30 minit</option>
+            <option value="45">45 minit</option>
+            <option value="60">1 jam</option>
+            <option value="75">1 jam 15 minit</option>
+            <option value="90">1 jam 30 minit</option>
+            <option value="105">1 jam 45 minit</option>
+            <option value="120">2 jam</option>
+            <option value="135">2 jam 15 minit</option>
+            <option value="150">2 jam 30 minit</option>
+            <option value="165">2 jam 45 minit</option>
+            <option value="180">3 jam</option>
+          </select></div>
+      </div>
+      <div class="controls" style="margin-top:12px"><div class="field"><button class="act" id="s-start">Mula latihan</button></div></div>
+      <p id="s-count" class="tagline flush"></p>
+    </div>
+    <div id="k2l-run" class="hidden">
+      <p class="tagline flush">Tulis jawapan anda dahulu, kemudian banding dengan rangka dan cadangan skema.</p>
+      <div id="s-body"></div>
+      <div class="nav"><button class="act" id="s-end">Tamat latihan dan buka semua skema</button></div>
+    </div>
+    <div id="k2l-done" class="hidden"></div>
+  </div>
+
+  <div id="k2-uji" class="hidden">
+    <div id="k2e-setup">
+      <div class="brief">
+        <b>Kertas 2 (1249/2) — Arahan</b>
+        <ul>
+          <li>Kertas ini mengandungi dua bahagian, iaitu Bahagian A dan Bahagian B.</li>
+          <li>Bahagian A: empat soalan struktur. Jawab semua soalan. 40 markah, cadangan masa 60 minit.</li>
+          <li>Bahagian B: lima soalan esei. Jawab tiga soalan sahaja. 60 markah, cadangan masa 90 minit.</li>
+          <li>Soalan 1 dan 2 Tingkatan 4, soalan 3 dan 4 Tingkatan 5.</li>
+          <li>Soalan 5 dan 6 Tingkatan 4, soalan 7 campuran, soalan 8 dan 9 Tingkatan 5.</li>
+          <li>Jumlah 100 markah. Masa: dua jam 30 minit, bermula sebaik sahaja anda menekan butang di bawah.</li>
+          <li>Rangka dan skema jawapan tidak akan dipaparkan sehingga anda menamatkan kertas.</li>
+          <li>Anda tidak boleh meninggalkan kertas ini atau membuka bahagian lain selagi masa berjalan.</li>
+        </ul>
+      </div>
+      <p class="tagline flush">Soalan belum dipaparkan. Sediakan kertas dan pen, kemudian mulakan.</p>
+      <button class="act" id="k2e-start">Mulakan masa dan paparkan soalan</button>
+    </div>
+    <div id="k2e-run" class="hidden">
+      <div id="k2e-body"></div>
+      <div class="nav"><button class="act" id="k2e-submit">Tamat dan lihat skema</button></div>
+    </div>
+    <div id="k2e-done" class="hidden"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p><b>Tentang soalan ini.</b> Semua soalan di sini ialah soalan latihan asli yang ditulis mengikut format pentaksiran Sejarah SPM 1249 dan sukatan KSSM Tingkatan 4 dan 5. Ia bukan salinan soalan percubaan negeri, kerana kertas tersebut ialah bahan berhak cipta JPN masing-masing. Untuk latihan kertas sebenar, dapatkan kertas percubaan daripada sekolah atau JPN anda dan jawab di bawah keadaan peperiksaan.</p>
+</footer>
+</div>
+
+<script>
+/* =======================================================================
+   BAB
+   ======================================================================= */
+const BAB = {
+  4:["Warisan Negara Bangsa","Kebangkitan Nasionalisme","Konflik Dunia dan Pendudukan Jepun di Negara Kita",
+     "Era Peralihan Kuasa British di Negara Kita","Persekutuan Tanah Melayu 1948",
+     "Ancaman Komunis dan Pengisytiharan Darurat","Usaha ke Arah Kemerdekaan","Pilihan Raya",
+     "Perlembagaan Persekutuan Tanah Melayu 1957","Pemasyhuran Kemerdekaan"],
+  5:["Kedaulatan Negara","Perlembagaan Persekutuan","Raja Berperlembagaan dan Demokrasi Berparlimen",
+     "Sistem Persekutuan","Pembentukan Malaysia","Cabaran Selepas Pembentukan Malaysia",
+     "Membina Kesejahteraan Negara","Membina Kemakmuran Negara","Dasar Luar Malaysia",
+     "Kecemerlangan Malaysia di Persada Dunia"]
+};
+
+/* =======================================================================
+   BANK SOALAN OBJEKTIF   f=tingkatan  b=bab  a=indeks jawapan  e=huraian
+   ======================================================================= */
+const OBJ = [
+/* ---------------- T4 B1 Warisan Negara Bangsa ---------------- */
+{f:4,b:1,s:"Kerajaan Funan · Kerajaan Champa",q:"Ciri negara bangsa yang dimiliki oleh kedua-dua kerajaan di atas dan kemudiannya diwarisi oleh Kesultanan Melayu Melaka ialah",
+ o:["raja, undang-undang, wilayah pengaruh dan rakyat","parlimen, kabinet dan pilihan raya","perlembagaan bertulis dan mahkamah persekutuan","sistem ahli dan majlis perundangan"],a:0,
+ e:"Funan dan Champa mempunyai ciri asas negara bangsa Alam Melayu iaitu raja, undang-undang, wilayah pengaruh dan rakyat. Ciri ini diwarisi Kesultanan Melayu Melaka dan diteruskan oleh Kesultanan Johor-Riau."},
+{f:4,b:1,q:"Apakah bidang yang dikanunkan dalam Hukum Kanun Melaka?",
+ o:["Peraturan pelayaran dan cukai di pelabuhan","Bidang kuasa raja dan pembesar serta hukuman jenayah","Syarat pemilihan Yang di-Pertuan Agong","Pembahagian kuasa antara kerajaan pusat dengan negeri"],a:1,
+ e:"Hukum Kanun Melaka menetapkan bidang kuasa sultan dan pembesar, adat istiadat istana, kesalahan jenayah dan hukuman. Peraturan pelayaran dan perdagangan di laut pula terkandung dalam Undang-Undang Laut Melaka."},
+{f:4,b:1,q:"Pembesar Kesultanan Melayu Melaka yang bertanggungjawab menjaga keamanan kota, menjalankan hukuman dan menjadi ketua polis ialah",
+ o:["Bendahara","Penghulu Bendahari","Temenggung","Laksamana"],a:2,
+ e:"Temenggung menjaga keamanan dan undang-undang di kota, menjadi ketua polis serta melaksanakan hukuman. Laksamana pula mengetuai angkatan laut."},
+{f:4,b:1,s:"\u201CRaja tidak akan menzalimi rakyat dan rakyat tidak akan menderhaka kepada raja.\u201D",q:"Konsep di atas penting kepada Kesultanan Melayu Melaka kerana",
+ o:["mengekalkan kedaulatan raja dan kestabilan pemerintahan","memberikan kuasa mutlak kepada pembesar daerah","membolehkan rakyat memilih pemerintah baharu","melemahkan pengaruh agama dalam pentadbiran"],a:0,
+ e:"Taat setia rakyat dan keadilan raja ialah asas ketaatan waad. Hubungan timbal balik ini mengukuhkan daulat raja dan menjamin kestabilan politik negeri."},
+
+/* ---------------- T4 B2 Kebangkitan Nasionalisme ---------------- */
+{f:4,b:2,q:"Apakah maksud nasionalisme?",
+ o:["Perasaan cinta dan setia yang mendalam terhadap bangsa dan tanah air","Dasar meluaskan kuasa ke negara lain","Sistem ekonomi berasaskan pasaran bebas","Amalan mengekalkan adat lama tanpa perubahan"],a:0,
+ e:"Nasionalisme ialah semangat cinta dan setia kepada bangsa serta tanah air, yang mendorong perjuangan membebaskan negara daripada penjajahan."},
+{f:4,b:2,s:"Al-Imam (1906) · Al-Ikhwan · Saudara",q:"Penerbitan di atas menyumbang kepada kebangkitan nasionalisme di Tanah Melayu melalui",
+ o:["gerakan Islah yang menyeru pembaharuan dan kemajuan orang Melayu","penubuhan parti politik Melayu yang pertama","penganjuran pilihan raya di negeri-negeri Melayu","penghantaran memorandum kepada Pesuruhjaya Tinggi"],a:0,
+ e:"Akhbar dan majalah gerakan Islah seperti Al-Imam menyeru orang Melayu memajukan pendidikan, ekonomi dan cara berfikir berpandukan Islam. Tokoh utamanya termasuk Syeikh Tahir Jalaluddin dan Sayid Syeikh al-Hadi."},
+{f:4,b:2,q:"Kesatuan Melayu Muda (KMM) yang ditubuhkan pada tahun 1938 dipimpin oleh",
+ o:["Dato\u2019 Onn Jaafar","Ibrahim Yaacob","Mohammad Eunos Abdullah","Tan Cheng Lock"],a:1,
+ e:"KMM dipimpin oleh Ibrahim Yaacob dengan matlamat radikal iaitu menyatukan Melayu-Indonesia dan membebaskan Tanah Melayu daripada British."},
+{f:4,b:2,q:"Mengapakah maktab perguruan seperti Sultan Idris Training College (SITC) penting dalam perkembangan nasionalisme Melayu?",
+ o:["Menjadi pusat latihan tentera penduduk tempatan","Melahirkan golongan guru yang menyebarkan kesedaran kebangsaan","Menyediakan tempat mesyuarat Majlis Raja-Raja","Menerbitkan perlembagaan bagi negeri-negeri Melayu"],a:1,
+ e:"SITC melahirkan guru berpendidikan Melayu seperti Ibrahim Yaacob dan Harun Aminurrashid yang menyebarkan idea kebangsaan melalui pengajaran, persatuan dan penulisan."},
+
+/* ---------------- T4 B3 Konflik Dunia & Pendudukan Jepun ---------------- */
+{f:4,b:3,q:"Serangan Jepun ke atas Tanah Melayu dimulakan dengan pendaratan tentera Jepun pada 8 Disember 1941 di",
+ o:["Kota Bharu, Kelantan","Pulau Pinang","Johor Bahru, Johor","Kuching, Sarawak"],a:0,
+ e:"Tentera Jepun mendarat di Kota Bharu pada 8 Disember 1941, serentak dengan serangan ke atas Pearl Harbor, lalu bergerak ke selatan sehingga Singapura jatuh pada 15 Februari 1942."},
+{f:4,b:3,s:"Sook Ching · Kempeitai",q:"Kedua-dua perkara di atas menunjukkan bahawa pentadbiran Jepun di Tanah Melayu bersifat",
+ o:["demokratik dan terbuka","kejam dan menindas rakyat","berteraskan perundingan dengan raja-raja","memberi hak kerakyatan yang sama"],a:1,
+ e:"Sook Ching ialah pembersihan beramai-ramai terhadap orang Cina yang disyaki anti-Jepun, manakala Kempeitai ialah polis tentera Jepun yang terkenal kerana penyeksaan. Kedua-duanya membuktikan pemerintahan tentera yang kejam."},
+{f:4,b:3,q:"Force 136 yang bergerak semasa pendudukan Jepun bertujuan",
+ o:["mengumpul maklumat dan menentang Jepun dengan bantuan British","mentadbir Tanah Melayu bagi pihak Jepun","menguruskan pengagihan beras kepada rakyat","menyusun perlembagaan baharu bagi Tanah Melayu"],a:0,
+ e:"Force 136 ialah gerakan bawah tanah yang disokong British bagi mengumpul maklumat, melatih anggota tempatan dan menyerang kedudukan Jepun. Antara tokohnya ialah Lim Bo Seng."},
+{f:4,b:3,q:"Pemberontakan yang dipimpin oleh Albert Kwok pada tahun 1943 menentang Jepun berlaku di",
+ o:["Sarawak","Jesselton, Borneo Utara","Perak","Terengganu"],a:1,
+ e:"Albert Kwok memimpin Kinabalu Guerrilla Defence Force dalam pemberontakan Jesselton 1943 di Borneo Utara. Pemberontakan itu ditumpaskan dan pemimpinnya dihukum bunuh."},
+
+/* ---------------- T4 B4 Era Peralihan Kuasa British ---------------- */
+{f:4,b:4,q:"Apakah tugas utama Sir Harold MacMichael di Tanah Melayu pada tahun 1945 hingga 1946?",
+ o:["Menyiasat pendapat rakyat tentang pembentukan Malaysia","Mendapatkan tandatangan raja-raja Melayu bagi menerima Malayan Union","Menyusun perlembagaan Persekutuan Tanah Melayu 1957","Mengetuai Suruhanjaya Reid"],a:1,
+ e:"MacMichael dihantar untuk mendapatkan tandatangan sembilan raja Melayu bagi melaksanakan Malayan Union, sering kali melalui ugutan dan tekanan masa."},
+{f:4,b:4,q:"Antara ciri Malayan Union yang paling ditentang oleh orang Melayu ialah",
+ o:["kerakyatan jus soli yang longgar dan kuasa sultan yang terhad","pemisahan Singapura daripada Tanah Melayu","penubuhan Majlis Raja-Raja","pengekalan bahasa Melayu sebagai bahasa rasmi"],a:0,
+ e:"Kerakyatan jus soli yang longgar mengancam kedudukan orang Melayu, manakala kuasa sultan dihadkan kepada urusan agama Islam dan adat Melayu sahaja."},
+{f:4,b:4,q:"United Malays National Organisation (UMNO) ditubuhkan pada tahun 1946 hasil Kongres Melayu di bawah pimpinan",
+ o:["Tunku Abdul Rahman","Dato\u2019 Onn Jaafar","Dr. Burhanuddin al-Helmy","Tun Abdul Razak"],a:1,
+ e:"Dato\u2019 Onn Jaafar menyatukan pelbagai persatuan Melayu melalui Kongres Melayu lalu menubuhkan UMNO pada tahun 1946 bagi menentang Malayan Union."},
+{f:4,b:4,q:"Gerakan Anti-Penyerahan di Sarawak timbul kerana penduduk tempatan menolak",
+ o:["penyerahan Sarawak kepada kerajaan British pada tahun 1946","kemasukan Sarawak ke dalam Malaysia pada tahun 1963","pelaksanaan Rancangan Briggs di Sarawak","penubuhan Majlis Negeri oleh Charles Brooke"],a:0,
+ e:"Charles Vyner Brooke menyerahkan Sarawak kepada British pada 1 Julai 1946 tanpa merujuk kepada penduduk. Gerakan Anti-Penyerahan ditentang melalui persatuan tempatan dan Rukun 13."},
+
+/* ---------------- T4 B5 PTM 1948 ---------------- */
+{f:4,b:5,q:"Jawatankuasa Kerja yang merangka Persekutuan Tanah Melayu 1948 terdiri daripada wakil",
+ o:["British, UMNO dan raja-raja Melayu","PUTERA dan AMCJA","MCA, MIC dan PKM","Suruhanjaya Reid dan Majlis Raja-Raja"],a:0,
+ e:"Jawatankuasa Kerja dianggotai pegawai British, wakil UMNO dan wakil raja-raja Melayu. PUTERA-AMCJA tidak dijemput lalu menggubal Perlembagaan Rakyat sebagai tentangan."},
+{f:4,b:5,q:"Apakah tindakan PUTERA-AMCJA bagi menentang cadangan Persekutuan Tanah Melayu 1948?",
+ o:["Memulakan perang gerila di kawasan pedalaman","Mengadakan hartal pada Oktober 1947","Menghantar rombongan merdeka ke London","Menubuhkan Parti Perikatan"],a:1,
+ e:"PUTERA-AMCJA mengemukakan Perlembagaan Rakyat dan mengadakan hartal iaitu pemogokan menutup kedai dan perniagaan pada Oktober 1947 sebagai protes."},
+{f:4,b:5,q:"Persekutuan Tanah Melayu 1948 berbeza daripada Malayan Union kerana",
+ o:["kuasa raja-raja Melayu dipulihkan dan syarat kerakyatan diperketat","Singapura dimasukkan ke dalam persekutuan","pentadbiran diketuai oleh seorang Gabenor","kerakyatan jus soli diberikan tanpa syarat"],a:0,
+ e:"Di bawah PTM 1948, kuasa sultan dipulihkan, Majlis Raja-Raja diwujudkan dan syarat kerakyatan diperketat. Singapura tetap kekal sebagai tanah jajahan berasingan."},
+{f:4,b:5,q:"Ketua pentadbiran Persekutuan Tanah Melayu 1948 ialah",
+ o:["Gabenor","Pesuruhjaya Tinggi","Residen Jeneral","Ketua Menteri"],a:1,
+ e:"PTM 1948 diketuai oleh Pesuruhjaya Tinggi British, dibantu Majlis Mesyuarat Kerja dan Majlis Perundangan Persekutuan."},
+
+/* ---------------- T4 B6 Ancaman Komunis & Darurat ---------------- */
+{f:4,b:6,q:"Apakah peristiwa yang menyebabkan Darurat diisytiharkan di seluruh Tanah Melayu pada 18 Jun 1948?",
+ o:["Pembunuhan tiga pengurus estet Eropah di Sungai Siput","Pembunuhan Sir Henry Gurney di Bukit Fraser","Hartal yang dianjurkan oleh PUTERA-AMCJA","Kegagalan Perundingan Baling"],a:0,
+ e:"Pembunuhan tiga pengurus estet Eropah di Sungai Siput, Perak pada 16 Jun 1948 mendorong British mengisytiharkan Darurat di seluruh Tanah Melayu dua hari kemudian."},
+{f:4,b:6,q:"Rancangan Briggs yang dilaksanakan pada tahun 1950 bertujuan",
+ o:["memindahkan penduduk ke kampung baharu untuk memutuskan bekalan komunis","melatih pasukan Home Guard di setiap negeri","menyusun semula sistem pendidikan negara","menarik pelabur asing ke sektor perlombongan"],a:0,
+ e:"Rancangan Briggs memindahkan penduduk pinggir hutan ke kampung baharu berkawal supaya bekalan makanan, ubat dan maklumat kepada komunis terputus."},
+{f:4,b:6,q:"Perundingan Baling pada Disember 1955 menemukan Tunku Abdul Rahman dengan",
+ o:["Sir Gerald Templer","Chin Peng","Lord Reid","Dato\u2019 Onn Jaafar"],a:1,
+ e:"Perundingan Baling mempertemukan Tunku Abdul Rahman, David Marshall dan Tan Cheng Lock dengan Chin Peng, Rashid Maidin dan Chen Tien. Rundingan gagal kerana PKM menuntut pengiktirafan sebagai parti sah."},
+{f:4,b:6,q:"Darurat di Tanah Melayu secara rasmi ditamatkan pada",
+ o:["31 Ogos 1957","31 Julai 1960","16 September 1963","2 Disember 1989"],a:1,
+ e:"Darurat pertama ditamatkan pada 31 Julai 1960 setelah ancaman komunis berjaya dikawal. Konflik dengan PKM hanya benar-benar berakhir dengan Perjanjian Damai Hat Yai 1989."},
+
+/* ---------------- T4 B7 Usaha ke Arah Kemerdekaan ---------------- */
+{f:4,b:7,q:"Apakah tujuan utama pelaksanaan Sistem Ahli pada tahun 1951?",
+ o:["Melatih penduduk tempatan mengendalikan pentadbiran negara","Mengagihkan kuasa kepada raja-raja Melayu","Menyediakan perlembagaan bagi Malayan Union","Menamatkan Darurat di Tanah Melayu"],a:0,
+ e:"Sistem Ahli melantik penduduk tempatan sebagai ahli yang menjaga portfolio tertentu sebagai latihan awal berkerajaan sendiri, sekaligus memupuk kerjasama antara kaum."},
+{f:4,b:7,q:"Parti Perikatan yang ditubuhkan pada tahun 1952 pada awalnya merupakan pakatan antara",
+ o:["UMNO dengan MCA","UMNO dengan Parti Negara","MCA dengan MIC","IMP dengan PAS"],a:0,
+ e:"UMNO dan MCA bekerjasama dalam Pilihan Raya Majlis Bandaran Kuala Lumpur 1952 dan menang besar. MIC menyertai pakatan itu pada tahun 1955."},
+{f:4,b:7,q:"Parti Kemerdekaan Malaya (IMP) yang ditubuhkan oleh Dato\u2019 Onn Jaafar pada tahun 1951 gagal mendapat sokongan kerana",
+ o:["dasar keanggotaan terbuka kepada semua kaum tidak diterima oleh majoriti Melayu pada masa itu","parti itu menyokong Malayan Union","parti itu diharamkan oleh British","pemimpinnya menolak kemerdekaan"],a:0,
+ e:"IMP membuka keanggotaan kepada semua kaum, satu idea yang terlalu awal bagi majoriti orang Melayu ketika itu, sehingga parti itu tewas kepada Perikatan."},
+{f:4,b:7,q:"Rombongan Merdeka ke London pada Januari 1956 diketuai oleh",
+ o:["Dato\u2019 Onn Jaafar","Tunku Abdul Rahman","Tun Abdul Razak","Tan Cheng Lock"],a:1,
+ e:"Tunku Abdul Rahman mengetuai rombongan yang terdiri daripada wakil Perikatan dan raja-raja Melayu ke London. Hasilnya, British bersetuju memberikan kemerdekaan pada 31 Ogos 1957."},
+
+/* ---------------- T4 B8 Pilihan Raya ---------------- */
+{f:4,b:8,q:"Pilihan raya pertama di Tanah Melayu diadakan pada tahun 1951 di peringkat",
+ o:["Majlis Bandaran Pulau Pinang","Majlis Perundangan Persekutuan","Dewan Undangan Negeri","Majlis Bandaran Kuala Lumpur"],a:0,
+ e:"Pilihan raya peringkat bandaran bermula di Pulau Pinang pada tahun 1951, diikuti Majlis Bandaran Kuala Lumpur pada tahun 1952 yang dimenangi pakatan UMNO-MCA."},
+{f:4,b:8,q:"Dalam Pilihan Raya Majlis Perundangan Persekutuan 1955, Parti Perikatan memenangi",
+ o:["51 daripada 52 kerusi yang dipertandingkan","34 daripada 52 kerusi","Semua 52 kerusi","Kurang separuh daripada kerusi"],a:0,
+ e:"Perikatan menang 51 daripada 52 kerusi dan satu kerusi lagi dimenangi Parti Islam. Kemenangan besar ini mengukuhkan hujah bahawa rakyat bersatu menuntut kemerdekaan."},
+{f:4,b:8,q:"Kemenangan besar Parti Perikatan dalam pilihan raya 1955 penting kepada perjuangan kemerdekaan kerana",
+ o:["membuktikan kepada British bahawa rakyat berbilang kaum bersatu dan bersedia berkerajaan sendiri","membolehkan Perikatan mengharamkan parti pembangkang","menamatkan kuasa raja-raja Melayu","membatalkan Perjanjian Persekutuan 1948"],a:0,
+ e:"Kemenangan itu menjadi bukti kestabilan dan perpaduan kaum, memberi Tunku Abdul Rahman mandat kuat untuk berunding kemerdekaan di London."},
+{f:4,b:8,q:"Selepas pilihan raya 1955, Tunku Abdul Rahman dilantik sebagai",
+ o:["Perdana Menteri","Ketua Menteri","Pesuruhjaya Tinggi","Yang di-Pertuan Agong"],a:1,
+ e:"Tunku Abdul Rahman menjadi Ketua Menteri Persekutuan Tanah Melayu selepas kemenangan 1955 dan kemudian menjadi Perdana Menteri pertama pada tahun 1957."},
+
+/* ---------------- T4 B9 Perlembagaan PTM 1957 ---------------- */
+{f:4,b:9,q:"Suruhanjaya yang dilantik untuk merangka perlembagaan Persekutuan Tanah Melayu 1957 diketuai oleh",
+ o:["Lord Reid","Lord Cobbold","Sir Ivor Jennings","Lord Lansdowne"],a:0,
+ e:"Suruhanjaya Reid diketuai Lord Reid dan dianggotai Sir Ivor Jennings, Sir William McKell, B. Malik serta Abdul Hamid. Lord Cobbold pula mengetuai suruhanjaya bagi pembentukan Malaysia."},
+{f:4,b:9,q:"Antara perkara yang termaktub dalam Perlembagaan Persekutuan Tanah Melayu 1957 ialah",
+ o:["Islam sebagai agama Persekutuan dan bahasa Melayu sebagai bahasa kebangsaan","penubuhan Malayan Union","pengekalan kuasa Pesuruhjaya Tinggi British","penyerahan Sarawak kepada British"],a:0,
+ e:"Perlembagaan 1957 menetapkan Islam sebagai agama Persekutuan, bahasa Melayu sebagai bahasa kebangsaan, raja berperlembagaan serta kedudukan istimewa orang Melayu."},
+{f:4,b:9,q:"Konsep raja berperlembagaan bermaksud",
+ o:["raja memerintah dengan kuasa mutlak","raja menjalankan kuasa mengikut peruntukan perlembagaan","raja dipilih oleh rakyat melalui pilihan raya","raja hanya menguruskan hal ehwal agama"],a:1,
+ e:"Raja berperlembagaan bermaksud Yang di-Pertuan Agong dan raja-raja negeri bertindak berdasarkan perlembagaan serta nasihat Perdana Menteri atau Menteri Besar, bukan kuasa mutlak."},
+{f:4,b:9,q:"Perkara 153 Perlembagaan berkaitan dengan",
+ o:["kedudukan istimewa orang Melayu dan kepentingan sah kaum lain","kebebasan bersuara dan berhimpun","kuasa Majlis Raja-Raja","pembahagian hasil kewangan negeri"],a:0,
+ e:"Perkara 153 memberi tanggungjawab kepada Yang di-Pertuan Agong memelihara kedudukan istimewa orang Melayu dan bumiputera serta kepentingan sah kaum lain."},
+
+/* ---------------- T4 B10 Pemasyhuran Kemerdekaan ---------------- */
+{f:4,b:10,q:"Pemasyhuran Kemerdekaan Persekutuan Tanah Melayu disempurnakan pada 31 Ogos 1957 di",
+ o:["Padang Kelab Selangor","Stadium Merdeka, Kuala Lumpur","Istana Negara","Dataran Merdeka Melaka"],a:1,
+ e:"Upacara pemasyhuran diadakan di Stadium Merdeka pada pagi 31 Ogos 1957. Sebelum itu, pada tengah malam 30 Ogos, Union Jack diturunkan di Padang Kelab Selangor."},
+{f:4,b:10,q:"Semasa pemasyhuran kemerdekaan, Tunku Abdul Rahman melaungkan kata \u201CMerdeka\u201D sebanyak",
+ o:["tiga kali","lima kali","tujuh kali","sembilan kali"],a:2,
+ e:"Tunku Abdul Rahman melaungkan \u201CMerdeka\u201D sebanyak tujuh kali dan laungan itu disambut oleh puluhan ribu rakyat di Stadium Merdeka."},
+{f:4,b:10,q:"Perjanjian Persekutuan Tanah Melayu 1957 ditandatangani antara raja-raja Melayu dengan",
+ o:["kerajaan British","Pertubuhan Bangsa-Bangsa Bersatu","kerajaan Singapura","Suruhanjaya Reid"],a:0,
+ e:"Perjanjian itu ditandatangani antara raja-raja Melayu dengan wakil kerajaan British, dan menjadi asas perundangan kepada pembentukan Persekutuan Tanah Melayu yang merdeka."},
+{f:4,b:10,q:"Apakah iktibar utama daripada peristiwa pemasyhuran kemerdekaan bagi generasi hari ini?",
+ o:["Kemerdekaan dicapai melalui perundingan, perpaduan dan tolak ansur kaum","Kemerdekaan hanya boleh dicapai melalui pertumpahan darah","Kemerdekaan diberikan tanpa usaha rakyat","Kemerdekaan bergantung sepenuhnya kepada bantuan asing"],a:0,
+ e:"Kemerdekaan Tanah Melayu dicapai secara damai melalui rundingan dan kerjasama pelbagai kaum. Iktibarnya, perpaduan dan tolak ansur perlu terus dipelihara."},
+
+/* ---------------- T5 B1 Kedaulatan Negara ---------------- */
+{f:5,b:1,q:"Apakah maksud kedaulatan negara?",
+ o:["Kuasa tertinggi sebuah negara untuk memerintah tanpa campur tangan kuasa luar","Kuasa negara untuk menjajah wilayah lain","Hak rakyat memilih kerajaan setiap lima tahun","Kebebasan berdagang dengan negara luar"],a:0,
+ e:"Kedaulatan ialah kuasa tertinggi dan mutlak sebuah negara ke atas wilayah dan rakyatnya, bebas daripada kawalan atau campur tangan kuasa asing."},
+{f:5,b:1,s:"Wilayah · Rakyat · Kerajaan · Kedaulatan",q:"Perkara di atas merupakan",
+ o:["prinsip Rukun Negara","unsur asas sebuah negara","fungsi badan perundangan","syarat kewarganegaraan"],a:1,
+ e:"Sebuah negara yang diiktiraf mesti mempunyai wilayah yang jelas, rakyat yang menetap, kerajaan yang berfungsi dan kedaulatan untuk memerintah."},
+{f:5,b:1,q:"Pengiktirafan de jure terhadap sebuah negara bermaksud pengiktirafan yang",
+ o:["bersifat sementara dan boleh ditarik semula","sah di sisi undang-undang antarabangsa dan bersifat kekal","diberikan hanya oleh negara jiran","hanya melibatkan hubungan perdagangan"],a:1,
+ e:"Pengiktirafan de jure ialah pengiktirafan rasmi yang sah di sisi undang-undang antarabangsa dan bersifat kekal, berbeza daripada de facto yang bersifat sementara."},
+{f:5,b:1,q:"Mengapakah sempadan negara penting kepada kedaulatan Malaysia?",
+ o:["Menentukan had kuasa pemerintahan dan mengelakkan pertikaian wilayah","Menentukan jumlah kerusi dalam Dewan Rakyat","Menetapkan kadar cukai bagi setiap negeri","Menentukan bilangan bahasa rasmi negara"],a:0,
+ e:"Sempadan darat, laut dan udara menetapkan had kuasa kerajaan menguatkuasakan undang-undang, menjaga keselamatan dan mengelakkan tuntutan bertindih dengan negara lain."},
+
+/* ---------------- T5 B2 Perlembagaan Persekutuan ---------------- */
+{f:5,b:2,q:"Perlembagaan Persekutuan ialah undang-undang tertinggi negara. Apakah kesan peruntukan ini?",
+ o:["Mana-mana undang-undang yang bercanggah dengan perlembagaan adalah tidak sah","Perlembagaan tidak boleh dipinda sama sekali","Kerajaan negeri tidak perlu mematuhi perlembagaan","Mahkamah tidak boleh mentafsir perlembagaan"],a:0,
+ e:"Perkara 4 menetapkan Perlembagaan Persekutuan sebagai undang-undang tertinggi, maka undang-undang lain yang bercanggah dengannya terbatal sehingga takat percanggahan itu."},
+{f:5,b:2,q:"Pindaan kepada Perlembagaan Persekutuan pada umumnya memerlukan",
+ o:["sokongan majoriti dua pertiga ahli di kedua-dua Dewan Parlimen","keputusan sebulat suara Majlis Raja-Raja","undi rakyat melalui referendum","persetujuan semua Dewan Undangan Negeri"],a:0,
+ e:"Kebanyakan pindaan memerlukan majoriti dua pertiga di Dewan Rakyat dan Dewan Negara. Perkara tertentu pula memerlukan persetujuan Majlis Raja-Raja atau Yang di-Pertua Negeri Sabah dan Sarawak."},
+{f:5,b:2,q:"Perkara 152 Perlembagaan Persekutuan memperuntukkan",
+ o:["bahasa Melayu sebagai bahasa kebangsaan","Islam sebagai agama Persekutuan","kebebasan bersuara","kuasa Yang di-Pertuan Agong"],a:0,
+ e:"Perkara 152 menetapkan bahasa Melayu sebagai bahasa kebangsaan, sambil membenarkan penggunaan dan pembelajaran bahasa lain."},
+{f:5,b:2,q:"Antara cara memperoleh kewarganegaraan Malaysia ialah",
+ o:["kuat kuasa undang-undang, pendaftaran dan naturalisasi","pilihan raya, perakuan dan perundingan","warisan, pajakan dan penyerahan","wasiat, hibah dan pusaka"],a:0,
+ e:"Kewarganegaraan diperoleh melalui kuat kuasa undang-undang, pendaftaran, naturalisasi dan penggabungan wilayah seperti termaktub dalam Bahagian III Perlembagaan."},
+
+/* ---------------- T5 B3 Raja Berperlembagaan & Demokrasi Berparlimen ---------------- */
+{f:5,b:3,q:"Yang di-Pertuan Agong dipilih daripada kalangan sembilan Raja Melayu oleh Majlis Raja-Raja untuk tempoh",
+ o:["tiga tahun","lima tahun","tujuh tahun","seumur hidup"],a:1,
+ e:"Yang di-Pertuan Agong memegang jawatan selama lima tahun dan dipilih oleh Majlis Raja-Raja secara bergilir dalam kalangan sembilan Raja Melayu."},
+{f:5,b:3,q:"Antara kuasa budi bicara Yang di-Pertuan Agong ialah",
+ o:["melantik Perdana Menteri dan memperkenan permintaan membubarkan Parlimen","menetapkan kadar cukai pendapatan negara","meluluskan belanjawan negeri","melantik semua Menteri Besar di setiap negeri"],a:0,
+ e:"Kuasa budi bicara Yang di-Pertuan Agong meliputi pelantikan Perdana Menteri, memperkenan atau menolak permintaan membubarkan Parlimen, dan memanggil mesyuarat Majlis Raja-Raja."},
+{f:5,b:3,s:"Yang di-Pertuan Agong · Dewan Negara · Dewan Rakyat",q:"Ketiga-tiga komponen di atas membentuk",
+ o:["Parlimen Malaysia","Kabinet","Badan Kehakiman","Majlis Raja-Raja"],a:0,
+ e:"Parlimen Malaysia terdiri daripada Yang di-Pertuan Agong, Dewan Negara dan Dewan Rakyat. Ia merupakan badan perundangan yang menggubal undang-undang persekutuan."},
+{f:5,b:3,q:"Badan yang bertanggungjawab melaksanakan dasar kerajaan dan mentadbir negara ialah",
+ o:["badan perundangan","badan pelaksana","badan kehakiman","Suruhanjaya Pilihan Raya"],a:1,
+ e:"Badan pelaksana iaitu Kabinet yang diketuai Perdana Menteri melaksanakan dasar dan mentadbir negara melalui kementerian dan jabatan kerajaan."},
+
+/* ---------------- T5 B4 Sistem Persekutuan ---------------- */
+{f:5,b:4,q:"Apakah maksud sistem persekutuan?",
+ o:["Sistem yang menggabungkan beberapa negeri di bawah satu kerajaan pusat dengan pembahagian kuasa","Sistem pemerintahan oleh satu parti sahaja","Sistem yang meletakkan semua kuasa pada kerajaan negeri","Sistem yang menolak kewujudan kerajaan negeri"],a:0,
+ e:"Sistem persekutuan menggabungkan beberapa negeri di bawah satu kerajaan pusat, dengan kuasa dibahagikan antara kerajaan pusat dan kerajaan negeri melalui perlembagaan."},
+{f:5,b:4,q:"Pembahagian kuasa antara kerajaan pusat dengan kerajaan negeri di Malaysia terkandung dalam",
+ o:["Jadual Kesembilan Perlembagaan Persekutuan","Rukun Negara","Dasar Ekonomi Baru","Perjanjian Malaysia 1963"],a:0,
+ e:"Jadual Kesembilan menyenaraikan Senarai Persekutuan, Senarai Negeri dan Senarai Bersama yang menentukan bidang kuasa masing-masing."},
+{f:5,b:4,q:"Antara perkara dalam Senarai Negeri ialah",
+ o:["pertahanan dan hal luar negeri","tanah, hutan dan hal ehwal agama Islam","kewarganegaraan dan mata wang","perdagangan antarabangsa"],a:1,
+ e:"Tanah, hutan, kerajaan tempatan dan hal ehwal agama Islam terletak di bawah kuasa negeri. Pertahanan, hal luar negeri dan mata wang pula di bawah Senarai Persekutuan."},
+{f:5,b:4,q:"Ketua kerajaan negeri bagi negeri yang mempunyai Raja Melayu ialah",
+ o:["Ketua Menteri","Menteri Besar","Yang di-Pertua Negeri","Setiausaha Kerajaan Negeri"],a:1,
+ e:"Negeri beraja diketuai oleh Menteri Besar, manakala negeri tanpa raja seperti Melaka, Pulau Pinang, Sabah dan Sarawak diketuai oleh Ketua Menteri."},
+
+/* ---------------- T5 B5 Pembentukan Malaysia ---------------- */
+{f:5,b:5,q:"Gagasan Malaysia diumumkan secara terbuka oleh Tunku Abdul Rahman pada 27 Mei 1961 dalam ucapan beliau kepada",
+ o:["Persatuan Wartawan Asia Tenggara di Singapura","Perhimpunan Agung Pertubuhan Bangsa-Bangsa Bersatu","Majlis Raja-Raja di Kuala Lumpur","Mesyuarat Komanwel di London"],a:0,
+ e:"Tunku Abdul Rahman mengemukakan gagasan penyatuan Tanah Melayu, Singapura, Sarawak, Borneo Utara dan Brunei dalam ucapan kepada Persatuan Wartawan Asia Tenggara di Singapura."},
+{f:5,b:5,q:"Suruhanjaya Cobbold ditubuhkan pada tahun 1962 untuk",
+ o:["meninjau pendapat penduduk Sarawak dan Borneo Utara tentang gagasan Malaysia","merangka Perlembagaan Persekutuan Tanah Melayu","menyelesaikan Konfrontasi dengan Indonesia","menentukan sempadan Malaysia dengan Thailand"],a:0,
+ e:"Suruhanjaya Cobbold meninjau pandangan penduduk Sarawak dan Borneo Utara. Laporannya mendapati majoriti menyokong penyertaan dengan syarat kepentingan mereka dijamin."},
+{f:5,b:5,q:"Jaminan khas bagi Sabah dan Sarawak dalam pembentukan Malaysia dikenali sebagai",
+ o:["20 Perkara dan 18 Perkara","Rukun 13","Perlembagaan Rakyat","Deklarasi Bangkok"],a:0,
+ e:"Sabah mengemukakan 20 Perkara dan Sarawak 18 Perkara meliputi agama, bahasa, imigresen, pendidikan dan hak tanah. Tuntutan ini dibincangkan melalui Jawatankuasa Antara Kerajaan."},
+{f:5,b:5,q:"Malaysia secara rasmi ditubuhkan pada",
+ o:["9 Julai 1963","31 Ogos 1963","16 September 1963","9 Ogos 1965"],a:2,
+ e:"Perjanjian Malaysia ditandatangani pada 9 Julai 1963 dan Malaysia diisytiharkan pada 16 September 1963, menggabungkan Tanah Melayu, Singapura, Sarawak dan Sabah."},
+
+/* ---------------- T5 B6 Cabaran Selepas Pembentukan Malaysia ---------------- */
+{f:5,b:6,q:"Konfrontasi terhadap Malaysia dilancarkan oleh Indonesia kerana menganggap pembentukan Malaysia sebagai",
+ o:["satu bentuk neokolonialisme British","satu ancaman kepada perdagangan Indonesia","pelanggaran Deklarasi Bangkok","penolakan terhadap keanggotaan ASEAN"],a:0,
+ e:"Presiden Sukarno menganggap Malaysia sebagai neokolonialisme British lalu melancarkan Konfrontasi dengan slogan Ganyang Malaysia, termasuk serangan di Labis dan Pontian."},
+{f:5,b:6,q:"Konfrontasi Indonesia-Malaysia berakhir dengan",
+ o:["Perjanjian Bangkok pada tahun 1966","Perjanjian Hat Yai pada tahun 1989","Deklarasi Kuala Lumpur pada tahun 1971","Perjanjian Manila pada tahun 1963"],a:0,
+ e:"Selepas perubahan kepimpinan di Indonesia, Perjanjian Bangkok tahun 1966 menamatkan Konfrontasi dan memulihkan hubungan diplomatik kedua-dua negara."},
+{f:5,b:6,q:"Singapura keluar daripada Malaysia pada 9 Ogos 1965 terutamanya kerana",
+ o:["perbezaan pendirian politik dan ekonomi dengan kerajaan pusat","tuntutan Filipina terhadap Singapura","tekanan daripada Pertubuhan Bangsa-Bangsa Bersatu","kekalahan Singapura dalam pilihan raya persekutuan"],a:0,
+ e:"Ketegangan berpunca daripada perbezaan dasar politik dan ekonomi termasuk isu pasaran bersama, cukai dan persaingan politik antara kaum, sehingga Singapura berpisah pada 9 Ogos 1965."},
+{f:5,b:6,q:"Rukun Negara diisytiharkan pada 31 Ogos 1970 bertujuan",
+ o:["memupuk perpaduan dan mengembalikan kestabilan selepas Peristiwa 13 Mei 1969","menggantikan Perlembagaan Persekutuan","menamatkan Darurat kedua","menyusun semula sistem persekutuan"],a:0,
+ e:"Selepas Peristiwa 13 Mei 1969 dan pemerintahan MAGERAN, Rukun Negara diperkenalkan sebagai ideologi kebangsaan bagi memupuk perpaduan dan keharmonian kaum."},
+
+/* ---------------- T5 B7 Membina Kesejahteraan Negara ---------------- */
+{f:5,b:7,q:"Penyata Razak 1956 mengesyorkan",
+ o:["bahasa Melayu sebagai bahasa pengantar utama dan sukatan pelajaran yang sama bagi semua sekolah","penubuhan universiti awam di setiap negeri","pemansuhan sekolah vernakular serta-merta","pendidikan wajib sehingga peringkat menengah atas"],a:0,
+ e:"Penyata Razak 1956 menjadi asas Dasar Pendidikan Kebangsaan dengan menetapkan bahasa Melayu sebagai bahasa pengantar utama dan kurikulum serta peperiksaan yang sama bagi semua sekolah."},
+{f:5,b:7,q:"Dewan Bahasa dan Pustaka yang ditubuhkan pada tahun 1956 berperanan",
+ o:["memperkembangkan bahasa Melayu sebagai bahasa kebangsaan dan bahasa ilmu","menguruskan peperiksaan awam negara","menyelaras dasar kebudayaan antarabangsa","mengawal penerbitan akhbar harian"],a:0,
+ e:"DBP bertanggungjawab membina istilah, menerbitkan bahan bacaan dan memperkembangkan bahasa Melayu sebagai bahasa kebangsaan serta bahasa ilmu."},
+{f:5,b:7,q:"Falsafah Pendidikan Kebangsaan yang diperkenalkan pada tahun 1988 memberi penekanan kepada",
+ o:["perkembangan potensi individu secara menyeluruh dan seimbang","penguasaan kemahiran teknikal sahaja","pencapaian akademik dalam peperiksaan awam sahaja","penggunaan bahasa Inggeris dalam semua mata pelajaran"],a:0,
+ e:"Falsafah Pendidikan Kebangsaan menekankan pembangunan potensi individu secara menyeluruh dan seimbang dari segi jasmani, emosi, rohani dan intelek."},
+{f:5,b:7,q:"Rukun Tetangga yang diperkenalkan pada tahun 1975 bertujuan",
+ o:["memupuk semangat kejiranan dan menjaga keselamatan setempat","menyediakan bantuan kewangan kepada petani","menguruskan pengagihan tanah kepada peneroka","melatih tenaga kerja untuk sektor perindustrian"],a:0,
+ e:"Rukun Tetangga menggalakkan penduduk setempat bekerjasama menjaga keselamatan kawasan kediaman dan memupuk semangat kejiranan antara kaum."},
+
+/* ---------------- T5 B8 Membina Kemakmuran Negara ---------------- */
+{f:5,b:8,q:"Dua strategi utama Dasar Ekonomi Baru (1971-1990) ialah",
+ o:["membasmi kemiskinan dan menyusun semula masyarakat","menswastakan agensi kerajaan dan mengurangkan cukai","memperluas pasaran eksport dan mengehadkan import","meningkatkan pengeluaran bijih timah dan getah"],a:0,
+ e:"DEB bermatlamat perpaduan negara melalui dua strategi iaitu membasmi kemiskinan tanpa mengira kaum dan menyusun semula masyarakat supaya kaum tidak dikenal pasti mengikut fungsi ekonomi."},
+{f:5,b:8,q:"FELDA yang ditubuhkan pada tahun 1956 berperanan",
+ o:["membuka tanah baharu dan memindahkan peneroka bagi meningkatkan pendapatan luar bandar","memberi pinjaman kepada usahawan bandar","mengeluarkan kereta nasional","menguruskan hubungan perdagangan luar"],a:0,
+ e:"FELDA membuka tanah baharu untuk tanaman getah dan kelapa sawit serta memindahkan peneroka tanpa tanah bagi membasmi kemiskinan luar bandar."},
+{f:5,b:8,q:"Dasar Pandang ke Timur yang diperkenalkan pada tahun 1982 menggalakkan rakyat Malaysia mencontohi",
+ o:["Jepun dan Korea Selatan dalam etika kerja dan pengurusan","Britain dan Amerika Syarikat dalam sistem perundangan","India dan China dalam sektor pertanian","Australia dan New Zealand dalam sektor perkhidmatan"],a:0,
+ e:"Dasar Pandang ke Timur menggalakkan rakyat mencontohi etika kerja, disiplin dan kaedah pengurusan Jepun serta Korea Selatan untuk mempercepat pembangunan negara."},
+{f:5,b:8,q:"Perusahaan Otomobil Nasional (Proton) yang ditubuhkan pada tahun 1983 mencerminkan usaha kerajaan",
+ o:["memajukan industri berat dan mengurangkan kebergantungan kepada import","menswastakan semua syarikat kerajaan","mengurangkan pengeluaran petroleum negara","memperluas sektor pertanian moden"],a:0,
+ e:"Proton merupakan projek industri berat yang bertujuan membina keupayaan teknologi tempatan, menjana pekerjaan dan mengurangkan kebergantungan kepada kereta import."},
+
+/* ---------------- T5 B9 Dasar Luar Malaysia ---------------- */
+{f:5,b:9,q:"Dasar luar Malaysia pada tahap pertama (1957-1970) berorientasikan",
+ o:["pro-Barat dan anti-komunis","berkecuali dan tidak bersekutu","penekanan kepada kepentingan ekonomi","kerjasama Selatan-Selatan"],a:0,
+ e:"Pada zaman Tunku Abdul Rahman, dasar luar bersifat pro-Barat dan anti-komunis kerana keperluan keselamatan semasa ancaman komunis dan Konfrontasi."},
+{f:5,b:9,q:"ZOPFAN yang diisytiharkan pada tahun 1971 bermatlamat menjadikan Asia Tenggara sebagai",
+ o:["zon aman, bebas dan berkecuali","kawasan perdagangan bebas","zon bebas cukai","pusat pengeluaran senjata"],a:0,
+ e:"ZOPFAN iaitu Zone of Peace, Freedom and Neutrality bertujuan menjadikan Asia Tenggara bebas daripada campur tangan kuasa besar, selari dengan dasar berkecuali Tun Abdul Razak."},
+{f:5,b:9,q:"Malaysia menjadi anggota Pertubuhan Bangsa-Bangsa Bersatu pada",
+ o:["31 Ogos 1957","17 September 1957","8 Ogos 1967","16 September 1963"],a:1,
+ e:"Persekutuan Tanah Melayu diterima sebagai anggota PBB pada 17 September 1957, tidak lama selepas mencapai kemerdekaan."},
+{f:5,b:9,q:"ASEAN ditubuhkan pada 8 Ogos 1967 melalui",
+ o:["Deklarasi Bangkok","Deklarasi Kuala Lumpur","Perjanjian Manila","Deklarasi Singapura"],a:0,
+ e:"ASEAN ditubuhkan melalui Deklarasi Bangkok oleh Malaysia, Indonesia, Filipina, Singapura dan Thailand bagi menggalakkan kerjasama serantau."},
+
+/* ---------------- T5 B10 Kecemerlangan Malaysia ---------------- */
+{f:5,b:10,q:"Penglibatan Malaysia dalam pasukan pendamai Pertubuhan Bangsa-Bangsa Bersatu di Bosnia, Somalia dan Lubnan menunjukkan",
+ o:["komitmen Malaysia terhadap keamanan dan kemanusiaan sejagat","matlamat Malaysia meluaskan pengaruh tentera","kebergantungan Malaysia kepada bantuan asing","dasar berkecuali Malaysia telah ditinggalkan"],a:0,
+ e:"Penghantaran pasukan pendamai seperti MALBATT membuktikan Malaysia komited kepada keamanan dunia dan bantuan kemanusiaan menurut prinsip Piagam PBB."},
+{f:5,b:10,q:"Tunku Abdul Rahman mencatat kecemerlangan Malaysia di peringkat dunia apabila dilantik sebagai",
+ o:["Setiausaha Agung pertama Pertubuhan Persidangan Islam","Presiden Perhimpunan Agung PBB","Setiausaha Agung ASEAN yang pertama","Pengerusi Pergerakan Negara-Negara Berkecuali"],a:0,
+ e:"Tunku Abdul Rahman dilantik sebagai Setiausaha Agung pertama Pertubuhan Persidangan Islam pada tahun 1971, satu pengiktirafan terhadap kepimpinan Malaysia dalam dunia Islam."},
+{f:5,b:10,q:"Angkasawan Malaysia yang pertama berlepas ke Stesen Angkasa Antarabangsa pada tahun 2007 ialah",
+ o:["Dr. Sheikh Muszaphar Shukor","Dr. Faiz Khaleed","Nicol David","Datuk Lee Chong Wei"],a:0,
+ e:"Dr. Sheikh Muszaphar Shukor menjadi angkasawan Malaysia pertama pada tahun 2007 melalui Program Angkasawan Negara, dan menjalankan penyelidikan sains di Stesen Angkasa Antarabangsa."},
+{f:5,b:10,q:"Malaysia menjadi tuan rumah Sukan Komanwel pada tahun 1998 di Kuala Lumpur. Apakah kesan utama penganjuran ini?",
+ o:["Meningkatkan imej dan keyakinan terhadap keupayaan Malaysia di persada dunia","Menamatkan keanggotaan Malaysia dalam Komanwel","Mengurangkan pelaburan asing dalam sektor sukan","Menyebabkan Malaysia menarik diri daripada sukan antarabangsa"],a:0,
+ e:"Malaysia menjadi negara Asia pertama menganjurkan Sukan Komanwel. Penganjuran itu mengangkat imej negara, membangunkan infrastruktur sukan dan memupuk semangat patriotik."}
+];
+
+/* =======================================================================
+   BANK SOALAN STRUKTUR — Bahagian A, 10 markah setiap soalan
+   ======================================================================= */
+const STR = [
+/* ================= TINGKATAN 4 ================= */
+{f:4,b:1,t:"Warisan negara bangsa sebelum kedatangan Barat",
+ s:"Kesultanan Melayu Melaka mewarisi ciri negara bangsa daripada kerajaan Alam Melayu yang terdahulu dan mengungguli sistem pentadbiran serta perundangan sebelum kedatangan Barat.",
+ parts:[
+  {q:"Nyatakan dua ciri negara bangsa Kesultanan Melayu Melaka.",m:2,ans:["Kerajaan atau raja yang berdaulat","Rakyat","Kedaulatan","Wilayah pengaruh","Undang-undang","Lambang kebesaran seperti nobat dan cap mohor"]},
+  {q:"Jelaskan peranan dua orang pembesar dalam sistem pentadbiran Kesultanan Melayu Melaka.",m:4,ans:["Bendahara: penasihat utama sultan, ketua pembesar dan mengetuai pentadbiran negeri","Penghulu Bendahari: menguruskan perbendaharaan, hasil dan cukai negeri","Temenggung: menjaga keamanan kota, ketua polis dan melaksanakan hukuman","Laksamana: mengetuai angkatan laut dan menjaga keselamatan perairan"]},
+  {q:"Pada pendapat anda, mengapakah undang-undang penting kepada sebuah negara bangsa?",m:4,ans:["Menjamin keamanan dan ketenteraman rakyat","Menetapkan had kuasa pemerintah supaya tidak berlaku penyelewengan","Menjadi panduan menyelesaikan pertikaian secara adil","Mengukuhkan kedaulatan negara di mata negara luar","Melindungi hak dan harta rakyat"]}
+ ]},
+{f:4,b:1,t:"Keunggulan sistem perundangan Kesultanan Melayu Melaka",
+ s:"Hukum Kanun Melaka dan Undang-Undang Laut Melaka menjadi bukti kewujudan sistem perundangan yang tersusun di Kesultanan Melayu Melaka sebelum kedatangan kuasa Barat.",
+ parts:[
+  {q:"Namakan dua undang-undang bertulis Kesultanan Melayu Melaka.",m:2,ans:["Hukum Kanun Melaka","Undang-Undang Laut Melaka"]},
+  {q:"Terangkan kandungan kedua-dua undang-undang tersebut.",m:4,ans:["Hukum Kanun Melaka: menetapkan bidang kuasa sultan dan pembesar","Hukum Kanun Melaka: adat istiadat istana, larangan dan pantang larang","Hukum Kanun Melaka: kesalahan jenayah dan hukuman seperti mencuri dan membunuh","Undang-Undang Laut Melaka: kuasa nakhoda sebagai ketua di atas kapal","Undang-Undang Laut Melaka: peraturan pelayaran, perdagangan dan keselamatan di laut"]},
+  {q:"Pada pendapat anda, apakah kesan kewujudan undang-undang bertulis terhadap kegemilangan Melaka?",m:4,ans:["Pedagang asing yakin berdagang kerana urusan dilindungi undang-undang","Pelabuhan Melaka menjadi lebih teratur dan cekap","Keamanan dan keadilan terpelihara sehingga rakyat hidup sejahtera","Kedaulatan Melaka diakui oleh kerajaan luar","Menjadi rujukan dan warisan perundangan kepada kerajaan selepasnya"]}
+ ]},
+{f:4,b:2,t:"Kebangkitan nasionalisme di negara kita",
+ s:"Akhbar, majalah dan novel memainkan peranan besar menyemai kesedaran kebangsaan dalam kalangan orang Melayu sebelum Perang Dunia Kedua.",
+ parts:[
+  {q:"Namakan dua akhbar atau majalah yang menyemarakkan semangat nasionalisme di Tanah Melayu.",m:2,ans:["Al-Imam","Al-Ikhwan","Saudara","Warta Malaya","Majlis","Utusan Melayu","Majalah Bulan Melayu","Pengasuh"]},
+  {q:"Terangkan dua faktor kemunculan nasionalisme di Tanah Melayu sebelum Perang Dunia Kedua.",m:4,ans:["Dasar penjajah British yang menindas dan mengabaikan kepentingan penduduk tempatan","Pengaruh gerakan Islah yang menyeru pembaharuan pendidikan dan ekonomi orang Melayu","Perkembangan pendidikan dan kemunculan golongan guru serta intelektual","Peranan akhbar, majalah dan novel menyebarkan kesedaran","Pengaruh nasionalisme luar dari Indonesia, Turki dan Mesir"]},
+  {q:"Mengapakah golongan guru dianggap penting dalam gerakan nasionalisme Melayu?",m:4,ans:["Mereka berpendidikan dan mampu menganalisis kesan penjajahan","Mereka berhubung dengan ramai murid dan masyarakat setiap hari","Mereka menubuhkan dan memimpin persatuan seperti KMM dan PASPAM","Mereka menulis dalam akhbar, majalah dan novel untuk membangkitkan kesedaran","Mereka dihormati masyarakat sehingga suara mereka mudah diterima"]}
+ ]},
+{f:4,b:2,t:"Peranan persatuan dalam gerakan nasionalisme",
+ s:"Penubuhan persatuan Melayu seperti Kesatuan Melayu Singapura, Persatuan Sahabat Pena Malaya dan Kesatuan Melayu Muda menandakan perjuangan nasionalisme mula bergerak secara berorganisasi.",
+ parts:[
+  {q:"Nyatakan dua persatuan yang terlibat dalam gerakan nasionalisme Melayu sebelum Perang Dunia Kedua.",m:2,ans:["Kesatuan Melayu Singapura (KMS)","Persatuan Sahabat Pena Malaya (PASPAM)","Kesatuan Melayu Muda (KMM)","Persatuan Melayu Selangor","Persatuan Melayu Perak"]},
+  {q:"Jelaskan dua perbezaan antara persatuan yang bersifat sederhana dengan persatuan yang bersifat radikal.",m:4,ans:["Persatuan sederhana seperti KMS memperjuangkan kepentingan negeri masing-masing melalui saluran undang-undang","Persatuan sederhana menuntut pendidikan, peluang pekerjaan dan kemajuan ekonomi orang Melayu","Persatuan radikal seperti KMM menuntut kemerdekaan terus daripada British","KMM berhasrat menyatukan Tanah Melayu dengan Indonesia dalam konsep Melayu Raya","Persatuan radikal bersedia bekerjasama dengan kuasa luar untuk menentang British"]},
+  {q:"Pada pendapat anda, apakah kepentingan penubuhan persatuan kepada perjuangan sesuatu bangsa?",m:4,ans:["Menyatukan suara dan tenaga rakyat supaya lebih berkesan","Menjadi saluran menyampaikan tuntutan secara teratur kepada pemerintah","Melahirkan kepimpinan yang berpengalaman dan berwibawa","Menyebarkan kesedaran kepada masyarakat yang lebih luas","Memberi kekuatan moral kepada anggota untuk terus berjuang"]}
+ ]},
+{f:4,b:3,t:"Konflik dunia dan pendudukan Jepun",
+ s:"Tentera Jepun mendarat di Kota Bharu pada 8 Disember 1941 dan menawan seluruh Tanah Melayu dalam masa kurang daripada tiga bulan. Pendudukan Jepun meninggalkan kesan yang mendalam kepada rakyat.",
+ parts:[
+  {q:"Nyatakan dua kesan pendudukan Jepun terhadap ekonomi Tanah Melayu.",m:2,ans:["Kekurangan makanan terutamanya beras","Inflasi akibat pengeluaran wang Jepun secara berlebihan","Kemerosotan perusahaan getah dan bijih timah","Kemusnahan kemudahan pengangkutan dan infrastruktur","Rakyat terpaksa menanam ubi kayu sebagai makanan ganti"]},
+  {q:"Jelaskan dua bentuk perjuangan rakyat menentang pendudukan Jepun.",m:4,ans:["Force 136: gerakan bawah tanah dengan sokongan British mengumpul maklumat dan menyerang Jepun","MPAJA: tentera gerila yang menyerang kedudukan Jepun dari kawasan hutan","Wataniah di Pahang: pasukan gerila Melayu yang dipimpin Yeop Mahidin","Kinabalu Guerrilla Defence Force: pemberontakan Jesselton 1943 dipimpin Albert Kwok","Askar Melayu dan polis tempatan yang terus menentang secara senyap"]},
+  {q:"Pada pendapat anda, apakah iktibar yang boleh diambil daripada pengalaman rakyat semasa pendudukan Jepun?",m:4,ans:["Pertahanan negara yang kukuh penting untuk menjamin kedaulatan","Perpaduan kaum diperlukan untuk menghadapi ancaman luar","Semangat berani dan rela berkorban perlu dicontohi","Kebergantungan kepada kuasa asing untuk mempertahankan negara tidak boleh diharapkan","Menghargai keamanan dan kemerdekaan yang dinikmati hari ini"]}
+ ]},
+{f:4,b:3,t:"Dasar pentadbiran Jepun di Tanah Melayu",
+ s:"Jepun melaksanakan pelbagai dasar pentadbiran, pendidikan dan sosial di Tanah Melayu bagi mengukuhkan kedudukan mereka dan menanam pengaruh Nippon dalam kalangan penduduk tempatan.",
+ parts:[
+  {q:"Nyatakan dua dasar yang dilaksanakan oleh pentadbiran Jepun di Tanah Melayu.",m:2,ans:["Pengenalan bahasa Nippon-go dalam sistem pendidikan","Dasar Kominka untuk menanam semangat kejepunan","Penubuhan Kempeitai sebagai polis tentera","Dasar memecah dan memerintah antara kaum","Pengeluaran mata wang Jepun sebagai mata wang sah","Pelaksanaan Sook Ching terhadap golongan yang disyaki anti-Jepun"]},
+  {q:"Terangkan dua kesan sosial pendudukan Jepun terhadap masyarakat Tanah Melayu.",m:4,ans:["Hubungan antara kaum menjadi tegang akibat dasar memecah dan memerintah","Rakyat hidup dalam ketakutan kerana kekejaman Kempeitai","Sistem pendidikan terganggu kerana banyak sekolah ditutup atau diubah","Taraf kesihatan merosot kerana kekurangan makanan dan ubat","Rakyat kehilangan nyawa dan keluarga akibat kerja paksa seperti pembinaan landasan kereta api","Keyakinan terhadap British sebagai pelindung merosot sehingga menyemarakkan semangat kemerdekaan"]},
+  {q:"Pada pendapat anda, mengapakah dasar memecah dan memerintah berbahaya kepada sebuah masyarakat berbilang kaum?",m:4,ans:["Menimbulkan rasa curiga dan permusuhan antara kaum","Melemahkan kekuatan bersatu rakyat menentang penjajah","Boleh mencetuskan rusuhan dan pertumpahan darah","Menghalang pembangunan negara kerana tenaga rakyat terbahagi","Meninggalkan kesan prasangka yang berpanjangan kepada generasi berikutnya"]}
+ ]},
+{f:4,b:4,t:"Malayan Union dan reaksi penduduk tempatan",
+ s:"Pada 1 April 1946, British melaksanakan Malayan Union di Tanah Melayu. Pelaksanaan ini mendapat tentangan hebat daripada orang Melayu di seluruh negeri.",
+ parts:[
+  {q:"Nyatakan dua ciri Malayan Union.",m:2,ans:["Diketuai oleh seorang Gabenor British","Kuasa sultan terhad kepada hal ehwal agama Islam dan adat Melayu","Kerakyatan jus soli yang longgar kepada semua kaum","Singapura menjadi tanah jajahan berasingan","Negeri-negeri Melayu digabungkan dengan Melaka dan Pulau Pinang"]},
+  {q:"Terangkan dua bentuk tentangan orang Melayu terhadap Malayan Union.",m:4,ans:["Mengadakan demonstrasi damai dan perarakan di seluruh negeri","Mengadakan Kongres Melayu lalu menubuhkan UMNO pada tahun 1946","Memboikot upacara pelantikan Gabenor Malayan Union","Raja-raja Melayu tidak menghadiri upacara rasmi sebagai protes","Menghantar memorandum dan surat protes kepada kerajaan British"]},
+  {q:"Mengapakah penubuhan UMNO dianggap titik penting dalam sejarah politik negara?",m:4,ans:["Menyatukan pelbagai persatuan Melayu di bawah satu pertubuhan kebangsaan","Berjaya membatalkan Malayan Union dan menggantikannya dengan PTM 1948","Memperkenalkan perjuangan politik secara berorganisasi dan berperlembagaan","Menjadi asas kepada rundingan kemerdekaan bersama MCA dan MIC","Membuktikan perjuangan secara damai boleh berjaya"]}
+ ]},
+{f:4,b:4,t:"Penyerahan Sarawak dan Borneo Utara kepada British",
+ s:"Pada tahun 1946, Sarawak diserahkan oleh Charles Vyner Brooke kepada kerajaan British manakala Borneo Utara diserahkan oleh Syarikat Borneo Utara British. Penyerahan ini dilakukan tanpa merujuk kepada penduduk tempatan.",
+ parts:[
+  {q:"Nyatakan dua sebab penduduk Sarawak menentang penyerahan Sarawak kepada British.",m:2,ans:["Penyerahan dilakukan tanpa merujuk kepada penduduk tempatan","Bercanggah dengan Perjanjian 1941 yang menjanjikan pemerintahan sendiri","Menjejaskan kedudukan dan hak penduduk tempatan","Sarawak akan menjadi tanah jajahan British sepenuhnya","Kehilangan identiti Sarawak sebagai wilayah yang berautonomi"]},
+  {q:"Jelaskan dua bentuk gerakan anti-penyerahan di Sarawak.",m:4,ans:["Penubuhan persatuan seperti Persatuan Kebangsaan Melayu Sarawak bagi menyatukan tentangan","Penubuhan Barisan Pemuda Sarawak sebagai gerakan pemuda menentang penyerahan","Menghantar memorandum dan wakil ke London untuk menyatakan protes","Pegawai tempatan meletakkan jawatan sebagai tanda protes","Mengadakan kempen kesedaran melalui akhbar dan perhimpunan","Gerakan Rukun 13 yang berikrar menentang penyerahan"]},
+  {q:"Pada pendapat anda, mengapakah pandangan rakyat perlu diambil kira dalam keputusan besar sebuah negara?",m:4,ans:["Rakyat ialah pemilik kedaulatan negara","Keputusan yang disokong rakyat lebih mudah dilaksanakan dan bertahan","Mengelakkan rasa tidak puas hati yang boleh mencetuskan konflik","Menghormati prinsip demokrasi dan hak asasi","Rakyat yang menanggung kesan keputusan tersebut dalam jangka panjang"]}
+ ]},
+{f:4,b:5,t:"Persekutuan Tanah Melayu 1948",
+ s:"Persekutuan Tanah Melayu 1948 ditubuhkan pada 1 Februari 1948 bagi menggantikan Malayan Union yang ditentang penduduk tempatan.",
+ parts:[
+  {q:"Namakan dua jawatankuasa yang terlibat dalam pembentukan Persekutuan Tanah Melayu 1948.",m:2,ans:["Jawatankuasa Kerja (Working Committee)","Jawatankuasa Perundingan (Consultative Committee)"]},
+  {q:"Jelaskan dua perbezaan antara Persekutuan Tanah Melayu 1948 dengan Malayan Union.",m:4,ans:["PTM 1948 memulihkan kuasa dan kedaulatan raja-raja Melayu manakala Malayan Union menghadkannya","PTM 1948 memperketat syarat kerakyatan manakala Malayan Union memberi jus soli yang longgar","PTM 1948 diketuai Pesuruhjaya Tinggi manakala Malayan Union diketuai Gabenor","PTM 1948 mewujudkan Majlis Raja-Raja yang perlu dirujuk dalam perkara tertentu","PTM 1948 mengekalkan setiap negeri sebagai satu unit yang mempunyai perlembagaan negeri"]},
+  {q:"Pada pendapat anda, apakah kepentingan penubuhan Persekutuan Tanah Melayu 1948 kepada negara?",m:4,ans:["Meletakkan asas kepada sistem persekutuan yang diamalkan hingga kini","Memulihkan kedudukan raja-raja Melayu sebagai lambang kedaulatan negeri","Membuka ruang penyertaan penduduk tempatan dalam pentadbiran","Mewujudkan kestabilan politik yang membolehkan rundingan kemerdekaan diteruskan","Menunjukkan British mula mengambil kira pandangan penduduk tempatan"]}
+ ]},
+{f:4,b:5,t:"Perlembagaan Rakyat PUTERA-AMCJA",
+ s:"PUTERA-AMCJA yang tidak dijemput menyertai Jawatankuasa Kerja telah mengemukakan Perlembagaan Rakyat sebagai cadangan alternatif kepada Persekutuan Tanah Melayu 1948.",
+ parts:[
+  {q:"Nyatakan dua cadangan dalam Perlembagaan Rakyat.",m:2,ans:["Singapura dimasukkan ke dalam Persekutuan","Kerakyatan yang sama rata bagi semua yang menganggap Tanah Melayu sebagai tanah air","Bahasa Melayu sebagai bahasa rasmi","Orang Melayu dan bukan Melayu digelar Melayu sebagai satu bangsa","Majlis Perundangan dipilih melalui pilihan raya","Sultan menjadi raja berperlembagaan yang menerima nasihat rakyat"]},
+  {q:"Terangkan dua tindakan PUTERA-AMCJA bagi menentang cadangan Persekutuan Tanah Melayu 1948.",m:4,ans:["Menggubal dan mengemukakan Perlembagaan Rakyat sebagai cadangan alternatif","Mengadakan hartal iaitu pemogokan menutup kedai dan perniagaan pada Oktober 1947","Mengadakan perhimpunan dan kempen kesedaran kepada rakyat","Menghantar memorandum kepada kerajaan British","Mendapatkan sokongan pertubuhan buruh dan kesatuan sekerja"]},
+  {q:"Pada pendapat anda, mengapakah cadangan Perlembagaan Rakyat tidak diterima oleh British?",m:4,ans:["PUTERA-AMCJA tidak diiktiraf sebagai wakil rasmi rakyat oleh British","British lebih mempercayai UMNO dan raja-raja Melayu sebagai pihak berunding","Cadangan itu dilihat mengancam kedudukan istimewa orang Melayu","Sebahagian pertubuhan dalam AMCJA dikaitkan dengan pengaruh kiri dan komunis","British bimbang kehilangan kawalan politik dan ekonomi ke atas Tanah Melayu"]}
+ ]},
+{f:4,b:6,t:"Ancaman komunis dan Pengisytiharan Darurat",
+ s:"Pengisytiharan Darurat pada 18 Jun 1948 memaksa kerajaan melaksanakan pelbagai strategi bagi menangani ancaman Parti Komunis Malaya.",
+ parts:[
+  {q:"Nyatakan dua langkah kerajaan menangani ancaman komunis semasa Darurat.",m:2,ans:["Melaksanakan Rancangan Briggs dengan memindahkan penduduk ke kampung baharu","Menguatkuasakan Ordinan Darurat dan pengenalan kad pengenalan","Menubuhkan Home Guard dan pasukan keselamatan tambahan","Mengharamkan Parti Komunis Malaya","Melancarkan perang saraf melalui risalah dan siaran radio","Menawarkan pengampunan kepada komunis yang menyerah diri"]},
+  {q:"Terangkan dua kesan Darurat terhadap negara.",m:4,ans:["Kehilangan nyawa anggota keselamatan dan orang awam","Kegiatan ekonomi terganggu terutamanya di estet dan lombong","Perbelanjaan kerajaan meningkat untuk keselamatan","Penubuhan kampung baharu mengubah taburan penduduk secara kekal","Kesedaran bahawa perpaduan kaum penting untuk keselamatan negara"]},
+  {q:"Sebagai seorang rakyat Malaysia, bagaimanakah anda boleh membantu menjaga keselamatan negara hari ini?",m:4,ans:["Menghormati undang-undang dan tidak terlibat dalam kegiatan menyalahi undang-undang","Melaporkan kegiatan yang mencurigakan kepada pihak berkuasa","Tidak menyebarkan berita palsu yang mengancam keharmonian kaum","Menyertai badan sukarela seperti RELA atau Rukun Tetangga","Menghormati kepelbagaian budaya dan agama untuk mengekalkan perpaduan"]}
+ ]},
+{f:4,b:6,t:"Strategi Briggs dan Templer",
+ s:"Rancangan Briggs 1950 dan pentadbiran Sir Gerald Templer dari tahun 1952 merupakan dua strategi penting British dalam usaha menumpaskan Parti Komunis Malaya.",
+ parts:[
+  {q:"Nyatakan dua ciri Rancangan Briggs.",m:2,ans:["Memindahkan penduduk pinggir hutan ke kampung baharu yang berkawal","Kampung baharu dipagar dan dikawal oleh pasukan keselamatan","Menyediakan kemudahan asas seperti air, elektrik dan sekolah di kampung baharu","Memutuskan bekalan makanan, ubat dan maklumat kepada komunis","Mengawal pergerakan penduduk melalui kad pengenalan dan perintah berkurung"]},
+  {q:"Jelaskan dua langkah yang diperkenalkan oleh Sir Gerald Templer bagi menangani komunis.",m:4,ans:["Memperkenalkan konsep memenangi hati dan fikiran rakyat","Mengisytiharkan kawasan putih bagi kawasan yang bebas daripada komunis sebagai insentif","Mempercepat pemberian kerakyatan kepada penduduk bukan Melayu untuk memenangi kesetiaan","Meningkatkan operasi ketenteraan dan perisikan terhadap komunis","Memperkukuh Home Guard dan melibatkan penduduk tempatan dalam pertahanan","Menyediakan kemudahan sosial dan hak milik tanah di kampung baharu"]},
+  {q:"Pada pendapat anda, mengapakah pendekatan memenangi hati dan fikiran rakyat lebih berkesan berbanding kekerasan semata-mata?",m:4,ans:["Rakyat yang berpuas hati tidak akan menyokong atau melindungi pengganas","Mengurangkan simpati rakyat terhadap perjuangan komunis","Menghindari kemarahan rakyat akibat tindakan keras pihak berkuasa","Menyelesaikan punca masalah iaitu kemiskinan dan ketidakadilan","Membina kepercayaan rakyat terhadap kerajaan dalam jangka panjang"]}
+ ]},
+{f:4,b:7,t:"Usaha ke arah kemerdekaan",
+ s:"Selepas Darurat, pelbagai usaha dilakukan ke arah berkerajaan sendiri termasuk pelaksanaan Sistem Ahli dan penubuhan parti politik pelbagai kaum.",
+ parts:[
+  {q:"Nyatakan dua tujuan pelaksanaan Sistem Ahli pada tahun 1951.",m:2,ans:["Melatih penduduk tempatan mentadbir negara","Memupuk kerjasama dan perpaduan antara kaum","Menyediakan negara ke arah berkerajaan sendiri","Memberi pengalaman kepada pemimpin tempatan mengurus portfolio kementerian"]},
+  {q:"Jelaskan dua sumbangan Parti Perikatan dalam perjuangan kemerdekaan.",m:4,ans:["Menyatukan UMNO, MCA dan MIC sebagai bukti perpaduan kaum kepada British","Memenangi pilihan raya 1952 dan 1955 secara meyakinkan","Mengetuai Rombongan Merdeka ke London pada tahun 1956","Mengemukakan memorandum bersama kepada Suruhanjaya Reid","Mengamalkan tolak ansur dalam isu kerakyatan, bahasa dan agama"]},
+  {q:"Pada pendapat anda, mengapakah British akhirnya bersetuju memberikan kemerdekaan kepada Persekutuan Tanah Melayu?",m:4,ans:["Rakyat berbilang kaum telah membuktikan perpaduan melalui Parti Perikatan","Kemenangan besar Perikatan dalam pilihan raya 1955 menunjukkan mandat rakyat","Penduduk tempatan menunjukkan keupayaan mentadbir melalui Sistem Ahli","Ancaman komunis semakin terkawal sehingga peralihan kuasa boleh dilakukan","Tekanan antipenjajahan di peringkat dunia selepas Perang Dunia Kedua"]}
+ ]},
+{f:4,b:7,t:"Kerjasama politik antara kaum",
+ s:"Penubuhan MCA pada tahun 1949 dan MIC pada tahun 1946, serta kerjasama parti-parti ini dengan UMNO, membuka jalan kepada perjuangan kemerdekaan secara bersama.",
+ parts:[
+  {q:"Nyatakan dua parti politik yang bergabung dalam Parti Perikatan.",m:2,ans:["United Malays National Organisation (UMNO)","Malayan Chinese Association (MCA)","Malayan Indian Congress (MIC)"]},
+  {q:"Terangkan dua peranan Jawatankuasa Hubungan Antara Kaum dalam memupuk kerjasama politik.",m:4,ans:["Menjadi ruang perbincangan antara pemimpin pelbagai kaum secara tidak formal","Membincangkan isu sensitif seperti kerakyatan, pendidikan dan ekonomi","Mencari penyelesaian secara tolak ansur sebelum isu menjadi konflik terbuka","Membina kepercayaan dan hubungan peribadi antara pemimpin kaum","Meletakkan asas kepada pembentukan pakatan politik seperti Parti Perikatan"]},
+  {q:"Pada pendapat anda, apakah nilai yang perlu diamalkan supaya kerjasama antara kaum terus berkekalan?",m:4,ans:["Semangat tolak ansur dan saling memberi laluan","Sikap hormat terhadap agama, budaya dan bahasa kaum lain","Kesediaan berunding dan berbincang secara terbuka","Amanah dan menunaikan janji dalam perjanjian bersama","Mengutamakan kepentingan negara melebihi kepentingan kaum sendiri"]}
+ ]},
+{f:4,b:8,t:"Pilihan raya dan demokrasi berparlimen",
+ s:"Pilihan Raya Majlis Perundangan Persekutuan pada 27 Julai 1955 merupakan pilihan raya umum pertama di Persekutuan Tanah Melayu.",
+ parts:[
+  {q:"Nyatakan keputusan Parti Perikatan dalam Pilihan Raya Majlis Perundangan Persekutuan 1955.",m:2,ans:["Perikatan memenangi 51 daripada 52 kerusi yang dipertandingkan","Satu kerusi dimenangi oleh Parti Islam","Tunku Abdul Rahman dilantik sebagai Ketua Menteri"]},
+  {q:"Terangkan dua kepentingan pilihan raya dalam sistem demokrasi.",m:4,ans:["Memberi hak kepada rakyat memilih wakil dan kerajaan yang mereka mahu","Menjadi saluran rakyat menilai prestasi kerajaan secara berkala","Menjamin peralihan kuasa berlaku secara aman dan sah","Meningkatkan akauntabiliti pemimpin kepada rakyat","Mengurangkan kemungkinan rampasan kuasa atau keganasan politik"]},
+  {q:"Sebagai pengundi masa depan, apakah tanggungjawab anda dalam sebuah pilihan raya?",m:4,ans:["Mendaftar sebagai pengundi dan keluar mengundi","Menilai calon dan manifesto secara rasional bukan berdasarkan emosi","Tidak menerima rasuah atau pengaruh wang","Menolak berita palsu dan kempen yang memecahbelahkan kaum","Menerima keputusan pilihan raya secara matang"]}
+ ]},
+{f:4,b:8,t:"Pilihan raya peringkat bandaran",
+ s:"Pilihan raya di Tanah Melayu bermula di peringkat bandaran pada tahun 1951 dan 1952 sebelum diperluas ke peringkat Majlis Perundangan Persekutuan pada tahun 1955.",
+ parts:[
+  {q:"Nyatakan dua pilihan raya peringkat bandaran yang diadakan sebelum tahun 1955.",m:2,ans:["Pilihan raya Majlis Bandaran Pulau Pinang pada tahun 1951","Pilihan raya Majlis Bandaran Kuala Lumpur pada tahun 1952","Pilihan raya Majlis Bandaran Melaka","Pilihan raya Majlis Bandaran Johor Bahru"]},
+  {q:"Jelaskan dua kepentingan pilihan raya peringkat bandaran kepada perkembangan politik negara.",m:4,ans:["Memberi pengalaman pertama kepada rakyat dalam proses mengundi","Melatih parti politik menyusun jentera dan berkempen","Membuktikan kerjasama antara kaum boleh berjaya apabila UMNO dan MCA menang","Meyakinkan British bahawa rakyat bersedia untuk demokrasi","Membuka jalan kepada pilihan raya di peringkat yang lebih tinggi"]},
+  {q:"Pada pendapat anda, mengapakah kejayaan UMNO dan MCA dalam pilihan raya bandaran 1952 penting?",m:4,ans:["Membuktikan pakatan antara kaum boleh menarik sokongan pengundi berbilang kaum","Menewaskan Parti Kemerdekaan Malaya yang bersifat keanggotaan terbuka","Menjadi asas kepada pembentukan Parti Perikatan","Menguatkan hujah kepada British bahawa rakyat telah bersatu","Memberi keyakinan kepada pemimpin untuk menuntut kemerdekaan"]}
+ ]},
+{f:4,b:9,t:"Perlembagaan Persekutuan Tanah Melayu 1957",
+ s:"Suruhanjaya Reid ditubuhkan pada tahun 1956 bagi merangka perlembagaan Persekutuan Tanah Melayu yang merdeka. Suruhanjaya ini menerima ratusan memorandum daripada pelbagai pihak.",
+ parts:[
+  {q:"Namakan dua anggota Suruhanjaya Reid.",m:2,ans:["Lord Reid sebagai pengerusi","Sir Ivor Jennings","Sir William McKell","B. Malik","Abdul Hamid"]},
+  {q:"Jelaskan dua peruntukan penting dalam Perlembagaan Persekutuan Tanah Melayu 1957.",m:4,ans:["Islam sebagai agama Persekutuan tetapi agama lain boleh diamalkan dengan aman","Bahasa Melayu sebagai bahasa kebangsaan","Yang di-Pertuan Agong sebagai ketua negara dan raja berperlembagaan","Kerakyatan secara jus soli dengan syarat tertentu","Kedudukan istimewa orang Melayu serta kepentingan sah kaum lain","Pembahagian kuasa antara kerajaan pusat dengan kerajaan negeri"]},
+  {q:"Pada pendapat anda, mengapakah semangat tolak ansur penting semasa merangka perlembagaan negara?",m:4,ans:["Perlembagaan perlu diterima oleh semua kaum agar sah dan kekal","Tolak ansur mengelakkan konflik dan pertumpahan darah","Setiap kaum memperoleh jaminan terhadap kepentingan asas masing-masing","Membina kepercayaan antara kaum sebagai asas perpaduan","Menjadi contoh penyelesaian masalah secara rundingan sehingga hari ini"]}
+ ]},
+{f:4,b:9,t:"Kontrak sosial dalam Perlembagaan 1957",
+ s:"Perlembagaan Persekutuan Tanah Melayu 1957 terhasil daripada tolak ansur antara kaum, iaitu penerimaan kerakyatan yang lebih terbuka bertukar ganti dengan pengiktirafan terhadap kedudukan istimewa orang Melayu, bahasa Melayu dan agama Islam.",
+ parts:[
+  {q:"Nyatakan dua pihak yang mengemukakan memorandum kepada Suruhanjaya Reid.",m:2,ans:["Parti Perikatan","Majlis Raja-Raja","Parti Negara","Persatuan dan pertubuhan kaum Cina dan India","Kesatuan sekerja dan pertubuhan agama"]},
+  {q:"Terangkan dua tolak ansur yang dicapai antara kaum dalam Perlembagaan 1957.",m:4,ans:["Kaum bukan Melayu menerima bahasa Melayu sebagai bahasa kebangsaan","Kaum bukan Melayu menerima Islam sebagai agama Persekutuan dan kedudukan istimewa orang Melayu","Orang Melayu bersetuju memberi kerakyatan secara jus soli kepada penduduk bukan Melayu","Kepentingan sah kaum lain dijamin dalam Perkara 153","Kebebasan mengamalkan agama lain dan menggunakan bahasa lain dijamin"]},
+  {q:"Pada pendapat anda, mengapakah rakyat hari ini perlu memahami sejarah tolak ansur ini?",m:4,ans:["Supaya menghargai bahawa keharmonian hari ini hasil kompromi yang sukar","Supaya tidak mempersoalkan peruntukan perlembagaan secara sembarangan","Supaya sensitiviti kaum dan agama terus dihormati","Supaya mengelakkan isu perkauman dipolitikkan semula","Supaya generasi muda meneruskan budaya berunding dan bukan berkonfrontasi"]}
+ ]},
+{f:4,b:10,t:"Pemasyhuran Kemerdekaan 31 Ogos 1957",
+ s:"Pada pagi 31 Ogos 1957 di Stadium Merdeka, Tunku Abdul Rahman membaca Pemasyhuran Kemerdekaan dan melaungkan kata Merdeka sebanyak tujuh kali disambut sorakan rakyat.",
+ parts:[
+  {q:"Nyatakan dua perkara yang terkandung dalam Pemasyhuran Kemerdekaan.",m:2,ans:["Persekutuan Tanah Melayu menjadi sebuah negara yang merdeka dan berdaulat","Negara diperintah berdasarkan prinsip kebebasan dan keadilan","Kesejahteraan rakyat dan keamanan menjadi matlamat negara","Persekutuan kekal sebagai sebuah negara demokrasi berparlimen"]},
+  {q:"Terangkan dua kepentingan kemerdekaan kepada rakyat Persekutuan Tanah Melayu.",m:4,ans:["Rakyat bebas menentukan hala tuju dan pemerintahan negara sendiri","Bahasa, budaya dan agama penduduk tempatan dapat dimartabatkan","Hasil ekonomi negara dapat digunakan untuk pembangunan rakyat sendiri","Negara diiktiraf di peringkat antarabangsa dan menyertai PBB","Peluang pendidikan dan pekerjaan dibuka lebih luas kepada rakyat"]},
+  {q:"Bagaimanakah anda sebagai pelajar boleh menghargai perjuangan kemerdekaan?",m:4,ans:["Belajar dan memahami sejarah negara dengan bersungguh-sungguh","Menghormati lagu Negaraku, Jalur Gemilang dan lambang negara","Mengamalkan perpaduan dan menghormati kepelbagaian kaum","Menyertai aktiviti kebangsaan dan kemasyarakatan","Menjauhi perbuatan yang boleh mencemarkan maruah negara"]}
+ ]},
+{f:4,b:10,t:"Perjanjian Persekutuan Tanah Melayu 1957",
+ s:"Perjanjian Persekutuan Tanah Melayu 1957 yang ditandatangani antara raja-raja Melayu dengan kerajaan British menjadi asas perundangan kepada kelahiran sebuah negara merdeka.",
+ parts:[
+  {q:"Nyatakan dua pihak yang menandatangani Perjanjian Persekutuan Tanah Melayu 1957.",m:2,ans:["Raja-raja Melayu bagi sembilan negeri Melayu","Wakil kerajaan British iaitu Sir Donald MacGillivray"]},
+  {q:"Jelaskan dua kesan perjanjian tersebut terhadap pentadbiran negara.",m:4,ans:["Kuasa pemerintahan berpindah daripada British kepada kerajaan Persekutuan","Jawatan Pesuruhjaya Tinggi British dimansuhkan","Yang di-Pertuan Agong dilantik sebagai ketua negara","Parlimen dan kabinet yang dipilih rakyat mula berfungsi sepenuhnya","Melaka dan Pulau Pinang menjadi sebahagian Persekutuan yang merdeka"]},
+  {q:"Pada pendapat anda, mengapakah kemerdekaan yang dicapai melalui rundingan lebih bermakna kepada negara?",m:4,ans:["Tidak ada kehilangan nyawa dan kemusnahan harta benda","Hubungan baik dengan British dapat diteruskan selepas merdeka","Sistem pentadbiran dan ekonomi dapat diambil alih secara teratur","Menunjukkan kematangan politik pemimpin dan rakyat","Menjadi contoh kepada negara lain bahawa perjuangan damai boleh berjaya"]}
+ ]},
+
+/* ================= TINGKATAN 5 ================= */
+{f:5,b:1,t:"Kedaulatan negara",
+ s:"Kedaulatan ialah kuasa tertinggi sebuah negara untuk memerintah wilayah dan rakyatnya tanpa campur tangan kuasa luar. Malaysia mempertahankan kedaulatannya di darat, laut dan udara.",
+ parts:[
+  {q:"Nyatakan dua unsur asas sebuah negara yang berdaulat.",m:2,ans:["Wilayah yang jelas sempadannya","Rakyat yang menetap","Kerajaan yang berfungsi","Kedaulatan iaitu kuasa memerintah tanpa campur tangan luar","Pengiktirafan antarabangsa"]},
+  {q:"Jelaskan dua cara Malaysia mempertahankan kedaulatan negara.",m:4,ans:["Memperkukuh Angkatan Tentera Malaysia dan pasukan keselamatan","Mengawal sempadan darat, laut dan ruang udara termasuk Zon Ekonomi Eksklusif","Menguatkuasakan undang-undang negara di seluruh wilayah","Menyelesaikan pertikaian sempadan melalui saluran diplomatik dan undang-undang antarabangsa","Menyertai pertubuhan antarabangsa bagi mendapat pengiktirafan dan sokongan"]},
+  {q:"Pada pendapat anda, mengapakah kedaulatan penting kepada sebuah negara?",m:4,ans:["Membolehkan negara menentukan dasar sendiri tanpa tekanan luar","Menjamin keselamatan rakyat dan keutuhan wilayah","Melindungi sumber ekonomi negara daripada dieksploitasi kuasa asing","Mengekalkan identiti, budaya dan jati diri bangsa","Memberi negara hak bersuara sama rata dalam hubungan antarabangsa"]}
+ ]},
+{f:5,b:1,t:"Pengiktirafan dan ancaman terhadap kedaulatan",
+ s:"Sebuah negara memerlukan pengiktirafan antarabangsa untuk mengukuhkan kedaulatannya. Dalam masa yang sama, kedaulatan boleh terancam oleh pelbagai bentuk campur tangan dan tuntutan wilayah.",
+ parts:[
+  {q:"Nyatakan dua bentuk pengiktirafan terhadap sebuah negara.",m:2,ans:["Pengiktirafan de facto yang bersifat sementara","Pengiktirafan de jure yang sah dan kekal di sisi undang-undang antarabangsa"]},
+  {q:"Terangkan dua ancaman terhadap kedaulatan sebuah negara.",m:4,ans:["Pencerobohan wilayah oleh kuasa asing di darat, laut atau udara","Tuntutan bertindih ke atas wilayah oleh negara lain","Campur tangan kuasa luar dalam urusan dalam negeri","Kegiatan pengganas dan penyeludupan yang melemahkan kawalan sempadan","Kebergantungan ekonomi yang berlebihan kepada kuasa asing","Ancaman siber dan penyebaran maklumat palsu yang memecahkan perpaduan"]},
+  {q:"Pada pendapat anda, bagaimanakah sebuah negara kecil boleh mempertahankan kedaulatannya dalam dunia hari ini?",m:4,ans:["Menyertai pertubuhan antarabangsa untuk mendapat sokongan kolektif","Mengamalkan dasar luar yang berkecuali dan menjalin hubungan baik dengan semua negara","Membina kekuatan ekonomi supaya tidak mudah ditekan","Memperkukuh perpaduan dalam negeri supaya tidak boleh dipecahkan dari luar","Menggunakan saluran undang-undang antarabangsa untuk menyelesaikan pertikaian"]}
+ ]},
+{f:5,b:2,t:"Perlembagaan Persekutuan sebagai undang-undang tertinggi",
+ s:"Perkara 4 Perlembagaan Persekutuan menetapkan bahawa Perlembagaan ialah undang-undang utama Persekutuan dan mana-mana undang-undang yang bercanggah dengannya adalah tidak sah.",
+ parts:[
+  {q:"Nyatakan dua kepentingan Perlembagaan Persekutuan kepada negara.",m:2,ans:["Menjadi undang-undang tertinggi yang mengikat semua pihak","Menetapkan pembahagian kuasa antara kerajaan pusat dengan negeri","Menjamin hak asasi rakyat","Menetapkan bentuk pemerintahan negara","Menjadi rujukan menyelesaikan pertikaian perundangan"]},
+  {q:"Terangkan dua hak asasi yang dijamin dalam Perlembagaan Persekutuan.",m:4,ans:["Kebebasan diri: seseorang tidak boleh ditahan kecuali menurut undang-undang","Kesamarataan di sisi undang-undang tanpa diskriminasi","Kebebasan bersuara, berhimpun dan berpersatuan","Kebebasan beragama dengan Islam sebagai agama Persekutuan","Hak terhadap pendidikan","Hak terhadap harta dan pampasan yang adil"]},
+  {q:"Pada pendapat anda, mengapakah rakyat perlu memahami Perlembagaan Persekutuan?",m:4,ans:["Supaya mengetahui hak dan tanggungjawab sebagai warganegara","Supaya tidak mudah terpedaya dengan dakwaan palsu tentang perlembagaan","Supaya dapat menghormati sensitiviti kaum dan agama yang dijamin perlembagaan","Supaya dapat menyokong kestabilan politik dan keharmonian negara","Supaya dapat menuntut hak melalui saluran yang sah"]}
+ ]},
+{f:5,b:2,t:"Kewarganegaraan Malaysia",
+ s:"Perlembagaan Persekutuan menetapkan cara seseorang memperoleh kewarganegaraan Malaysia serta tanggungjawab yang perlu dipikul oleh setiap warganegara.",
+ parts:[
+  {q:"Nyatakan dua cara memperoleh kewarganegaraan Malaysia.",m:2,ans:["Kuat kuasa undang-undang","Pendaftaran","Naturalisasi","Penggabungan wilayah"]},
+  {q:"Jelaskan dua tanggungjawab seorang warganegara Malaysia.",m:4,ans:["Menghormati dan mematuhi perlembagaan serta undang-undang negara","Setia kepada raja dan negara","Membayar cukai dan menyumbang kepada pembangunan negara","Mempertahankan negara apabila diperlukan","Menjaga keharmonian dan perpaduan masyarakat berbilang kaum","Menghormati lambang negara seperti bendera dan lagu kebangsaan"]},
+  {q:"Pada pendapat anda, mengapakah syarat kewarganegaraan perlu ditetapkan dengan jelas dalam perlembagaan?",m:4,ans:["Mengelakkan pertikaian tentang status seseorang penduduk","Memastikan hanya mereka yang setia kepada negara diberi hak warganegara","Melindungi hak dan kepentingan warganegara yang sedia ada","Mengawal kemasukan penduduk asing secara tidak terkawal","Memberi kepastian undang-undang kepada generasi yang akan datang"]}
+ ]},
+{f:5,b:3,t:"Raja berperlembagaan dan demokrasi berparlimen",
+ s:"Malaysia mengamalkan sistem raja berperlembagaan dan demokrasi berparlimen. Yang di-Pertuan Agong ialah ketua negara manakala Perdana Menteri ialah ketua kerajaan.",
+ parts:[
+  {q:"Nyatakan tiga komponen Parlimen Malaysia.",m:3,ans:["Yang di-Pertuan Agong","Dewan Negara","Dewan Rakyat"]},
+  {q:"Jelaskan dua kuasa budi bicara Yang di-Pertuan Agong.",m:4,ans:["Melantik Perdana Menteri daripada ahli Dewan Rakyat yang mendapat kepercayaan majoriti","Memperkenan atau menolak permintaan Perdana Menteri membubarkan Parlimen","Memanggil mesyuarat Majlis Raja-Raja berkaitan keistimewaan dan kedudukan Raja-Raja"]},
+  {q:"Pada pendapat anda, apakah kebaikan sistem pemisahan kuasa antara badan perundangan, pelaksana dan kehakiman?",m:3,ans:["Mengelakkan penyalahgunaan kuasa oleh mana-mana satu badan","Setiap badan saling mengawal dan mengimbangi","Keputusan mahkamah dibuat secara bebas dan adil","Undang-undang digubal dan dilaksanakan secara telus","Meningkatkan keyakinan rakyat dan pelabur terhadap negara"]}
+ ]},
+{f:5,b:3,t:"Badan perundangan Malaysia",
+ s:"Dewan Rakyat dan Dewan Negara merupakan dua dewan dalam Parlimen Malaysia yang berperanan menggubal dan meneliti undang-undang persekutuan.",
+ parts:[
+  {q:"Nyatakan dua perbezaan antara Dewan Rakyat dengan Dewan Negara.",m:2,ans:["Ahli Dewan Rakyat dipilih melalui pilihan raya manakala ahli Dewan Negara dilantik","Ahli Dewan Rakyat mewakili kawasan pilihan raya manakala ahli Dewan Negara mewakili negeri dan kepakaran","Penggal Dewan Rakyat tamat apabila Parlimen dibubarkan manakala Dewan Negara tidak terjejas"]},
+  {q:"Jelaskan proses sesuatu rang undang-undang menjadi undang-undang.",m:4,ans:["Rang undang-undang dibentangkan untuk bacaan pertama","Bacaan kedua diikuti perbahasan oleh ahli dewan","Peringkat jawatankuasa untuk meneliti dan membuat pembetulan","Bacaan ketiga dan pengundian di Dewan Rakyat","Rang undang-undang dihantar ke Dewan Negara untuk proses yang sama","Diperkenan oleh Yang di-Pertuan Agong dan digazetkan sebagai undang-undang"]},
+  {q:"Pada pendapat anda, mengapakah perbahasan di Parlimen penting kepada rakyat?",m:4,ans:["Wakil rakyat dapat menyuarakan masalah dan pandangan pengundi","Dasar kerajaan diteliti dan dipersoalkan sebelum dilaksanakan","Meningkatkan ketelusan dan akauntabiliti kerajaan","Rakyat dapat menilai prestasi wakil mereka","Mengelakkan undang-undang yang tidak adil diluluskan tanpa semakan"]}
+ ]},
+{f:5,b:4,t:"Sistem persekutuan di Malaysia",
+ s:"Malaysia mengamalkan sistem persekutuan yang membahagikan kuasa antara kerajaan pusat dengan kerajaan negeri melalui Jadual Kesembilan Perlembagaan Persekutuan.",
+ parts:[
+  {q:"Namakan tiga senarai dalam Jadual Kesembilan Perlembagaan Persekutuan.",m:3,ans:["Senarai Persekutuan","Senarai Negeri","Senarai Bersama"]},
+  {q:"Jelaskan dua bidang kuasa kerajaan negeri.",m:4,ans:["Tanah: pemberian hak milik, pengambilan dan pentadbiran tanah negeri","Hutan dan sumber hutan termasuk pengeluaran lesen pembalakan","Hal ehwal agama Islam, wakaf, zakat dan Mahkamah Syariah","Kerajaan tempatan dan kerja raya negeri","Adat istiadat Melayu dan adat anak negeri Sabah serta Sarawak"]},
+  {q:"Pada pendapat anda, mengapakah sistem persekutuan sesuai diamalkan di Malaysia?",m:3,ans:["Malaysia terdiri daripada negeri yang berbeza latar belakang sejarah dan budaya","Kerajaan negeri lebih memahami keperluan setempat","Kedudukan raja-raja Melayu dan hak istimewa negeri dapat dikekalkan","Sabah dan Sarawak memperoleh kuasa autonomi tertentu seperti imigresen","Kuasa tidak tertumpu pada satu pihak sahaja sehingga pentadbiran lebih seimbang"]}
+ ]},
+{f:5,b:4,t:"Hubungan kerajaan pusat dengan kerajaan negeri",
+ s:"Kerajaan pusat dan kerajaan negeri bekerjasama dalam pelbagai bidang melalui Senarai Bersama dan badan perundingan yang diwujudkan dalam Perlembagaan Persekutuan.",
+ parts:[
+  {q:"Nyatakan dua perkara yang terkandung dalam Senarai Bersama.",m:2,ans:["Kebajikan masyarakat","Biasiswa","Perlindungan hidupan liar dan taman negara","Kesihatan awam dan pembetungan","Parit dan saliran","Perancangan bandar dan desa","Pemuliharaan tanah"]},
+  {q:"Jelaskan dua cara kerajaan pusat membantu kerajaan negeri.",m:4,ans:["Memberi pemberian perkapita berdasarkan jumlah penduduk negeri","Memberi pemberian khas untuk projek pembangunan negeri","Memberi pinjaman kepada negeri bagi membiayai projek besar","Menyediakan kepakaran teknikal melalui jabatan persekutuan","Membiayai projek infrastruktur seperti jalan raya dan bekalan air"]},
+  {q:"Pada pendapat anda, mengapakah kerjasama antara kerajaan pusat dengan kerajaan negeri penting?",m:4,ans:["Projek pembangunan dapat dilaksanakan dengan lebih cepat dan cekap","Mengelakkan pertindihan tugas dan pembaziran sumber","Memastikan pembangunan seimbang antara negeri","Rakyat di semua negeri menikmati kemudahan yang setara","Mengelakkan pertikaian kuasa yang boleh menjejaskan kestabilan negara"]}
+ ]},
+{f:5,b:5,t:"Pembentukan Malaysia 1963",
+ s:"Gagasan Malaysia yang diumumkan oleh Tunku Abdul Rahman pada 27 Mei 1961 melalui beberapa peringkat perundingan sebelum Malaysia diisytiharkan pada 16 September 1963.",
+ parts:[
+  {q:"Nyatakan dua badan yang ditubuhkan bagi meneliti pembentukan Malaysia.",m:2,ans:["Jawatankuasa Perunding Perpaduan Malaysia (JPPM)","Suruhanjaya Cobbold","Jawatankuasa Antara Kerajaan yang dipengerusikan Lord Lansdowne","Suruhanjaya Penyiasat Pertubuhan Bangsa-Bangsa Bersatu"]},
+  {q:"Jelaskan dua faktor yang mendorong pembentukan Malaysia.",m:4,ans:["Mempercepat kemerdekaan Sarawak, Sabah dan Singapura","Membendung ancaman komunis khususnya di Singapura","Mengimbangi komposisi kaum selepas penyertaan Singapura","Mengukuhkan kerjasama ekonomi dan pasaran yang lebih luas","Mengukuhkan keselamatan serantau melalui satu persekutuan yang lebih besar"]},
+  {q:"Pada pendapat anda, mengapakah tuntutan 20 Perkara dan 18 Perkara penting kepada Sabah dan Sarawak?",m:4,ans:["Menjamin hak dan kepentingan penduduk tempatan dalam persekutuan baharu","Melindungi kedudukan agama, bahasa dan adat anak negeri","Memberi kuasa autonomi dalam imigresen dan pendidikan","Menjamin perwakilan yang wajar dalam Parlimen","Membina keyakinan penduduk untuk menyertai Malaysia secara sukarela"]}
+ ]},
+{f:5,b:5,t:"Reaksi terhadap gagasan Malaysia",
+ s:"Gagasan Malaysia menerima reaksi yang berbeza-beza daripada penduduk wilayah yang terlibat dan daripada negara jiran seperti Indonesia, Filipina dan Brunei.",
+ parts:[
+  {q:"Nyatakan dua negara yang menentang pembentukan Malaysia.",m:2,ans:["Indonesia","Filipina"]},
+  {q:"Terangkan reaksi dua wilayah terhadap gagasan Malaysia.",m:4,ans:["Sarawak: sebahagian parti menyokong manakala SUPP awalnya menentang kerana bimbang menjadi tanah jajahan baharu","Sabah: penduduk menyokong dengan syarat 20 Perkara dijamin dalam perlembagaan","Singapura: kerajaan menyokong dan mengadakan pungutan suara yang menunjukkan sokongan majoriti","Brunei: Parti Rakyat Brunei menentang dan mencetuskan pemberontakan pada Disember 1962 sehingga Brunei menarik diri","Persekutuan Tanah Melayu: majoriti menyokong kerana melihat faedah keselamatan dan ekonomi"]},
+  {q:"Pada pendapat anda, mengapakah gagasan Malaysia akhirnya berjaya dilaksanakan walaupun menghadapi tentangan?",m:4,ans:["Suruhanjaya Cobbold membuktikan majoriti penduduk menyokong","Tuntutan Sabah dan Sarawak dipenuhi melalui Jawatankuasa Antara Kerajaan","Kepimpinan Tunku Abdul Rahman yang berunding secara sabar dan terbuka","Sokongan Britain dan pengiktirafan Pertubuhan Bangsa-Bangsa Bersatu","Kesedaran bahawa penyatuan memberi manfaat keselamatan dan ekonomi bersama"]}
+ ]},
+{f:5,b:6,t:"Cabaran selepas pembentukan Malaysia",
+ s:"Selepas 16 September 1963, Malaysia menghadapi pelbagai cabaran dari dalam dan luar negara termasuk Konfrontasi, tuntutan wilayah, pemisahan Singapura dan rusuhan kaum.",
+ parts:[
+  {q:"Nyatakan dua cabaran luar yang dihadapi Malaysia selepas tahun 1963.",m:2,ans:["Konfrontasi oleh Indonesia dengan slogan Ganyang Malaysia","Tuntutan Filipina terhadap Sabah","Ancaman komunis dari sempadan Thailand","Ketegangan hubungan dengan Singapura sebelum pemisahan"]},
+  {q:"Jelaskan dua langkah kerajaan memulihkan perpaduan selepas Peristiwa 13 Mei 1969.",m:4,ans:["Menubuhkan MAGERAN bagi mengembalikan keamanan dan ketenteraman","Menubuhkan Majlis Perundingan Negara untuk membincangkan perpaduan","Mengisytiharkan Rukun Negara pada 31 Ogos 1970 sebagai ideologi kebangsaan","Melaksanakan Dasar Ekonomi Baru bagi mengurangkan jurang ekonomi antara kaum","Membuka kembali Parlimen pada tahun 1971 dan meminda perlembagaan berkaitan isu sensitif"]},
+  {q:"Pada pendapat anda, apakah iktibar daripada Peristiwa 13 Mei 1969 kepada generasi hari ini?",m:4,ans:["Isu perkauman tidak boleh dijadikan bahan politik atau permainan","Jurang ekonomi antara kaum perlu dirapatkan untuk keharmonian","Kebebasan bersuara perlu digunakan secara bertanggungjawab","Perpaduan adalah asas kestabilan dan pembangunan negara","Sebarang perselisihan wajar diselesaikan melalui rundingan bukan keganasan"]}
+ ]},
+{f:5,b:6,t:"Konfrontasi Indonesia dan pemisahan Singapura",
+ s:"Konfrontasi Indonesia dari tahun 1963 hingga 1966 dan pemisahan Singapura pada 9 Ogos 1965 merupakan dua cabaran besar yang menguji kekuatan Malaysia pada tahun-tahun awal pembentukannya.",
+ parts:[
+  {q:"Nyatakan dua tindakan Indonesia semasa Konfrontasi.",m:2,ans:["Melancarkan kempen Ganyang Malaysia","Menghantar pengintip dan pengganas ke wilayah Malaysia","Mendarat di Labis, Johor dan Pontian pada tahun 1964","Memutuskan hubungan diplomatik dan perdagangan dengan Malaysia","Menyerang kawasan sempadan di Sarawak dan Sabah"]},
+  {q:"Jelaskan dua langkah Malaysia menghadapi Konfrontasi Indonesia.",m:4,ans:["Memperkukuh angkatan tentera dan pasukan keselamatan sempadan","Menubuhkan pasukan sukarela seperti RELA dan Briged Sukarelawan","Mendapatkan bantuan ketenteraan daripada Britain, Australia dan New Zealand","Membawa isu ini ke Majlis Keselamatan Pertubuhan Bangsa-Bangsa Bersatu","Menjalankan usaha diplomatik melalui rundingan di Tokyo, Manila dan Bangkok"]},
+  {q:"Pada pendapat anda, apakah kesan positif yang diperoleh Malaysia daripada cabaran-cabaran ini?",m:4,ans:["Rakyat menjadi lebih bersatu dan bersemangat patriotik","Angkatan tentera dan sistem pertahanan negara diperkukuh","Malaysia memperoleh pengiktirafan dan simpati antarabangsa","Malaysia menyedari kepentingan kerjasama serantau yang membawa kepada ASEAN","Kepimpinan negara menjadi lebih matang dalam menangani krisis"]}
+ ]},
+{f:5,b:7,t:"Membina kesejahteraan negara",
+ s:"Selepas merdeka, kerajaan melaksanakan dasar pendidikan, bahasa dan kebudayaan bagi membina perpaduan dan kesejahteraan rakyat berbilang kaum.",
+ parts:[
+  {q:"Nyatakan dua laporan atau penyata yang menjadi asas Dasar Pendidikan Kebangsaan.",m:2,ans:["Penyata Razak 1956","Penyata Rahman Talib 1960","Laporan Kabinet 1979","Laporan Barnes 1951","Laporan Fenn-Wu 1951"]},
+  {q:"Jelaskan dua peranan pendidikan dalam memupuk perpaduan negara.",m:4,ans:["Menyediakan kurikulum dan peperiksaan yang sama bagi semua murid","Menjadikan bahasa Melayu sebagai bahasa pengantar yang menyatukan","Menyemai nilai murni dan semangat patriotik melalui mata pelajaran seperti Sejarah","Mewujudkan interaksi antara murid berbilang kaum di sekolah","Memberi peluang pendidikan yang sama rata untuk mengurangkan jurang sosial"]},
+  {q:"Pada pendapat anda, bagaimanakah bahasa Melayu dapat terus diperkukuh sebagai bahasa kebangsaan?",m:4,ans:["Menggunakan bahasa Melayu yang betul dalam urusan rasmi dan media","Memperbanyak penerbitan ilmiah dan istilah baharu melalui Dewan Bahasa dan Pustaka","Menggunakan bahasa Melayu sebagai bahasa ilmu di institusi pendidikan","Menganjurkan Bulan Bahasa dan pertandingan yang menarik minat generasi muda","Menerapkan sikap bangga berbahasa Melayu tanpa menolak penguasaan bahasa lain"]}
+ ]},
+{f:5,b:7,t:"Rukun Negara dan Dasar Kebudayaan Kebangsaan",
+ s:"Rukun Negara yang diisytiharkan pada 31 Ogos 1970 dan Dasar Kebudayaan Kebangsaan yang diperkenalkan pada tahun 1971 merupakan usaha kerajaan membina identiti dan perpaduan negara.",
+ parts:[
+  {q:"Nyatakan dua prinsip Rukun Negara.",m:2,ans:["Kepercayaan kepada Tuhan","Kesetiaan kepada Raja dan Negara","Keluhuran Perlembagaan","Kedaulatan Undang-undang","Kesopanan dan Kesusilaan"]},
+  {q:"Jelaskan dua prinsip Dasar Kebudayaan Kebangsaan.",m:4,ans:["Kebudayaan kebangsaan berteraskan kebudayaan rakyat asal rantau ini","Unsur kebudayaan lain yang sesuai dan wajar boleh diterima","Islam menjadi unsur yang penting dalam pembentukan kebudayaan kebangsaan","Dasar ini bertujuan memupuk identiti nasional yang dikongsi semua kaum","Dasar ini menggalakkan penghayatan seni dan warisan tempatan"]},
+  {q:"Pada pendapat anda, mengapakah negara memerlukan ideologi kebangsaan seperti Rukun Negara?",m:4,ans:["Menjadi panduan nilai dan tingkah laku rakyat berbilang kaum","Menyatukan rakyat di bawah matlamat dan kepercayaan yang sama","Mengukuhkan kesetiaan kepada raja, negara dan perlembagaan","Mencegah perselisihan yang berpunca daripada perbezaan kaum dan agama","Membentuk jati diri bangsa Malaysia yang dihormati di peringkat dunia"]}
+ ]},
+{f:5,b:8,t:"Membina kemakmuran negara",
+ s:"Dasar Ekonomi Baru yang dilaksanakan dari tahun 1971 hingga 1990 bermatlamat mencapai perpaduan negara melalui dua strategi utama.",
+ parts:[
+  {q:"Nyatakan dua strategi Dasar Ekonomi Baru.",m:2,ans:["Membasmi kemiskinan tanpa mengira kaum","Menyusun semula masyarakat supaya kaum tidak dikenal pasti mengikut fungsi ekonomi"]},
+  {q:"Jelaskan peranan dua agensi yang membantu pembangunan ekonomi rakyat.",m:4,ans:["FELDA: membuka tanah baharu dan memindahkan peneroka untuk meningkatkan pendapatan","FELCRA: memulihkan tanah terbiar dan membantu petani meningkatkan hasil","RISDA: membantu pekebun kecil getah menanam semula dan memodenkan hasil","MARA: memberi latihan, pinjaman dan pendidikan kepada usahawan bumiputera","PNB dan Amanah Saham: meningkatkan pemilikan ekuiti dan tabungan rakyat","UDA: membangunkan hartanah bandar dan ruang niaga untuk bumiputera"]},
+  {q:"Pada pendapat anda, apakah cabaran utama Malaysia untuk terus makmur pada masa hadapan?",m:4,ans:["Persaingan ekonomi global dan perubahan teknologi yang pantas","Keperluan meningkatkan kemahiran dan produktiviti tenaga kerja","Jurang pendapatan antara bandar dengan luar bandar","Kebergantungan kepada komoditi dan tenaga kerja asing","Keperluan pembangunan yang mampan dan menjaga alam sekitar"]}
+ ]},
+{f:5,b:8,t:"Dasar perindustrian dan penswastaan",
+ s:"Sejak tahun 1980-an, kerajaan memperkenalkan dasar perindustrian berat, penswastaan dan Dasar Pensyarikatan Malaysia bagi mempercepat pertumbuhan ekonomi negara.",
+ parts:[
+  {q:"Nyatakan dua dasar ekonomi yang diperkenalkan pada tahun 1980-an.",m:2,ans:["Dasar Pandang ke Timur 1982","Dasar Penswastaan 1983","Dasar Pensyarikatan Malaysia 1983","Pelan Induk Perindustrian 1986","Dasar Perindustrian Berat"]},
+  {q:"Jelaskan dua kesan positif dasar penswastaan terhadap negara.",m:4,ans:["Mengurangkan beban kewangan dan perbelanjaan kerajaan","Meningkatkan kecekapan dan mutu perkhidmatan yang diswastakan","Mempercepat pelaksanaan projek pembangunan infrastruktur","Membuka peluang pekerjaan dan penyertaan sektor swasta tempatan","Meningkatkan pendapatan negara melalui cukai dan pelaburan"]},
+  {q:"Pada pendapat anda, apakah kepentingan industri berat seperti Proton kepada pembangunan negara?",m:4,ans:["Membina keupayaan teknologi dan kejuruteraan tempatan","Menjana peluang pekerjaan dalam industri dan vendor berkaitan","Mengurangkan kebergantungan kepada barangan import","Melahirkan tenaga kerja mahir dan usahawan komponen tempatan","Meningkatkan keyakinan bahawa negara membangun mampu berdaya saing"]}
+ ]},
+{f:5,b:9,t:"Dasar luar Malaysia",
+ s:"Dasar luar Malaysia berkembang melalui beberapa tahap sejak tahun 1957, dipengaruhi oleh faktor keselamatan, ekonomi, geografi dan kepimpinan negara.",
+ parts:[
+  {q:"Nyatakan dua faktor yang mempengaruhi dasar luar Malaysia.",m:2,ans:["Faktor keselamatan dan ancaman komunis","Faktor geografi dan kedudukan strategik di Asia Tenggara","Faktor ekonomi dan keperluan pasaran serta pelaburan","Faktor politik dan kepimpinan Perdana Menteri","Faktor demografi iaitu masyarakat berbilang kaum dan agama"]},
+  {q:"Jelaskan perubahan orientasi dasar luar Malaysia daripada tahap pertama kepada tahap kedua.",m:4,ans:["Tahap pertama dari tahun 1957 hingga 1970 di bawah Tunku Abdul Rahman bersifat pro-Barat dan anti-komunis","Tahap kedua dari tahun 1971 hingga 1980 di bawah Tun Abdul Razak bersifat berkecuali dan tidak bersekutu","Malaysia memperkenalkan konsep ZOPFAN bagi menjadikan Asia Tenggara zon aman, bebas dan berkecuali","Malaysia menjalin hubungan diplomatik dengan negara komunis termasuk China pada tahun 1974","Penekanan beralih daripada pergantungan kepada Barat kepada kerjasama serantau dan negara membangun"]},
+  {q:"Pada pendapat anda, apakah faedah keanggotaan Malaysia dalam ASEAN?",m:4,ans:["Mengekalkan keamanan dan kestabilan serantau","Membuka pasaran perdagangan dan pelaburan yang lebih besar","Menyelesaikan pertikaian sempadan secara rundingan","Meningkatkan kerjasama pendidikan, kesihatan dan bencana alam","Memberi suara kolektif yang lebih kuat kepada Malaysia di peringkat dunia"]}
+ ]},
+{f:5,b:9,t:"Keanggotaan Malaysia dalam pertubuhan antarabangsa",
+ s:"Malaysia menyertai pelbagai pertubuhan antarabangsa seperti Pertubuhan Bangsa-Bangsa Bersatu, Komanwel, Pertubuhan Persidangan Islam, ASEAN dan Pergerakan Negara-Negara Berkecuali bagi memperjuangkan kepentingan negara.",
+ parts:[
+  {q:"Nyatakan dua pertubuhan antarabangsa yang dianggotai oleh Malaysia.",m:2,ans:["Pertubuhan Bangsa-Bangsa Bersatu","Komanwel","Pertubuhan Persidangan Islam","ASEAN","Pergerakan Negara-Negara Berkecuali","Kumpulan Lapan Negara Membangun"]},
+  {q:"Jelaskan dua faedah yang diperoleh Malaysia daripada keanggotaan dalam Pertubuhan Bangsa-Bangsa Bersatu.",m:4,ans:["Kedaulatan Malaysia diiktiraf di peringkat dunia","Malaysia memperoleh perlindungan dan sokongan ketika berhadapan Konfrontasi dan tuntutan wilayah","Malaysia menerima bantuan teknikal dan kepakaran daripada agensi PBB","Malaysia dapat menyuarakan pandangan negara membangun di forum dunia","Malaysia berpeluang menyumbang kepada keamanan dunia melalui pasukan pendamai"]},
+  {q:"Pada pendapat anda, mengapakah negara kecil seperti Malaysia perlu aktif dalam pertubuhan antarabangsa?",m:4,ans:["Suara negara kecil lebih didengari apabila disampaikan melalui forum bersama","Memperoleh sokongan kolektif apabila kedaulatan terancam","Membuka peluang perdagangan, pelaburan dan kerjasama teknologi","Meningkatkan imej dan pengaruh negara di peringkat dunia","Dapat menyumbang kepada penyelesaian isu global seperti keamanan dan iklim"]}
+ ]},
+{f:5,b:10,t:"Kecemerlangan Malaysia di persada dunia",
+ s:"Malaysia aktif menyumbang kepada keamanan dan kerjasama antarabangsa melalui penglibatan dalam PBB, OIC, ASEAN, Komanwel dan NAM, selain pencapaian dalam bidang sukan dan sains.",
+ parts:[
+  {q:"Nyatakan dua sumbangan Malaysia kepada keamanan dunia.",m:2,ans:["Menghantar pasukan pendamai PBB ke Bosnia, Somalia, Lubnan dan Kongo","Memberi bantuan kemanusiaan kepada mangsa perang dan bencana","Menyuarakan penentangan terhadap keganasan dan penjajahan di forum antarabangsa","Menjadi anggota tidak tetap Majlis Keselamatan PBB","Menjadi orang tengah dalam rundingan damai serantau"]},
+  {q:"Jelaskan dua pencapaian Malaysia yang mengangkat imej negara di peringkat antarabangsa.",m:4,ans:["Tunku Abdul Rahman dilantik Setiausaha Agung pertama Pertubuhan Persidangan Islam pada tahun 1971","Malaysia menjadi negara Asia pertama menganjurkan Sukan Komanwel pada tahun 1998","Dr. Sheikh Muszaphar Shukor menjadi angkasawan Malaysia pertama pada tahun 2007","Malaysia menyertai ekspedisi saintifik dan menubuhkan stesen penyelidikan di Antartika","Kejayaan atlet negara seperti Nicol David dan Lee Chong Wei di peringkat dunia","Malaysia dipilih sebagai pengerusi ASEAN, NAM dan OIC pada tempoh tertentu"]},
+  {q:"Pada pendapat anda, bagaimanakah generasi muda boleh menyumbang kepada kecemerlangan Malaysia di peringkat global?",m:4,ans:["Menguasai ilmu, teknologi dan kemahiran yang berdaya saing","Menguasai pelbagai bahasa untuk berkomunikasi di peringkat antarabangsa","Menjaga integriti dan disiplin diri sebagai wakil negara","Berinovasi dan bersedia menceburi bidang baharu seperti sains dan teknologi hijau","Mempromosikan budaya dan keharmonian Malaysia kepada dunia"]}
+ ]},
+{f:5,b:10,t:"Peranan Malaysia dalam pertubuhan serantau dan Islam",
+ s:"Malaysia memainkan peranan aktif dalam ASEAN, Pertubuhan Persidangan Islam dan Pergerakan Negara-Negara Berkecuali, termasuk menjadi tuan rumah dan pengerusi persidangan besar pertubuhan tersebut.",
+ parts:[
+  {q:"Nyatakan dua peranan Malaysia dalam ASEAN.",m:2,ans:["Menjadi negara pengasas ASEAN pada tahun 1967","Mencadangkan konsep ZOPFAN bagi zon aman, bebas dan berkecuali","Menjadi tuan rumah persidangan kemuncak ASEAN","Menjadi pengerusi ASEAN pada tempoh tertentu","Menggalakkan kerjasama ekonomi melalui kawasan perdagangan bebas ASEAN"]},
+  {q:"Jelaskan dua sumbangan Malaysia dalam Pertubuhan Persidangan Islam.",m:4,ans:["Tunku Abdul Rahman menjadi Setiausaha Agung pertama pertubuhan itu","Malaysia menjadi tuan rumah persidangan menteri luar dan sidang kemuncak OIC","Malaysia memperjuangkan isu umat Islam seperti Palestin dan Bosnia","Malaysia menggalakkan kerjasama ekonomi dan pendidikan antara negara Islam","Malaysia menyediakan bantuan kemanusiaan kepada negara Islam yang dilanda krisis"]},
+  {q:"Pada pendapat anda, mengapakah penganjuran persidangan antarabangsa memberi manfaat kepada Malaysia?",m:4,ans:["Meningkatkan imej dan keyakinan dunia terhadap keupayaan Malaysia","Membuka peluang pelaburan dan perdagangan dengan negara peserta","Menggalakkan pertumbuhan sektor pelancongan dan perkhidmatan","Membolehkan Malaysia mempengaruhi agenda dan keputusan penting","Membina jaringan diplomatik yang berguna dalam jangka panjang"]}
+ ]}
+];
+/* =======================================================================
+   BANK SOALAN ESEI — Bahagian B, 20 markah setiap soalan
+   rangka = rangka jawapan (pendahuluan / isi / penutup)
+   ======================================================================= */
+const ESEI = [
+/* ================= TINGKATAN 4 ================= */
+{f:4,b:1,t:"Warisan negara bangsa Kesultanan Melayu Melaka",
+ s:"Kesultanan Melayu Melaka mengungguli ciri negara bangsa dan sistem pentadbiran yang tersusun sebelum kedatangan kuasa Barat.",
+ parts:[
+  {q:"Huraikan ciri-ciri negara bangsa Kesultanan Melayu Melaka.",m:6,ans:["Kerajaan yang diketuai sultan sebagai pemerintah tertinggi","Rakyat yang terdiri daripada penduduk tempatan dan pendatang yang taat kepada sultan","Kedaulatan iaitu kuasa mutlak sultan yang tidak boleh dipertikaikan","Wilayah pengaruh yang meliputi jajahan takluk di Semenanjung dan Sumatera","Undang-undang bertulis iaitu Hukum Kanun Melaka dan Undang-Undang Laut Melaka","Lambang kebesaran seperti nobat, cap mohor, warna kuning dan bahasa istana"]},
+  {q:"Jelaskan keunggulan sistem pentadbiran dan perundangan Kesultanan Melayu Melaka.",m:6,ans:["Sistem pembesar empat lipatan yang tersusun iaitu 4, 8, 16 dan 32 pembesar","Bendahara sebagai penasihat utama dan ketua pentadbiran","Penghulu Bendahari menguruskan hasil dan perbendaharaan negeri","Temenggung menjaga keamanan kota dan melaksanakan hukuman","Laksamana mengetuai angkatan laut dan menjaga perairan","Hukum Kanun Melaka menetapkan bidang kuasa pemerintah dan hukuman jenayah","Undang-Undang Laut Melaka mengatur pelayaran dan perdagangan di laut"]},
+  {q:"Pada pendapat anda, apakah nilai warisan Kesultanan Melayu Melaka yang wajar dikekalkan dalam pentadbiran negara hari ini?",m:8,ans:["Keadilan pemerintah terhadap rakyat sebagai asas kepercayaan","Kesetiaan rakyat kepada raja dan negara","Kedaulatan undang-undang yang mengikat semua pihak termasuk pemerintah","Sistem pentadbiran yang jelas pembahagian tugas dan tanggungjawab","Amalan bermusyawarah sebelum membuat keputusan penting","Keterbukaan kepada pedagang dan budaya luar tanpa kehilangan jati diri","Integriti dan amanah pembesar dalam mengurus hasil negara"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan latar Kesultanan Melayu Melaka sebagai kerajaan yang mewarisi ciri negara bangsa Alam Melayu daripada Funan, Champa dan diteruskan Johor-Riau, serta kegemilangannya pada abad ke-15.",
+  isi:["Bahagian (a): senaraikan dan huraikan setiap ciri negara bangsa satu demi satu — kerajaan, rakyat, kedaulatan, wilayah pengaruh, undang-undang, lambang kebesaran. Beri satu huraian pendek untuk setiap fakta.","Bahagian (b): bahagikan kepada dua blok — sistem pentadbiran (pembesar empat lipatan dan peranan masing-masing) dan sistem perundangan (dua undang-undang bertulis dan kandungannya).","Bahagian (c): pilih empat nilai, nyatakan nilai itu, kaitkan dengan amalan zaman Melaka, kemudian hubungkan dengan konteks pentadbiran Malaysia hari ini."],
+  penutup:"Simpulkan bahawa warisan Melaka membuktikan kewujudan negara bangsa Melayu yang bertamadun sebelum kedatangan Barat, dan nilainya masih relevan sebagai asas pentadbiran negara."}
+},
+{f:4,b:2,t:"Kebangkitan nasionalisme sebelum Perang Dunia Kedua",
+ s:"Nasionalisme di Tanah Melayu berkembang melalui gerakan Islah, media cetak dan penubuhan persatuan sebelum Perang Dunia Kedua.",
+ parts:[
+  {q:"Terangkan faktor-faktor kemunculan nasionalisme di Tanah Melayu.",m:6,ans:["Dasar penjajah British yang menindas dan mengabaikan kepentingan penduduk tempatan","Kemasukan imigran secara besar-besaran yang menjejaskan kedudukan orang Melayu","Pengaruh gerakan Islah dari Timur Tengah yang menyeru pembaharuan","Perkembangan pendidikan dan kemunculan golongan guru serta intelektual","Peranan akhbar, majalah dan novel menyebarkan kesedaran","Pengaruh nasionalisme luar dari Indonesia, Turki, Mesir dan India","Kemerosotan ekonomi orang Melayu yang tertinggal dalam sektor moden"]},
+  {q:"Jelaskan peranan gerakan Islah dan media cetak dalam membangkitkan kesedaran kebangsaan.",m:6,ans:["Gerakan Islah menyeru orang Melayu kembali kepada ajaran Islam yang sebenar","Menggesa orang Melayu memajukan pendidikan, ekonomi dan cara berfikir","Tokoh seperti Syeikh Tahir Jalaluddin dan Sayid Syeikh al-Hadi memimpin gerakan ini","Akhbar Al-Imam, Al-Ikhwan dan Saudara menjadi saluran idea pembaharuan","Akhbar Warta Malaya, Majlis dan Utusan Melayu mendedahkan ketidakadilan penjajah","Majalah Bulan Melayu menyuarakan isu pendidikan dan kedudukan wanita Melayu","Novel seperti karya Sayid Syeikh al-Hadi menyampaikan mesej kemajuan kepada pembaca"]},
+  {q:"Pada pendapat anda, apakah peranan media hari ini dalam memupuk semangat patriotik generasi muda?",m:8,ans:["Menyiarkan kandungan sejarah dan pencapaian negara secara menarik","Menyebarkan maklumat yang sahih bagi menangkis berita palsu","Mengetengahkan kejayaan rakyat Malaysia dalam pelbagai bidang","Menjadi ruang perbincangan isu negara secara matang dan bertanggungjawab","Mempromosikan kepelbagaian budaya bagi memupuk saling menghormati","Menggalakkan penggunaan bahasa kebangsaan yang betul","Menyokong kempen kebangsaan seperti sambutan Hari Merdeka dan Hari Malaysia"]}
+ ],
+ rangka:{
+  pendahuluan:"Takrifkan nasionalisme sebagai perasaan cinta dan setia kepada bangsa serta tanah air, dan nyatakan bahawa ia mula berkembang di Tanah Melayu pada awal abad ke-20.",
+  isi:["Bahagian (a): kumpulkan faktor kepada tiga kelompok — faktor dalaman (dasar British, kemasukan imigran, kemerosotan ekonomi), faktor pendidikan dan faktor luaran (pengaruh Timur Tengah dan negara jiran).","Bahagian (b): asingkan dua blok — gerakan Islah (matlamat, tokoh, seruan) dan media cetak (akhbar, majalah, novel berserta contoh dan kesannya).","Bahagian (c): berikan enam hingga tujuh peranan media hari ini, setiap satu dengan huraian ringkas dan contoh semasa."],
+  penutup:"Rumuskan bahawa gerakan Islah dan media cetak meletakkan asas kesedaran kebangsaan, dan media hari ini mewarisi peranan yang sama dalam membina jati diri bangsa."}
+},
+{f:4,b:3,t:"Pendudukan Jepun dan perjuangan rakyat",
+ s:"Pendudukan Jepun dari tahun 1942 hingga 1945 meninggalkan kesan mendalam terhadap politik, ekonomi dan sosial penduduk Tanah Melayu.",
+ parts:[
+  {q:"Huraikan dasar-dasar pentadbiran Jepun di Tanah Melayu.",m:6,ans:["Pentadbiran tentera yang berpusat dan menggantikan pentadbiran British","Pengenalan bahasa Nippon-go dalam sistem pendidikan dan urusan rasmi","Dasar Kominka bagi menanam semangat dan budaya kejepunan","Penubuhan Kempeitai sebagai polis tentera yang mengawal rakyat","Dasar memecah dan memerintah dengan melayan kaum secara berbeza","Pelaksanaan Sook Ching terhadap golongan yang disyaki anti-Jepun","Pengeluaran mata wang Jepun dan kawalan ke atas bekalan makanan"]},
+  {q:"Jelaskan bentuk-bentuk perjuangan rakyat menentang pendudukan Jepun.",m:6,ans:["Force 136 sebagai gerakan bawah tanah yang disokong British","MPAJA yang melancarkan serangan gerila dari kawasan hutan","Wataniah di Pahang di bawah pimpinan Yeop Mahidin","Kinabalu Guerrilla Defence Force dan pemberontakan Jesselton 1943 oleh Albert Kwok","Askar Melayu dan polis tempatan yang terus menentang secara senyap","Penubuhan KRIS pada tahun 1945 bagi menuntut kemerdekaan","Penentangan pasif seperti menyembunyikan hasil dan enggan bekerjasama"]},
+  {q:"Pada pendapat anda, mengapakah pertahanan negara yang kukuh penting kepada Malaysia hari ini?",m:8,ans:["Menjamin kedaulatan wilayah darat, laut dan udara","Menghalang pencerobohan dan tuntutan wilayah oleh pihak luar","Melindungi rakyat dan aktiviti ekonomi negara","Menjaga laluan perdagangan strategik seperti Selat Melaka","Menghadapi ancaman baharu seperti keganasan dan serangan siber","Memberi keyakinan kepada pelabur dan rakan dagang","Menyokong misi kemanusiaan dan bantuan bencana di dalam dan luar negara"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa tentera Jepun mendarat di Kota Bharu pada 8 Disember 1941 dan menawan Tanah Melayu sehingga Singapura jatuh pada 15 Februari 1942, lalu bermulanya pendudukan selama tiga tahun lapan bulan.",
+  isi:["Bahagian (a): susun dasar Jepun mengikut bidang — politik dan pentadbiran, pendidikan dan budaya, keselamatan, ekonomi.","Bahagian (b): asingkan gerakan bersenjata (Force 136, MPAJA, Wataniah, KGDF) daripada gerakan politik dan penentangan pasif.","Bahagian (c): kemukakan tujuh sebab dengan huraian, kaitkan dengan pengalaman kejatuhan Tanah Melayu yang pantas pada tahun 1941."],
+  penutup:"Simpulkan bahawa pendudukan Jepun mendedahkan kelemahan British dan menyemarakkan semangat kemerdekaan, sekali gus mengajar negara pentingnya pertahanan sendiri."}
+},
+{f:4,b:4,t:"Malayan Union dan tentangan penduduk tempatan",
+ s:"Pelaksanaan Malayan Union pada 1 April 1946 mencetuskan gelombang tentangan yang membawa kepada penubuhan UMNO.",
+ parts:[
+  {q:"Terangkan ciri-ciri Malayan Union.",m:6,ans:["Diketuai oleh seorang Gabenor British yang berkuasa penuh","Menggabungkan sembilan negeri Melayu dengan Melaka dan Pulau Pinang","Singapura dipisahkan sebagai tanah jajahan berasingan","Kuasa sultan terhad kepada hal ehwal agama Islam dan adat Melayu","Kerakyatan jus soli yang longgar kepada semua kaum","Majlis Undangan dan Majlis Mesyuarat Kerja dilantik oleh Gabenor","Kedaulatan negeri Melayu dipindahkan kepada kerajaan British"]},
+  {q:"Jelaskan bentuk-bentuk tentangan penduduk tempatan terhadap Malayan Union.",m:6,ans:["Mengadakan demonstrasi dan perarakan damai di seluruh negeri","Menganjurkan Kongres Melayu yang membawa kepada penubuhan UMNO pada tahun 1946","Memboikot upacara pelantikan Gabenor Malayan Union","Raja-raja Melayu tidak menghadiri upacara rasmi sebagai tanda protes","Menghantar memorandum dan surat protes kepada kerajaan British","Mendapat sokongan bekas pegawai British yang bersimpati","Menyuarakan tentangan melalui akhbar tempatan"]},
+  {q:"Pada pendapat anda, apakah pengajaran daripada kejayaan menentang Malayan Union kepada rakyat Malaysia hari ini?",m:8,ans:["Perjuangan secara damai dan berperlembagaan boleh berjaya","Perpaduan dan kesatuan suara memberi kekuatan kepada tuntutan rakyat","Kepimpinan yang berwibawa penting dalam menyusun perjuangan","Kesedaran dan pengetahuan rakyat tentang hak mereka amat perlu","Saluran undang-undang lebih berkesan daripada keganasan","Institusi raja perlu dihormati sebagai lambang kedaulatan negeri","Rakyat perlu peka terhadap dasar yang boleh menjejaskan hak mereka"]}
+ ],
+ rangka:{
+  pendahuluan:"Terangkan latar belakang British memperkenalkan Malayan Union selepas Perang Dunia Kedua bagi menyatukan pentadbiran, dan tugas Harold MacMichael mendapatkan tandatangan raja-raja Melayu.",
+  isi:["Bahagian (a): susun ciri mengikut aspek — pentadbiran dan wilayah, kedudukan sultan, kerakyatan, kuasa perundangan.","Bahagian (b): kumpulkan tentangan kepada tindakan rakyat, tindakan raja-raja dan tindakan berorganisasi melalui kongres serta UMNO.","Bahagian (c): berikan tujuh pengajaran dengan huraian, setiap satu dihubungkan dengan situasi semasa."],
+  penutup:"Rumuskan bahawa Malayan Union dibatalkan pada 1 Februari 1948 dan digantikan Persekutuan Tanah Melayu, membuktikan kekuatan perpaduan dan perjuangan berperlembagaan."}
+},
+{f:4,b:5,t:"Persekutuan Tanah Melayu 1948",
+ s:"Persekutuan Tanah Melayu 1948 terbentuk hasil rundingan antara British, UMNO dan raja-raja Melayu selepas pembatalan Malayan Union.",
+ parts:[
+  {q:"Huraikan ciri-ciri Persekutuan Tanah Melayu 1948.",m:6,ans:["Pentadbiran diketuai oleh Pesuruhjaya Tinggi British","Penubuhan Majlis Perundangan Persekutuan dan Majlis Mesyuarat Kerja","Majlis Raja-Raja diwujudkan dan perlu dirujuk dalam perkara tertentu","Kuasa dan kedaulatan raja-raja Melayu dipulihkan","Setiap negeri mempunyai perlembagaan dan Majlis Mesyuarat Negeri","Syarat kerakyatan diperketat berbanding Malayan Union","Singapura kekal sebagai tanah jajahan yang berasingan"]},
+  {q:"Jelaskan reaksi pelbagai pihak terhadap pembentukan Persekutuan Tanah Melayu 1948.",m:6,ans:["UMNO dan raja-raja Melayu menyokong kerana kedaulatan negeri dipulihkan","Orang Melayu berpuas hati kerana kerakyatan diperketat","PUTERA-AMCJA menentang kerana tidak dijemput berunding","PUTERA-AMCJA menggubal Perlembagaan Rakyat sebagai cadangan alternatif","Hartal diadakan pada Oktober 1947 sebagai protes","Sebahagian kaum bukan Melayu tidak berpuas hati dengan syarat kerakyatan","Parti Komunis Malaya menolak dan beralih kepada perjuangan bersenjata"]},
+  {q:"Pada pendapat anda, mengapakah Persekutuan Tanah Melayu 1948 penting sebagai asas kepada Malaysia hari ini?",m:8,ans:["Meletakkan asas sistem persekutuan yang diamalkan sehingga kini","Memulihkan kedudukan raja-raja Melayu sebagai lambang kedaulatan negeri","Mewujudkan Majlis Raja-Raja yang masih berfungsi hari ini","Membuka ruang penyertaan penduduk tempatan dalam pentadbiran","Mewujudkan kestabilan politik yang membolehkan rundingan kemerdekaan","Memperkenalkan amalan pembahagian kuasa antara pusat dengan negeri","Menjadi contoh penyelesaian melalui rundingan dan tolak ansur"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa tentangan terhadap Malayan Union mendorong British menubuhkan Jawatankuasa Kerja dan Jawatankuasa Perundingan, sehingga terbentuknya PTM 1948 pada 1 Februari 1948.",
+  isi:["Bahagian (a): susun ciri mengikut aspek pentadbiran pusat, kedudukan raja, pentadbiran negeri dan kerakyatan.","Bahagian (b): bahagikan reaksi kepada pihak yang menyokong dan pihak yang menentang, dengan sebab bagi setiap pihak.","Bahagian (c): kemukakan tujuh kepentingan, kaitkan setiap satu dengan amalan pentadbiran Malaysia hari ini."],
+  penutup:"Simpulkan bahawa PTM 1948 menjadi rangka asas negara moden dan bukti bahawa rundingan serta tolak ansur membawa penyelesaian yang bertahan lama."}
+},
+{f:4,b:6,t:"Ancaman komunis dan Darurat 1948 hingga 1960",
+ s:"Pengisytiharan Darurat pada 18 Jun 1948 bermula selepas pembunuhan tiga pengurus estet Eropah di Sungai Siput, Perak.",
+ parts:[
+  {q:"Terangkan strategi kerajaan menangani ancaman komunis semasa Darurat.",m:6,ans:["Mengharamkan Parti Komunis Malaya dan menguatkuasakan Ordinan Darurat","Melaksanakan Rancangan Briggs dengan memindahkan penduduk ke kampung baharu","Memperkenalkan kad pengenalan dan perintah berkurung bagi mengawal pergerakan","Menubuhkan Home Guard dan pasukan keselamatan tambahan","Sir Gerald Templer memperkenalkan pendekatan memenangi hati dan fikiran rakyat","Mengisytiharkan kawasan putih sebagai insentif kepada penduduk","Melancarkan perang saraf melalui risalah, siaran radio dan tawaran pengampunan"]},
+  {q:"Jelaskan kesan Darurat terhadap negara.",m:6,ans:["Kehilangan nyawa anggota keselamatan, komunis dan orang awam","Kegiatan ekonomi terganggu terutamanya di estet dan lombong","Perbelanjaan kerajaan meningkat untuk kos keselamatan","Penubuhan kampung baharu mengubah taburan penduduk secara kekal","Penduduk kampung baharu menerima kemudahan asas dan hak milik tanah","Kerakyatan dipercepat bagi memenangi kesetiaan penduduk bukan Melayu","Perpaduan kaum diperkukuh kerana semua kaum bekerjasama menentang komunis"]},
+  {q:"Pada pendapat anda, bagaimanakah rakyat Malaysia hari ini boleh membantu menjaga keselamatan negara?",m:8,ans:["Mematuhi undang-undang dan tidak terlibat dalam kegiatan menyalahi undang-undang","Melaporkan kegiatan yang mencurigakan kepada pihak berkuasa","Tidak menyebarkan berita palsu yang boleh mengancam keharmonian","Menolak ideologi ekstrem dan ajakan kumpulan pengganas","Menyertai badan sukarela seperti RELA dan Rukun Tetangga","Menghormati kepelbagaian kaum dan agama bagi mengelakkan konflik","Menyokong pasukan keselamatan dan menghargai perkhidmatan mereka"]}
+ ],
+ rangka:{
+  pendahuluan:"Terangkan latar belakang PKM yang ditubuhkan pada tahun 1930 dan tindakan bersenjata mereka yang membawa kepada Pengisytiharan Darurat pada 18 Jun 1948.",
+  isi:["Bahagian (a): kumpulkan strategi kepada tindakan undang-undang, tindakan ketenteraan, tindakan sosial dan perang saraf.","Bahagian (b): asingkan kesan negatif (nyawa, ekonomi, kos) daripada kesan positif (kemudahan kampung baharu, kerakyatan, perpaduan).","Bahagian (c): berikan tujuh cara dengan huraian dan contoh amalan harian."],
+  penutup:"Simpulkan bahawa Darurat berakhir pada 31 Julai 1960 dan pengalaman itu mengajar bahawa keselamatan negara ialah tanggungjawab bersama kerajaan dan rakyat."}
+},
+{f:4,b:7,t:"Usaha ke arah kemerdekaan Persekutuan Tanah Melayu",
+ s:"Kemerdekaan dicapai melalui pelbagai usaha termasuk Sistem Ahli, kerjasama politik antara kaum dan Rombongan Merdeka ke London.",
+ parts:[
+  {q:"Huraikan usaha-usaha ke arah kemerdekaan Persekutuan Tanah Melayu.",m:6,ans:["Penubuhan Jawatankuasa Hubungan Antara Kaum pada tahun 1949","Pelaksanaan Sistem Ahli pada tahun 1951 sebagai latihan berkerajaan sendiri","Penubuhan parti politik seperti UMNO, MCA dan MIC","Kerjasama UMNO dan MCA dalam pilihan raya bandaran 1952","Pembentukan Parti Perikatan dan kemenangan besar pilihan raya 1955","Perundingan Baling pada Disember 1955 bagi menamatkan ancaman komunis","Rombongan Merdeka ke London pada Januari 1956 yang diketuai Tunku Abdul Rahman","Penubuhan Suruhanjaya Reid bagi merangka perlembagaan"]},
+  {q:"Jelaskan peranan Parti Perikatan dalam perjuangan kemerdekaan.",m:6,ans:["Menyatukan UMNO, MCA dan MIC sebagai bukti perpaduan kaum kepada British","Membuktikan kerjasama antara kaum boleh menarik sokongan pengundi","Memenangi 51 daripada 52 kerusi dalam pilihan raya 1955","Mengetuai Rombongan Merdeka ke London pada tahun 1956","Mengemukakan memorandum bersama kepada Suruhanjaya Reid","Mengamalkan tolak ansur dalam isu kerakyatan, bahasa dan agama","Menyediakan kepimpinan yang stabil bagi peralihan kuasa"]},
+  {q:"Pada pendapat anda, apakah ciri kepimpinan yang diperlukan untuk membangunkan negara hari ini?",m:8,ans:["Berintegriti dan amanah dalam mengurus sumber negara","Berpandangan jauh dan mampu merancang masa depan negara","Bijak berunding dan mengamalkan tolak ansur","Adil kepada semua kaum dan golongan","Berani membuat keputusan sukar untuk kepentingan rakyat","Mendengar pandangan rakyat dan bersifat terbuka","Berilmu dan memahami cabaran global serta teknologi"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa selepas Darurat, British membuka ruang kepada penduduk tempatan berkerajaan sendiri secara berperingkat, dan pemimpin tempatan menyusun perjuangan secara berperlembagaan.",
+  isi:["Bahagian (a): susun usaha secara kronologi dari tahun 1949 hingga 1956 supaya jawapan kelihatan tersusun.","Bahagian (b): asingkan peranan Perikatan kepada aspek perpaduan, pilihan raya, rundingan dan tolak ansur.","Bahagian (c): berikan tujuh ciri kepimpinan, setiap satu dengan huraian dan sebab ia diperlukan hari ini."],
+  penutup:"Simpulkan bahawa gabungan perpaduan kaum, kepimpinan berwibawa dan rundingan damai membolehkan kemerdekaan dicapai pada 31 Ogos 1957."}
+},
+{f:4,b:8,t:"Pilihan raya dan sistem demokrasi berparlimen",
+ s:"Pilihan raya bermula di peringkat bandaran pada tahun 1951 sebelum diperluas ke Majlis Perundangan Persekutuan pada tahun 1955.",
+ parts:[
+  {q:"Terangkan perkembangan pilihan raya di Persekutuan Tanah Melayu sebelum kemerdekaan.",m:6,ans:["Pilihan raya Majlis Bandaran Pulau Pinang pada tahun 1951 sebagai yang pertama","Pilihan raya Majlis Bandaran Kuala Lumpur pada tahun 1952 dimenangi pakatan UMNO-MCA","Pilihan raya bandaran diperluas ke bandar lain seperti Melaka dan Johor Bahru","Pilihan Raya Majlis Perundangan Persekutuan diadakan pada 27 Julai 1955","Perikatan memenangi 51 daripada 52 kerusi yang dipertandingkan","Tunku Abdul Rahman dilantik sebagai Ketua Menteri selepas kemenangan itu","Suruhanjaya Pilihan Raya ditubuhkan bagi mengurus proses pilihan raya"]},
+  {q:"Jelaskan kepentingan pilihan raya dalam sistem demokrasi berparlimen.",m:6,ans:["Memberi hak kepada rakyat memilih wakil dan kerajaan","Menjadi saluran rakyat menilai prestasi kerajaan secara berkala","Menjamin peralihan kuasa berlaku secara aman dan sah","Meningkatkan akauntabiliti dan ketelusan pemimpin","Memberi kesahan kepada kerajaan yang memerintah","Mengurangkan kemungkinan rampasan kuasa atau keganasan politik","Menggalakkan parti politik mengemukakan dasar yang bermanfaat kepada rakyat"]},
+  {q:"Pada pendapat anda, apakah tanggungjawab seorang pengundi yang bertanggungjawab?",m:8,ans:["Mendaftar sebagai pengundi dan keluar mengundi pada hari pilihan raya","Menilai calon dan manifesto secara rasional bukan berdasarkan emosi","Menolak rasuah dan politik wang dalam apa-apa bentuk","Mengesahkan kebenaran maklumat sebelum mempercayai atau menyebarkannya","Mengelakkan kempen yang berunsur perkauman atau menghina","Menghormati pandangan politik orang lain","Menerima keputusan pilihan raya secara matang dan aman"]}
+ ],
+ rangka:{
+  pendahuluan:"Terangkan maksud pilihan raya sebagai proses rakyat memilih wakil, dan nyatakan bahawa amalan ini bermula di Tanah Melayu pada tahun 1951 sebagai persiapan berkerajaan sendiri.",
+  isi:["Bahagian (a): susun secara kronologi dari pilihan raya bandaran 1951 hingga pilihan raya persekutuan 1955 berserta keputusannya.","Bahagian (b): senaraikan kepentingan dari sudut rakyat, kerajaan dan kestabilan negara.","Bahagian (c): berikan tujuh tanggungjawab pengundi dengan huraian ringkas dan contoh."],
+  penutup:"Rumuskan bahawa pilihan raya ialah tulang belakang demokrasi berparlimen Malaysia dan keberkesanannya bergantung kepada kematangan pengundi."}
+},
+{f:4,b:9,t:"Perlembagaan Persekutuan Tanah Melayu 1957",
+ s:"Suruhanjaya Reid merangka perlembagaan Persekutuan Tanah Melayu berdasarkan ratusan memorandum daripada pelbagai pihak.",
+ parts:[
+  {q:"Huraikan peruntukan-peruntukan penting dalam Perlembagaan Persekutuan Tanah Melayu 1957.",m:6,ans:["Persekutuan diketuai Yang di-Pertuan Agong sebagai raja berperlembagaan","Islam sebagai agama Persekutuan tetapi agama lain boleh diamalkan dengan aman","Bahasa Melayu sebagai bahasa kebangsaan","Kerakyatan secara jus soli dengan syarat yang ditetapkan","Kedudukan istimewa orang Melayu serta kepentingan sah kaum lain dijamin","Pembahagian kuasa antara kerajaan pusat dengan kerajaan negeri","Sistem demokrasi berparlimen dengan Dewan Rakyat dan Dewan Negara","Kebebasan asasi rakyat dijamin dalam perlembagaan"]},
+  {q:"Jelaskan tolak ansur yang dicapai antara kaum dalam penggubalan perlembagaan tersebut.",m:6,ans:["Kaum bukan Melayu menerima bahasa Melayu sebagai bahasa kebangsaan","Kaum bukan Melayu menerima Islam sebagai agama Persekutuan","Kaum bukan Melayu menerima kedudukan istimewa orang Melayu","Orang Melayu bersetuju memberi kerakyatan jus soli kepada penduduk bukan Melayu","Kepentingan sah kaum lain dijamin dalam Perkara 153","Kebebasan mengamalkan agama lain dan menggunakan bahasa lain dijamin","Memorandum bersama Perikatan menjadi asas kompromi yang diterima semua pihak"]},
+  {q:"Pada pendapat anda, mengapakah Perlembagaan Persekutuan perlu dihormati oleh semua rakyat Malaysia?",m:8,ans:["Perlembagaan ialah undang-undang tertinggi yang mengikat semua pihak","Perlembagaan menjamin hak asasi setiap rakyat tanpa mengira kaum","Perlembagaan hasil tolak ansur yang sukar dicapai antara kaum","Menghormati perlembagaan mengekalkan kestabilan politik negara","Perlembagaan melindungi institusi raja dan kedaulatan negeri","Perlembagaan menetapkan saluran sah untuk menuntut hak","Keluhuran perlembagaan merupakan salah satu prinsip Rukun Negara"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa hasil Rombongan Merdeka 1956, Suruhanjaya Reid ditubuhkan dan dianggotai Lord Reid bersama empat anggota lain bagi merangka perlembagaan negara merdeka.",
+  isi:["Bahagian (a): susun peruntukan mengikut aspek — ketua negara, agama dan bahasa, kerakyatan, hak istimewa, pembahagian kuasa, sistem pemerintahan.","Bahagian (b): tunjukkan tolak ansur sebagai pertukaran dua hala; apa yang diterima kaum bukan Melayu dan apa yang diberikan oleh orang Melayu.","Bahagian (c): berikan tujuh sebab dengan huraian, kaitkan dengan Rukun Negara dan kestabilan negara."],
+  penutup:"Simpulkan bahawa Perlembagaan 1957 menjadi asas kepada Perlembagaan Persekutuan hari ini dan lambang kejayaan tolak ansur antara kaum."}
+},
+{f:4,b:10,t:"Pemasyhuran Kemerdekaan dan maknanya kepada negara",
+ s:"Pemasyhuran Kemerdekaan pada 31 Ogos 1957 di Stadium Merdeka menandakan kelahiran Persekutuan Tanah Melayu sebagai negara merdeka dan berdaulat.",
+ parts:[
+  {q:"Terangkan peristiwa-peristiwa yang berlaku menjelang dan semasa Pemasyhuran Kemerdekaan.",m:6,ans:["Perjanjian Persekutuan Tanah Melayu 1957 ditandatangani antara raja-raja Melayu dengan British","Union Jack diturunkan di Padang Kelab Selangor pada tengah malam 30 Ogos 1957","Jalur Gemilang dinaikkan dan lagu Negaraku dimainkan","Upacara pemasyhuran diadakan pada pagi 31 Ogos 1957 di Stadium Merdeka","Tunku Abdul Rahman membaca teks Pemasyhuran Kemerdekaan","Laungan Merdeka sebanyak tujuh kali disambut oleh rakyat","Tuanku Abdul Rahman dilantik sebagai Yang di-Pertuan Agong yang pertama","Tunku Abdul Rahman menjadi Perdana Menteri yang pertama"]},
+  {q:"Jelaskan kepentingan kemerdekaan kepada Persekutuan Tanah Melayu.",m:6,ans:["Rakyat bebas menentukan hala tuju dan pemerintahan negara sendiri","Kuasa pentadbiran berpindah sepenuhnya kepada pemimpin tempatan","Bahasa, budaya dan agama penduduk tempatan dapat dimartabatkan","Hasil ekonomi negara digunakan untuk pembangunan rakyat sendiri","Negara diiktiraf di peringkat antarabangsa dan menyertai PBB pada 17 September 1957","Peluang pendidikan dan pekerjaan dibuka lebih luas kepada rakyat","Negara bebas menentukan dasar luar dan menyertai pertubuhan dunia"]},
+  {q:"Pada pendapat anda, bagaimanakah generasi muda boleh mengekalkan kemerdekaan dan kedaulatan negara?",m:8,ans:["Mempelajari dan menghayati sejarah perjuangan negara","Menghormati lambang negara seperti Jalur Gemilang dan lagu Negaraku","Mengukuhkan perpaduan dan menolak sikap perkauman","Menguasai ilmu dan kemahiran supaya negara tidak bergantung kepada kuasa asing","Menyumbang kepada pembangunan ekonomi negara","Bersedia mempertahankan negara apabila diperlukan","Menolak pengaruh luar yang boleh menjejaskan jati diri dan kedaulatan"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa hasil rundingan London dan penggubalan perlembagaan, Persekutuan Tanah Melayu bersedia menerima kemerdekaan pada 31 Ogos 1957.",
+  isi:["Bahagian (a): susun peristiwa secara kronologi dari penandatanganan perjanjian, malam 30 Ogos, hingga upacara pagi 31 Ogos dan pelantikan pemimpin.","Bahagian (b): kumpulkan kepentingan kepada aspek politik, ekonomi, sosial dan hubungan antarabangsa.","Bahagian (c): berikan tujuh cara dengan huraian ringkas dan contoh tindakan generasi muda."],
+  penutup:"Simpulkan bahawa kemerdekaan ialah amanah yang perlu dipertahankan, dan tanggungjawab itu kini berpindah kepada generasi muda."}
+},
+
+/* ================= TINGKATAN 5 ================= */
+{f:5,b:1,t:"Kedaulatan negara dan kepentingannya",
+ s:"Kedaulatan ialah kuasa tertinggi sebuah negara memerintah wilayah dan rakyatnya tanpa campur tangan kuasa luar.",
+ parts:[
+  {q:"Huraikan ciri-ciri sebuah negara yang berdaulat.",m:6,ans:["Mempunyai wilayah yang jelas sempadannya di darat, laut dan udara","Mempunyai rakyat yang menetap dan taat kepada negara","Mempunyai kerajaan yang berfungsi dan berkuasa mentadbir","Mempunyai kedaulatan dalaman iaitu kuasa tertinggi dalam negara","Mempunyai kedaulatan luaran iaitu bebas daripada campur tangan kuasa asing","Diiktiraf oleh negara lain secara de facto dan de jure","Mempunyai undang-undang dan perlembagaan sendiri","Mempunyai lambang kedaulatan seperti bendera, lagu kebangsaan dan mata wang"]},
+  {q:"Jelaskan usaha Malaysia mempertahankan kedaulatan negara.",m:6,ans:["Memperkukuh Angkatan Tentera Malaysia dan pasukan keselamatan","Mengawal sempadan darat, laut dan ruang udara termasuk Zon Ekonomi Eksklusif","Menguatkuasakan undang-undang negara di seluruh wilayah","Menyelesaikan pertikaian sempadan melalui saluran diplomatik dan mahkamah antarabangsa","Menyertai pertubuhan antarabangsa bagi mendapat pengiktirafan dan sokongan","Mengamalkan dasar luar berkecuali dan berbaik-baik dengan semua negara","Memupuk perpaduan dalam negeri supaya tidak boleh dipecahkan dari luar"]},
+  {q:"Pada pendapat anda, apakah ancaman terhadap kedaulatan Malaysia pada masa kini dan bagaimana ia boleh ditangani?",m:8,ans:["Pencerobohan sempadan dan tuntutan bertindih ke atas wilayah, ditangani melalui rundingan dan kawalan sempadan","Kegiatan penyeludupan dan pendatang tanpa izin, ditangani melalui penguatkuasaan bersepadu","Ancaman siber dan serangan terhadap sistem maklumat negara, ditangani melalui keselamatan siber","Penyebaran berita palsu yang memecahkan perpaduan, ditangani melalui literasi maklumat","Kebergantungan ekonomi yang berlebihan kepada kuasa luar, ditangani melalui kepelbagaian pasaran","Pengaruh budaya luar yang menjejaskan jati diri, ditangani melalui pendidikan dan kebudayaan kebangsaan","Ancaman keganasan dan ideologi ekstrem, ditangani melalui kerjasama antarabangsa dan pemantauan"]}
+ ],
+ rangka:{
+  pendahuluan:"Takrifkan kedaulatan sebagai kuasa tertinggi negara ke atas wilayah dan rakyatnya, dan nyatakan bahawa Malaysia mencapai kedaulatan penuh sejak tahun 1957 dan 1963.",
+  isi:["Bahagian (a): bahagikan ciri kepada unsur fizikal (wilayah, rakyat), unsur politik (kerajaan, kedaulatan dalaman dan luaran) dan unsur pengiktirafan serta lambang.","Bahagian (b): kumpulkan usaha kepada langkah ketenteraan, penguatkuasaan undang-undang, diplomasi dan perpaduan dalam negeri.","Bahagian (c): bagi setiap ancaman, nyatakan ancaman itu dahulu, kemudian cara menanganinya. Struktur ini penting untuk markah penuh."],
+  penutup:"Simpulkan bahawa kedaulatan bukan sesuatu yang kekal secara automatik, tetapi perlu dipertahankan secara berterusan oleh kerajaan dan rakyat."}
+},
+{f:5,b:2,t:"Perlembagaan Persekutuan dan hak rakyat",
+ s:"Perlembagaan Persekutuan ialah undang-undang tertinggi Malaysia yang menjamin hak rakyat dan menetapkan bentuk pemerintahan negara.",
+ parts:[
+  {q:"Terangkan kepentingan Perlembagaan Persekutuan kepada negara.",m:6,ans:["Menjadi undang-undang tertinggi yang mengikat semua pihak termasuk kerajaan","Menetapkan bentuk pemerintahan iaitu raja berperlembagaan dan demokrasi berparlimen","Menetapkan pembahagian kuasa antara kerajaan pusat dengan kerajaan negeri","Menjamin hak asasi dan kebebasan rakyat","Menetapkan syarat kewarganegaraan","Menjadi rujukan mahkamah dalam menyelesaikan pertikaian perundangan","Melindungi kedudukan institusi raja dan kepentingan kaum"]},
+  {q:"Jelaskan hak-hak asasi yang dijamin dalam Perlembagaan Persekutuan.",m:6,ans:["Kebebasan diri iaitu tidak boleh ditahan kecuali menurut undang-undang","Larangan terhadap keabdian dan kerja paksa","Perlindungan daripada undang-undang jenayah yang berkuat kuasa ke belakang","Kesamarataan di sisi undang-undang tanpa diskriminasi","Larangan terhadap buangan negeri dan kebebasan bergerak","Kebebasan bersuara, berhimpun dan berpersatuan","Kebebasan beragama dengan Islam sebagai agama Persekutuan","Hak terhadap pendidikan dan hak terhadap harta"]},
+  {q:"Pada pendapat anda, mengapakah kebebasan asasi perlu disertai tanggungjawab?",m:8,ans:["Kebebasan yang tidak terkawal boleh menjejaskan hak orang lain","Negara berbilang kaum memerlukan sensitiviti dalam bersuara","Kebebasan yang disalahgunakan boleh mencetuskan konflik dan rusuhan","Keselamatan dan ketenteraman awam perlu dipelihara","Kebebasan bertanggungjawab mengekalkan kestabilan politik negara","Perlembagaan sendiri meletakkan batasan tertentu bagi kepentingan awam","Amalan bertanggungjawab membina masyarakat yang matang dan dihormati"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa Perlembagaan Persekutuan mula berkuat kuasa pada 31 Ogos 1957 dan diperluas pada tahun 1963, mengandungi peruntukan yang menjadi asas pentadbiran negara.",
+  isi:["Bahagian (a): kumpulkan kepentingan kepada aspek keluhuran undang-undang, bentuk pemerintahan, pembahagian kuasa dan jaminan hak.","Bahagian (b): senaraikan kebebasan asasi satu demi satu dengan huraian pendek bagi setiap satu.","Bahagian (c): berikan tujuh sebab, kaitkan dengan konteks masyarakat berbilang kaum dan media sosial hari ini."],
+  penutup:"Rumuskan bahawa keluhuran perlembagaan ialah salah satu prinsip Rukun Negara, dan pemahaman rakyat terhadapnya menjamin kestabilan negara."}
+},
+{f:5,b:3,t:"Raja berperlembagaan dan demokrasi berparlimen",
+ s:"Malaysia mengamalkan sistem raja berperlembagaan dan demokrasi berparlimen dengan pemisahan kuasa antara tiga badan utama kerajaan.",
+ parts:[
+  {q:"Huraikan peranan dan kuasa Yang di-Pertuan Agong dalam sistem pemerintahan Malaysia.",m:6,ans:["Ketua negara dan lambang perpaduan rakyat","Ketua agama Islam bagi negerinya sendiri serta Melaka, Pulau Pinang, Sabah, Sarawak dan Wilayah Persekutuan","Ketua tertinggi Angkatan Tentera Malaysia","Melantik Perdana Menteri daripada ahli Dewan Rakyat yang mendapat kepercayaan majoriti","Memperkenan atau menolak permintaan membubarkan Parlimen","Memperkenan rang undang-undang sebelum menjadi undang-undang","Melantik jawatan penting seperti hakim, Peguam Negara dan Ketua Audit atas nasihat","Berkuasa mengampun dan menangguhkan hukuman"]},
+  {q:"Jelaskan peranan tiga badan kerajaan dalam sistem demokrasi berparlimen.",m:6,ans:["Badan perundangan iaitu Parlimen menggubal dan meluluskan undang-undang persekutuan","Parlimen terdiri daripada Yang di-Pertuan Agong, Dewan Negara dan Dewan Rakyat","Badan perundangan meneliti dan membahaskan dasar serta belanjawan kerajaan","Badan pelaksana iaitu Kabinet melaksanakan dasar dan mentadbir negara","Kabinet diketuai Perdana Menteri dan bertanggungjawab kepada Parlimen","Badan kehakiman mentafsir undang-undang dan perlembagaan","Badan kehakiman mengadili kes serta bertindak bebas daripada pengaruh politik"]},
+  {q:"Pada pendapat anda, apakah kebaikan pemisahan kuasa antara ketiga-tiga badan kerajaan?",m:8,ans:["Mengelakkan penumpuan dan penyalahgunaan kuasa oleh satu badan","Setiap badan saling mengawal dan mengimbangi antara satu sama lain","Keputusan mahkamah dibuat secara bebas dan adil","Dasar kerajaan diteliti dan dipersoalkan sebelum dilaksanakan","Meningkatkan ketelusan dan akauntabiliti pentadbiran","Melindungi hak rakyat daripada tindakan sewenang-wenangnya","Meningkatkan keyakinan rakyat, pelabur dan negara luar terhadap Malaysia"]}
+ ],
+ rangka:{
+  pendahuluan:"Terangkan maksud raja berperlembagaan dan demokrasi berparlimen, dan nyatakan bahawa Malaysia mengamalkan kedua-duanya sejak tahun 1957.",
+  isi:["Bahagian (a): asingkan peranan simbolik Yang di-Pertuan Agong daripada kuasa perlembagaan dan kuasa budi bicara.","Bahagian (b): huraikan badan perundangan, pelaksana dan kehakiman satu demi satu dengan komposisi dan fungsinya.","Bahagian (c): berikan tujuh kebaikan dengan huraian dan contoh kesan jika pemisahan kuasa tidak diamalkan."],
+  penutup:"Simpulkan bahawa gabungan institusi raja dan demokrasi berparlimen memberi Malaysia kestabilan politik yang unik dan berkekalan."}
+},
+{f:5,b:4,t:"Sistem persekutuan Malaysia",
+ s:"Malaysia mengamalkan sistem persekutuan yang membahagikan kuasa antara kerajaan pusat dengan 13 kerajaan negeri.",
+ parts:[
+  {q:"Terangkan pembahagian kuasa antara kerajaan pusat dengan kerajaan negeri di Malaysia.",m:6,ans:["Pembahagian kuasa termaktub dalam Jadual Kesembilan Perlembagaan Persekutuan","Senarai Persekutuan meliputi pertahanan, keselamatan dalam negeri dan hal luar negeri","Senarai Persekutuan juga meliputi kewarganegaraan, mata wang, perdagangan dan pendidikan","Senarai Negeri meliputi tanah, hutan dan pertanian","Senarai Negeri juga meliputi hal ehwal agama Islam, adat Melayu dan kerajaan tempatan","Senarai Bersama meliputi kebajikan masyarakat, biasiswa, kesihatan awam dan perancangan bandar","Sabah dan Sarawak menikmati kuasa tambahan seperti imigresen dan undang-undang anak negeri"]},
+  {q:"Jelaskan hubungan dan kerjasama antara kerajaan pusat dengan kerajaan negeri.",m:6,ans:["Kerajaan pusat memberi pemberian perkapita berdasarkan jumlah penduduk negeri","Kerajaan pusat memberi pemberian khas untuk projek pembangunan negeri","Kerajaan pusat memberi pinjaman bagi projek besar negeri","Majlis Kewangan Negara menyelaras hal kewangan antara pusat dengan negeri","Majlis Tanah Negara menyelaras dasar berkaitan tanah","Majlis Negara bagi Kerajaan Tempatan menyelaras pentadbiran pihak berkuasa tempatan","Jabatan persekutuan menyediakan kepakaran teknikal kepada negeri"]},
+  {q:"Pada pendapat anda, mengapakah sistem persekutuan sesuai bagi sebuah negara seperti Malaysia?",m:8,ans:["Malaysia terdiri daripada negeri yang berbeza latar belakang sejarah dan budaya","Kerajaan negeri lebih memahami keperluan dan masalah setempat","Kedudukan raja-raja Melayu dan keistimewaan negeri dapat dikekalkan","Sabah dan Sarawak memerlukan autonomi tertentu seperti yang dijanjikan pada tahun 1963","Kuasa tidak tertumpu pada satu pihak sehingga mengurangkan risiko penyalahgunaan","Pembangunan dapat dilaksanakan lebih dekat dengan rakyat","Rakyat berpeluang menyertai pemerintahan di dua peringkat iaitu negeri dan pusat"]}
+ ],
+ rangka:{
+  pendahuluan:"Takrifkan sistem persekutuan sebagai penggabungan beberapa negeri di bawah satu kerajaan pusat dengan pembahagian kuasa yang termaktub dalam perlembagaan.",
+  isi:["Bahagian (a): huraikan tiga senarai dalam Jadual Kesembilan satu demi satu dengan contoh bidang bagi setiap senarai, kemudian sebut kedudukan khas Sabah dan Sarawak.","Bahagian (b): asingkan bantuan kewangan daripada badan penyelarasan seperti Majlis Kewangan Negara dan Majlis Tanah Negara.","Bahagian (c): berikan tujuh sebab dengan huraian, kaitkan dengan kepelbagaian negeri di Malaysia."],
+  penutup:"Simpulkan bahawa sistem persekutuan membolehkan Malaysia mengurus kepelbagaian negeri sambil mengekalkan perpaduan sebagai satu negara."}
+},
+{f:5,b:5,t:"Pembentukan Malaysia 1963",
+ s:"Gagasan Malaysia diumumkan pada 27 Mei 1961 dan Malaysia ditubuhkan pada 16 September 1963 setelah melalui beberapa peringkat perundingan.",
+ parts:[
+  {q:"Terangkan faktor-faktor yang mendorong pembentukan Malaysia.",m:6,ans:["Mempercepat kemerdekaan Sarawak, Sabah, Singapura dan Brunei","Membendung ancaman komunis khususnya di Singapura","Mengimbangi komposisi kaum selepas penyertaan Singapura","Mengukuhkan kerjasama ekonomi dan mewujudkan pasaran yang lebih luas","Mempercepat pembangunan wilayah Borneo yang masih ketinggalan","Mengukuhkan keselamatan serantau melalui persekutuan yang lebih besar","Persamaan sejarah, budaya dan bahasa antara penduduk wilayah terlibat"]},
+  {q:"Jelaskan langkah-langkah yang diambil ke arah pembentukan Malaysia.",m:6,ans:["Tunku Abdul Rahman mengumumkan gagasan Malaysia pada 27 Mei 1961","Penubuhan Jawatankuasa Perunding Perpaduan Malaysia bagi menerangkan gagasan kepada penduduk","Suruhanjaya Cobbold ditubuhkan pada tahun 1962 bagi meninjau pandangan penduduk Sarawak dan Borneo Utara","Sabah mengemukakan 20 Perkara dan Sarawak 18 Perkara sebagai jaminan","Jawatankuasa Antara Kerajaan dipengerusikan Lord Lansdowne meneliti tuntutan tersebut","Singapura mengadakan pungutan suara yang menunjukkan sokongan majoriti","Perjanjian Malaysia ditandatangani di London pada 9 Julai 1963","Malaysia diisytiharkan pada 16 September 1963"]},
+  {q:"Pada pendapat anda, mengapakah jaminan 20 Perkara dan 18 Perkara penting kepada Sabah dan Sarawak?",m:8,ans:["Menjamin hak dan kepentingan penduduk tempatan dalam persekutuan baharu","Melindungi kedudukan agama dan kebebasan beragama di kedua-dua wilayah","Melindungi bahasa dan adat anak negeri","Memberi kuasa autonomi dalam imigresen bagi mengawal kemasukan penduduk","Memberi autonomi dalam pendidikan dan perkhidmatan awam negeri","Menjamin perwakilan yang wajar dalam Parlimen","Membina keyakinan penduduk untuk menyertai Malaysia secara sukarela","Menjadi asas rujukan hubungan pusat dengan Sabah dan Sarawak sehingga kini"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan latar belakang selepas kemerdekaan 1957, dan ucapan Tunku Abdul Rahman kepada Persatuan Wartawan Asia Tenggara pada 27 Mei 1961 yang mencetuskan gagasan Malaysia.",
+  isi:["Bahagian (a): kumpulkan faktor kepada politik dan keselamatan, ekonomi, sosial dan sejarah.","Bahagian (b): susun langkah secara kronologi dari tahun 1961 hingga 16 September 1963.","Bahagian (c): berikan tujuh hingga lapan kepentingan, kaitkan dengan hubungan pusat dengan Sabah dan Sarawak hari ini."],
+  penutup:"Simpulkan bahawa pembentukan Malaysia berjaya kerana pendekatan rundingan dan jaminan terhadap hak wilayah yang menyertainya."}
+},
+{f:5,b:6,t:"Cabaran selepas pembentukan Malaysia",
+ s:"Selepas 16 September 1963, Malaysia menghadapi Konfrontasi Indonesia, tuntutan Filipina, pemisahan Singapura dan rusuhan kaum pada tahun 1969.",
+ parts:[
+  {q:"Terangkan cabaran-cabaran yang dihadapi Malaysia selepas pembentukannya.",m:6,ans:["Konfrontasi Indonesia dengan kempen Ganyang Malaysia dari tahun 1963 hingga 1966","Pendaratan tentera Indonesia di Labis, Johor dan Pontian pada tahun 1964","Tuntutan Filipina terhadap Sabah","Pemisahan Singapura daripada Malaysia pada 9 Ogos 1965","Ancaman komunis yang berterusan dari sempadan utara","Peristiwa 13 Mei 1969 yang mencetuskan rusuhan kaum","Jurang ekonomi antara kaum dan antara bandar dengan luar bandar"]},
+  {q:"Jelaskan langkah-langkah kerajaan mengatasi cabaran tersebut.",m:6,ans:["Memperkukuh angkatan tentera dan kawalan sempadan semasa Konfrontasi","Mendapatkan bantuan ketenteraan daripada Britain, Australia dan New Zealand","Membawa isu Konfrontasi ke Majlis Keselamatan Pertubuhan Bangsa-Bangsa Bersatu","Menamatkan Konfrontasi melalui Perjanjian Bangkok pada tahun 1966","Menubuhkan MAGERAN selepas Peristiwa 13 Mei bagi mengembalikan keamanan","Menubuhkan Majlis Perundingan Negara bagi membincangkan perpaduan","Mengisytiharkan Rukun Negara pada 31 Ogos 1970","Melaksanakan Dasar Ekonomi Baru bagi merapatkan jurang ekonomi antara kaum"]},
+  {q:"Pada pendapat anda, apakah iktibar daripada cabaran-cabaran tersebut kepada rakyat Malaysia hari ini?",m:8,ans:["Perpaduan kaum ialah asas kepada kestabilan dan kelangsungan negara","Isu perkauman dan agama tidak boleh dijadikan bahan politik","Jurang ekonomi antara kaum dan wilayah perlu dirapatkan secara adil","Kebebasan bersuara perlu digunakan secara bertanggungjawab","Hubungan baik dengan negara jiran perlu dipelihara melalui diplomasi","Pertahanan negara yang kukuh diperlukan untuk menghadapi ancaman luar","Penyelesaian melalui rundingan lebih baik daripada konfrontasi","Rakyat perlu peka terhadap usaha pihak luar memecahkan perpaduan negara"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa kelahiran Malaysia pada 16 September 1963 tidak bermakna berakhirnya cabaran, kerana negara segera berhadapan tekanan dari dalam dan luar.",
+  isi:["Bahagian (a): asingkan cabaran luar (Konfrontasi, tuntutan Filipina) daripada cabaran dalam (pemisahan Singapura, komunis, 13 Mei, jurang ekonomi).","Bahagian (b): padankan setiap cabaran dengan langkah yang diambil — ketenteraan, diplomatik, politik dan ekonomi.","Bahagian (c): berikan tujuh hingga lapan iktibar dengan huraian dan kaitan dengan situasi hari ini."],
+  penutup:"Simpulkan bahawa keupayaan Malaysia mengatasi cabaran awal ini membuktikan kematangan kepimpinan dan kekuatan perpaduan rakyat."}
+},
+{f:5,b:7,t:"Usaha membina kesejahteraan negara",
+ s:"Kerajaan melaksanakan dasar pendidikan, bahasa, kebudayaan dan perpaduan bagi membina kesejahteraan rakyat berbilang kaum selepas merdeka.",
+ parts:[
+  {q:"Terangkan perkembangan Dasar Pendidikan Kebangsaan selepas merdeka.",m:6,ans:["Penyata Razak 1956 menetapkan bahasa Melayu sebagai bahasa pengantar utama","Penyata Razak juga menetapkan kurikulum dan peperiksaan yang sama bagi semua sekolah","Penyata Rahman Talib 1960 memperkukuh dasar tersebut dan diikuti Akta Pelajaran 1961","Laporan Kabinet 1979 menilai semula pelaksanaan dasar pendidikan","KBSR dan KBSM diperkenalkan bagi memperbaharui kurikulum sekolah","Falsafah Pendidikan Kebangsaan diperkenalkan pada tahun 1988","Akta Pendidikan 1996 menggantikan Akta Pelajaran 1961","Pendidikan diperluas melalui penubuhan universiti dan institusi latihan"]},
+  {q:"Jelaskan usaha kerajaan memupuk perpaduan melalui bahasa dan kebudayaan.",m:6,ans:["Bahasa Melayu dimartabatkan sebagai bahasa kebangsaan menurut Perkara 152","Dewan Bahasa dan Pustaka ditubuhkan pada tahun 1956 bagi memperkembangkan bahasa Melayu","Penganjuran Bulan Bahasa dan Minggu Bahasa bagi menggalakkan penggunaan bahasa kebangsaan","Dasar Kebudayaan Kebangsaan diperkenalkan pada tahun 1971","Dasar tersebut berteraskan kebudayaan rakyat asal rantau ini dengan unsur Islam yang penting","Unsur kebudayaan lain yang sesuai diterima bagi mencerminkan kepelbagaian","Rukun Negara diisytiharkan pada 31 Ogos 1970 sebagai ideologi kebangsaan","Rukun Tetangga diperkenalkan pada tahun 1975 bagi memupuk semangat kejiranan"]},
+  {q:"Pada pendapat anda, bagaimanakah perpaduan rakyat Malaysia dapat diperkukuh pada masa kini?",m:8,ans:["Memperkukuh penggunaan bahasa kebangsaan sebagai bahasa perhubungan bersama","Menggalakkan interaksi antara kaum melalui sekolah, sukan dan aktiviti komuniti","Menyambut perayaan pelbagai kaum secara bersama dan menghormati amalan agama lain","Mengelakkan penyebaran kenyataan dan berita yang berunsur perkauman","Merapatkan jurang ekonomi dan peluang antara kaum serta antara wilayah","Menguatkuasakan undang-undang terhadap ucapan kebencian","Menerapkan nilai Rukun Negara dalam pendidikan dan kehidupan harian","Memupuk identiti bersama sebagai rakyat Malaysia tanpa menghapuskan identiti kaum"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa selepas merdeka, kerajaan menghadapi tugas membina perpaduan dalam masyarakat berbilang kaum melalui dasar pendidikan, bahasa dan kebudayaan.",
+  isi:["Bahagian (a): susun perkembangan pendidikan secara kronologi dari Penyata Razak 1956 hingga Akta Pendidikan 1996.","Bahagian (b): asingkan usaha bahasa (Perkara 152, DBP, Bulan Bahasa) daripada usaha kebudayaan dan perpaduan (Dasar Kebudayaan Kebangsaan, Rukun Negara, Rukun Tetangga).","Bahagian (c): berikan tujuh hingga lapan cara dengan huraian dan contoh amalan harian."],
+  penutup:"Rumuskan bahawa kesejahteraan negara bergantung kepada perpaduan, dan usaha membinanya ialah tanggungjawab berterusan kerajaan bersama rakyat."}
+},
+{f:5,b:8,t:"Dasar pembangunan dan kemakmuran negara",
+ s:"Dasar Ekonomi Baru 1971 hingga 1990 diikuti Dasar Pembangunan Nasional dan Dasar Wawasan Negara bagi membina kemakmuran negara.",
+ parts:[
+  {q:"Terangkan matlamat dan strategi Dasar Ekonomi Baru.",m:6,ans:["Matlamat utama ialah mencapai perpaduan negara","Strategi pertama ialah membasmi kemiskinan tanpa mengira kaum","Strategi kedua ialah menyusun semula masyarakat supaya kaum tidak dikenal pasti mengikut fungsi ekonomi","Meningkatkan pendapatan dan peluang pekerjaan golongan berpendapatan rendah","Meningkatkan pemilikan ekuiti bumiputera dalam sektor korporat","Menambah bilangan bumiputera dalam sektor perdagangan dan perindustrian","Menyediakan kemudahan asas dan peluang pendidikan di luar bandar"]},
+  {q:"Jelaskan peranan agensi dan dasar kerajaan dalam membangunkan ekonomi negara.",m:6,ans:["FELDA membuka tanah baharu dan memindahkan peneroka bagi meningkatkan pendapatan","FELCRA memulihkan tanah terbiar dan membantu petani meningkatkan hasil","RISDA membantu pekebun kecil getah menanam semula dan memodenkan hasil","MARA memberi latihan, pinjaman dan pendidikan kepada usahawan bumiputera","PNB dan Amanah Saham meningkatkan pemilikan ekuiti serta tabungan rakyat","Dasar Pandang ke Timur 1982 menggalakkan etika kerja dan pengurusan Jepun serta Korea","Dasar Penswastaan 1983 mengurangkan beban kerajaan dan meningkatkan kecekapan","Dasar perindustrian berat melahirkan projek seperti Proton dan HICOM"]},
+  {q:"Pada pendapat anda, apakah cabaran ekonomi Malaysia pada masa hadapan dan bagaimana ia boleh diatasi?",m:8,ans:["Persaingan global yang semakin ketat, diatasi dengan meningkatkan daya saing dan inovasi","Perubahan teknologi dan automasi, diatasi dengan latihan semula kemahiran tenaga kerja","Kebergantungan kepada tenaga kerja asing, diatasi dengan meningkatkan produktiviti dan mekanisasi","Jurang pendapatan antara bandar dengan luar bandar, diatasi dengan pembangunan wilayah","Kebergantungan kepada komoditi, diatasi dengan kepelbagaian ekonomi","Isu kemampanan dan perubahan iklim, diatasi dengan ekonomi hijau dan tenaga boleh baharu","Kos sara hidup yang meningkat, diatasi dengan peningkatan pendapatan dan kawalan inflasi","Keperluan tenaga kerja berkemahiran tinggi, diatasi dengan pendidikan TVET dan penyelidikan"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa Peristiwa 13 Mei 1969 mendedahkan jurang ekonomi antara kaum, lalu kerajaan melaksanakan DEB pada tahun 1971 sebagai dasar pembangunan jangka panjang.",
+  isi:["Bahagian (a): nyatakan matlamat perpaduan dahulu, kemudian huraikan dua strategi serta langkah pelaksanaannya.","Bahagian (b): asingkan agensi pembangunan luar bandar (FELDA, FELCRA, RISDA) daripada agensi keusahawanan dan ekuiti (MARA, PNB) dan daripada dasar perindustrian (Pandang ke Timur, penswastaan, industri berat).","Bahagian (c): bagi setiap cabaran, nyatakan cabaran itu dahulu kemudian cara mengatasinya."],
+  penutup:"Simpulkan bahawa dasar pembangunan negara berjaya merapatkan jurang ekonomi, dan kemakmuran masa depan bergantung kepada inovasi serta pembangunan modal insan."}
+},
+{f:5,b:9,t:"Dasar luar Malaysia",
+ s:"Dasar luar Malaysia berkembang melalui tiga tahap utama sejak tahun 1957 sesuai dengan keperluan keselamatan dan ekonomi negara.",
+ parts:[
+  {q:"Terangkan faktor-faktor yang mempengaruhi dasar luar Malaysia.",m:6,ans:["Faktor keselamatan iaitu ancaman komunis dan Konfrontasi pada tahun awal kemerdekaan","Faktor geografi iaitu kedudukan strategik di Asia Tenggara dan Selat Melaka","Faktor ekonomi iaitu keperluan pasaran, pelaburan dan perdagangan","Faktor politik dan kepimpinan setiap Perdana Menteri","Faktor demografi iaitu masyarakat berbilang kaum, agama dan budaya","Faktor sejarah iaitu hubungan dengan Britain dan negara Komanwel","Faktor kestabilan serantau dan hubungan dengan negara jiran"]},
+  {q:"Jelaskan perkembangan dasar luar Malaysia mengikut tahap.",m:6,ans:["Tahap pertama dari tahun 1957 hingga 1970 di bawah Tunku Abdul Rahman bersifat pro-Barat dan anti-komunis","Malaysia menyertai PBB pada 17 September 1957 dan kekal dalam Komanwel","Malaysia menganggotai ASA pada tahun 1961 dan MAPHILINDO pada tahun 1963","Tahap kedua dari tahun 1971 hingga 1980 di bawah Tun Abdul Razak bersifat berkecuali","Konsep ZOPFAN diperkenalkan bagi menjadikan Asia Tenggara zon aman, bebas dan berkecuali","Malaysia menjalin hubungan diplomatik dengan China pada tahun 1974","Tahap ketiga dari tahun 1981 di bawah Tun Dr. Mahathir menekankan kepentingan ekonomi","Dasar Pandang ke Timur dan kerjasama Selatan-Selatan diperkukuh"]},
+  {q:"Pada pendapat anda, apakah faedah dasar luar yang baik kepada Malaysia?",m:8,ans:["Menjamin keselamatan negara melalui hubungan baik dengan negara jiran","Membuka pasaran eksport dan menarik pelaburan asing","Memperoleh sokongan antarabangsa apabila kedaulatan negara terancam","Meningkatkan imej dan pengaruh Malaysia di peringkat dunia","Membolehkan Malaysia menyuarakan kepentingan negara membangun","Membuka peluang kerjasama pendidikan, teknologi dan kesihatan","Membolehkan penyelesaian pertikaian sempadan secara damai","Memberi peluang rakyat Malaysia bekerja dan belajar di luar negara"]}
+ ],
+ rangka:{
+  pendahuluan:"Takrifkan dasar luar sebagai garis panduan hubungan sebuah negara dengan negara lain, dan nyatakan bahawa dasar luar Malaysia berkembang mengikut keperluan setiap zaman.",
+  isi:["Bahagian (a): kumpulkan faktor kepada keselamatan, geografi, ekonomi, politik dan demografi.","Bahagian (b): huraikan tiga tahap secara kronologi dengan nama Perdana Menteri, orientasi dan contoh tindakan bagi setiap tahap.","Bahagian (c): berikan tujuh hingga lapan faedah dengan huraian dan contoh."],
+  penutup:"Simpulkan bahawa dasar luar Malaysia yang pragmatik dan berkecuali membolehkan negara kekal selamat serta makmur dalam dunia yang sering berubah."}
+},
+{f:5,b:10,t:"Kecemerlangan Malaysia di persada dunia",
+ s:"Malaysia menyumbang kepada keamanan dan kerjasama antarabangsa serta mencapai kejayaan dalam bidang sukan, sains dan penerokaan.",
+ parts:[
+  {q:"Terangkan sumbangan Malaysia dalam pertubuhan antarabangsa.",m:6,ans:["Menjadi anggota Pertubuhan Bangsa-Bangsa Bersatu sejak 17 September 1957","Menghantar pasukan pendamai PBB ke Kongo, Bosnia, Somalia dan Lubnan","Menjadi anggota tidak tetap Majlis Keselamatan PBB pada beberapa penggal","Menjadi negara pengasas ASEAN pada tahun 1967 dan mencadangkan ZOPFAN","Tunku Abdul Rahman menjadi Setiausaha Agung pertama Pertubuhan Persidangan Islam pada tahun 1971","Memperjuangkan isu umat Islam seperti Palestin dan Bosnia di forum dunia","Menjadi pengerusi dan tuan rumah persidangan NAM, OIC dan ASEAN","Menyuarakan kepentingan negara membangun melalui kerjasama Selatan-Selatan"]},
+  {q:"Jelaskan pencapaian Malaysia dalam bidang sukan, sains dan penerokaan.",m:6,ans:["Malaysia menjadi negara Asia pertama menganjurkan Sukan Komanwel pada tahun 1998","Kejayaan atlet negara seperti Nicol David dalam skuasy dan Lee Chong Wei dalam badminton","Penganjuran acara antarabangsa seperti perlumbaan Formula Satu di Sepang","Dr. Sheikh Muszaphar Shukor menjadi angkasawan Malaysia pertama pada tahun 2007","Malaysia menyertai ekspedisi saintifik dan menubuhkan stesen penyelidikan di Antartika","Pendaki Malaysia berjaya menawan Puncak Everest","Pembangunan Koridor Raya Multimedia sebagai hab teknologi maklumat","Penyelidikan tempatan dalam bioteknologi dan produk berasaskan kelapa sawit"]},
+  {q:"Pada pendapat anda, bagaimanakah generasi muda boleh menyumbang kepada kecemerlangan Malaysia di peringkat global?",m:8,ans:["Menguasai ilmu, sains dan teknologi yang berdaya saing","Menguasai pelbagai bahasa untuk berkomunikasi di peringkat antarabangsa","Menjaga integriti dan disiplin diri sebagai wakil negara","Berinovasi dan menceburi bidang baharu seperti kecerdasan buatan dan teknologi hijau","Cemerlang dalam sukan dan mewakili negara di pertandingan antarabangsa","Mempromosikan budaya dan keharmonian Malaysia kepada dunia","Menyertai program sukarelawan dan kemanusiaan antarabangsa","Membina keusahawanan yang mampu bersaing di pasaran global"]}
+ ],
+ rangka:{
+  pendahuluan:"Nyatakan bahawa sejak merdeka, Malaysia bukan sahaja membangun di dalam negara tetapi juga aktif menyumbang dan mencapai pengiktirafan di peringkat antarabangsa.",
+  isi:["Bahagian (a): susun sumbangan mengikut pertubuhan — PBB, ASEAN, OIC, NAM — dengan contoh sumbangan konkrit bagi setiap satu.","Bahagian (b): asingkan pencapaian sukan, pencapaian sains dan angkasa, serta penerokaan dan teknologi.","Bahagian (c): berikan tujuh hingga lapan cara dengan huraian dan contoh tindakan yang boleh dilakukan pelajar."],
+  penutup:"Simpulkan bahawa kecemerlangan Malaysia di persada dunia hasil usaha berterusan kerajaan dan rakyat, dan tanggungjawab mengekalkannya kini terletak pada generasi muda."}
+}
+];
+/* =======================================================================
+   APP
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+const LET = ["A","B","C","D"];
+const ABC = ["(a)","(b)","(c)","(d)"];
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function mmss(s){ return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); }
+function hms(s){ const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+  return (h? h+":"+String(m).padStart(2,"0") : String(m))+":"+String(x).padStart(2,"0"); }
+function gradeOf(p){
+  if(p>=90) return "A+ cemerlang tertinggi";
+  if(p>=80) return "A cemerlang";
+  if(p>=70) return "A- cemerlang";
+  if(p>=65) return "B+ kepujian tertinggi";
+  if(p>=60) return "B kepujian tinggi";
+  if(p>=55) return "C+ kepujian atas";
+  if(p>=50) return "C kepujian";
+  if(p>=45) return "D lulus atas";
+  if(p>=40) return "E lulus";
+  return "G gagal — perlu ulang kaji menyeluruh";
+}
+
+/* ---------- tabs and modes ---------- */
+const NAVBTNS = ["tab-k1","tab-k2","m1-lat","m1-uji","m2-lat","m2-uji"];
+function setLock(on){
+  NAVBTNS.forEach(id=>{
+    const b=$(id);
+    b.classList.toggle("lock", on);
+    b.setAttribute("aria-disabled", on ? "true" : "false");
+  });
+}
+function blocked(){
+  if(!examOn) return false;
+  alert("Masa sedang berjalan. Tekan \u201CTamatkan kertas\u201D di bar atas jika anda hendak berhenti.");
+  return true;
+}
+
+$("tab-k1").onclick = () => { if(!blocked()) tab("k1"); };
+$("tab-k2").onclick = () => { if(!blocked()) tab("k2"); };
+function tab(w){
+  $("tab-k1").classList.toggle("on", w==="k1");
+  $("tab-k2").classList.toggle("on", w==="k2");
+  $("pane-k1").classList.toggle("hidden", w!=="k1");
+  $("pane-k2").classList.toggle("hidden", w!=="k2");
+  window.scrollTo(0,0);
+}
+$("m1-lat").onclick = () => { if(!blocked()) mode1("lat"); };
+$("m1-uji").onclick = () => { if(!blocked()) mode1("uji"); };
+function mode1(w){
+  $("m1-lat").classList.toggle("on", w==="lat");
+  $("m1-uji").classList.toggle("on", w==="uji");
+  $("k1-lat").classList.toggle("hidden", w!=="lat");
+  $("k1-uji").classList.toggle("hidden", w!=="uji");
+}
+$("m2-lat").onclick = () => { if(!blocked()) mode2("lat"); };
+$("m2-uji").onclick = () => { if(!blocked()) mode2("uji"); };
+function mode2(w){
+  $("m2-lat").classList.toggle("on", w==="lat");
+  $("m2-uji").classList.toggle("on", w==="uji");
+  $("k2-lat").classList.toggle("hidden", w!=="lat");
+  $("k2-uji").classList.toggle("hidden", w!=="uji");
+}
+
+/* ---------- bab dropdowns ---------- */
+function fillBab(formSel, babSel){
+  const f = +$(formSel).value, b = $(babSel);
+  b.innerHTML = "<option value=\"0\">Semua bab</option>";
+  const add = form => BAB[form].forEach((nama,i)=>{
+    const o=document.createElement("option");
+    o.value=form+":"+(i+1);
+    o.textContent="T"+form+" Bab "+(i+1)+" — "+nama;
+    b.appendChild(o);
+  });
+  if(f===0){ add(4); add(5); } else { add(f); }
+}
+$("o-form").onchange = () => { fillBab("o-form","o-bab"); updateCount(); };
+$("o-bab").onchange = updateCount;
+$("s-form").onchange = () => { fillBab("s-form","s-bab"); updateCount2(); };
+$("s-bab").onchange = updateCount2;
+$("s-type").onchange = updateCount2;
+fillBab("o-form","o-bab");
+fillBab("s-form","s-bab");
+
+function filt(arr, formSel, babSel){
+  const f = +$(formSel).value, bv = $(babSel).value;
+  return arr.filter(q=>{
+    if(bv && bv!=="0"){ const [ff,bb]=bv.split(":").map(Number); return q.f===ff && q.b===bb; }
+    return f===0 || q.f===f;
+  });
+}
+function updateCount(){
+  $("o-count").textContent = filt(OBJ,"o-form","o-bab").length + " soalan tersedia untuk pilihan ini.";
+}
+updateCount();
+
+function pick2(){
+  const type=$("s-type").value;
+  return {
+    s: type==="esei" ? [] : filt(STR,"s-form","s-bab"),
+    e: type==="str"  ? [] : filt(ESEI,"s-form","s-bab")
+  };
+}
+function updateCount2(){
+  const {s,e}=pick2();
+  $("s-count").textContent = s.length+" soalan struktur dan "+e.length+" soalan esei tersedia untuk pilihan ini.";
+}
+updateCount2();
+
+/* =======================================================================
+   TIMER (shared)
+   ======================================================================= */
+let examOn=false, examLeft=0, examTick=null, examOnEnd=null;
+function startExam(name, seconds, onEnd){
+  examOn=true; examLeft=seconds; examOnEnd=onEnd;
+  $("ex-name").textContent=name;
+  $("exambar").classList.add("on");
+  setLock(true);
+  paintClock();
+  clearInterval(examTick);
+  examTick=setInterval(()=>{
+    examLeft--;
+    paintClock();
+    if(examLeft<=0){ const f=examOnEnd; stopExam(); if(f) f(true); }
+  },1000);
+}
+function paintClock(){
+  const c=$("ex-clock");
+  c.textContent=hms(Math.max(0,examLeft));
+  c.classList.toggle("warn", examLeft<=600 && examLeft>300);
+  c.classList.toggle("crit", examLeft<=300);
+}
+function stopExam(){
+  examOn=false; clearInterval(examTick); examTick=null;
+  $("exambar").classList.remove("on");
+  setLock(false);
+}
+$("ex-quit").onclick = () => {
+  if(!examOn) return;
+  if(!confirm("Tamatkan kertas sekarang dan lihat keputusan?")) return;
+  const f=examOnEnd; stopExam(); if(f) f(false);
+};
+
+/* =======================================================================
+   KERTAS 1 — LATIHAN (maklum balas segera)
+   ======================================================================= */
+let quiz=[], idx=0, score=0, answers=[], t0=0, ltimer=null, latTimed=false;
+
+$("o-start").onclick = () => {
+  const pool = filt(OBJ,"o-form","o-bab");
+  if(!pool.length){ $("o-count").textContent="Tiada soalan untuk pilihan ini. Pilih bab lain."; return; }
+  const want=+$("o-len").value;
+  quiz = shuffle(pool).slice(0, Math.min(want, pool.length));
+  idx=0; score=0; answers=[];
+  const mv=$("o-mins").value;
+  const mins = mv==="auto" ? Math.min(180, Math.max(1, Math.round(quiz.length*1.5))) : +mv;
+  latTimed = mins>0;
+  $("k1-setup").classList.add("hidden");
+  $("k1-done").classList.add("hidden");
+  $("k1-run").classList.remove("hidden");
+  $("o-total").textContent=quiz.length;
+  t0=Date.now();
+  clearInterval(ltimer);
+  ltimer=setInterval(()=>{ $("o-time").textContent=mmss(Math.floor((Date.now()-t0)/1000)); },1000);
+  $("o-time").textContent="0:00";
+  if(latTimed) startExam("Latihan · "+quiz.length+" soalan", mins*60, endLatByTime);
+  drawQ();
+  window.scrollTo(0,0);
+};
+function endLatByTime(expired){
+  if(expired) alert("Masa tamat. Latihan ditamatkan.");
+  finishLat();
+}
+function drawQ(){
+  const q=quiz[idx];
+  $("o-pos").textContent=idx+1;
+  $("o-sc").textContent=score;
+  $("o-prog").style.width=(idx/quiz.length*100)+"%";
+  let h="<div class=\"qhead\"><span class=\"qnum\">"+(idx+1)+"</span><div style=\"flex:1\"><p class=\"qtext\">"+esc(q.q)+"</p></div></div>"
+       +"<p class=\"tagline\">Tingkatan "+q.f+" · Bab "+q.b+" — "+esc(BAB[q.f][q.b-1])+"</p>";
+  if(q.s) h+="<div class=\"stim\">"+esc(q.s)+"</div>";
+  h+="<ul class=\"opts\">";
+  q.o.forEach((op,i)=>{ h+="<li><button class=\"opt\" data-i=\""+i+"\"><span class=\"ltr\">"+LET[i]+"</span><span>"+esc(op)+"</span></button></li>"; });
+  h+="</ul><div id=\"o-verd\"></div>";
+  $("o-body").innerHTML=h;
+  $("o-body").querySelectorAll(".opt").forEach(b=>{ b.onclick=()=>pick(+b.dataset.i); });
+}
+function pick(i){
+  const q=quiz[idx], ok=(i===q.a);
+  if(ok) score++;
+  answers.push({q:q,chosen:i,correct:ok});
+  $("o-body").querySelectorAll(".opt").forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.a) b.classList.add("right");
+    else if(j===i) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  $("o-verd").innerHTML="<div class=\"verdict\"><b class=\""+(ok?"ok":"no")+"\">"
+    +(ok?"Betul.":"Salah. Jawapan: "+LET[q.a]+".")+"</b><br>"+esc(q.e)+"</div>"
+    +"<div class=\"nav\"><button class=\"act\" id=\"o-next\">"+(idx+1<quiz.length?"Soalan seterusnya":"Lihat keputusan")+"</button></div>";
+  $("o-sc").textContent=score;
+  $("o-next").onclick=()=>{ if(idx+1<quiz.length){ idx++; drawQ(); window.scrollTo(0,0);} else finishLat(); };
+}
+function finishLat(){
+  clearInterval(ltimer);
+  if(examOn) stopExam();
+  $("k1-run").classList.add("hidden");
+  const pct=Math.round(score/quiz.length*100), secs=Math.floor((Date.now()-t0)/1000);
+  const byBab={};
+  answers.forEach(a=>{ const k=a.q.f+":"+a.q.b; byBab[k]=byBab[k]||{n:0,r:0}; byBab[k].n++; if(a.correct) byBab[k].r++; });
+  let h="<p class=\"score\">"+pct+"<small>%</small></p><p class=\"grade\">"+gradeOf(pct)+"</p>"
+   +"<p class=\"tagline flush\">"+score+" betul daripada "+quiz.length+" soalan · masa "+mmss(secs)+"</p>";
+  const unseen=quiz.length-answers.length;
+  if(unseen>0) h+="<p class=\"tagline flush\">"+unseen+" soalan tidak dijawab kerana masa tamat. Soalan itu dikira sebagai salah.</p>";
+  h+="<h2>Pecahan mengikut bab</h2><table><tr><th>Bab</th><th style=\"text-align:right\">Betul</th></tr>";
+  Object.keys(byBab).sort().forEach(k=>{ const [f,b]=k.split(":");
+    h+="<tr><td>T"+f+" B"+b+" — "+esc(BAB[f][b-1])+"</td><td class=\"n\">"+byBab[k].r+"/"+byBab[k].n+"</td></tr>"; });
+  h+="</table>";
+  const wrong=answers.filter(a=>!a.correct);
+  if(wrong.length){
+    h+="<h2>Soalan yang perlu diulang kaji</h2>";
+    wrong.forEach(a=>{
+      h+="<div class=\"review\"><p class=\"qq\">"+esc(a.q.q)+"</p>"
+        +"<p class=\"ln\"><span>Jawapan anda:</span> "+LET[a.chosen]+" — "+esc(a.q.o[a.chosen])+"</p>"
+        +"<p class=\"ln\"><span>Jawapan betul:</span> "+LET[a.q.a]+" — "+esc(a.q.o[a.q.a])+"</p>"
+        +"<p class=\"ln\"><span>"+esc(BAB[a.q.f][a.q.b-1])+"</span></p><p class=\"ln\">"+esc(a.q.e)+"</p></div>";
+    });
+  } else h+="<h2>Tiada kesilapan</h2><p>Semua jawapan betul. Cuba bab lain atau tambah bilangan soalan.</p>";
+  h+="<div class=\"nav\"><button class=\"act\" id=\"o-again\">Latihan baharu</button></div>";
+  $("k1-done").innerHTML=h;
+  $("k1-done").classList.remove("hidden");
+  $("o-again").onclick=()=>{ $("k1-done").classList.add("hidden"); $("k1-setup").classList.remove("hidden"); window.scrollTo(0,0); };
+  window.scrollTo(0,0);
+}
+
+/* =======================================================================
+   KERTAS 1 — KERTAS PENUH BERTIMER (40 soalan / 1 jam)
+   ======================================================================= */
+let ex1=[], ex1ans=[], ex1i=0, k1Score=null;
+
+$("k1e-start").onclick = () => {
+  if(!confirm("Masa satu jam akan bermula sekarang dan soalan akan dipaparkan.\n\nAnda tidak boleh berhenti sementara. Teruskan?")) return;
+  const paper=[];
+  [4,5].forEach(f=>{ for(let b=1;b<=10;b++){
+    const pool=OBJ.filter(q=>q.f===f&&q.b===b);
+    shuffle(pool).slice(0,2).forEach(q=>paper.push(q));
+  }});
+  ex1=paper; ex1ans=new Array(ex1.length).fill(null); ex1i=0;
+  $("k1e-setup").classList.add("hidden");
+  $("k1e-done").classList.add("hidden");
+  $("k1e-run").classList.remove("hidden");
+  drawEx1(); drawGrid();
+  startExam("Kertas 1 · 40 soalan", 60*60, autoEnd1);
+  window.scrollTo(0,0);
+};
+function autoEnd1(expired){
+  if(expired) alert("Masa tamat. Kertas dihantar secara automatik.");
+  gradeEx1();
+}
+function drawEx1(){
+  const q=ex1[ex1i];
+  let h="<div class=\"qhead\"><span class=\"qnum\">"+(ex1i+1)+"</span><div style=\"flex:1\"><p class=\"qtext\">"+esc(q.q)+"</p></div></div>"
+       +"<p class=\"tagline\">Soalan "+(ex1i+1)+" daripada 40</p>";
+  if(q.s) h+="<div class=\"stim\">"+esc(q.s)+"</div>";
+  h+="<ul class=\"opts\">";
+  q.o.forEach((op,i)=>{
+    h+="<li><button class=\"opt"+(ex1ans[ex1i]===i?" sel":"")+"\" data-i=\""+i+"\"><span class=\"ltr\">"+LET[i]+"</span><span>"+esc(op)+"</span></button></li>";
+  });
+  h+="</ul>";
+  $("k1e-body").innerHTML=h;
+  $("k1e-body").querySelectorAll(".opt").forEach(b=>{
+    b.onclick=()=>{
+      ex1ans[ex1i]=+b.dataset.i;
+      drawEx1(); drawGrid();
+      if(ex1i<ex1.length-1){ ex1i++; drawEx1(); drawGrid(); window.scrollTo(0,0); }
+    };
+  });
+  $("k1e-left").textContent = ex1ans.filter(a=>a===null).length + " soalan belum dijawab.";
+}
+function drawGrid(){
+  let h="";
+  for(let i=0;i<ex1.length;i++){
+    h+="<button class=\"gcell"+(ex1ans[i]!==null?" ans":"")+(i===ex1i?" now":"")+"\" data-i=\""+i+"\">"+(i+1)+"</button>";
+  }
+  $("k1e-grid").innerHTML=h;
+  $("k1e-grid").querySelectorAll(".gcell").forEach(b=>{
+    b.onclick=()=>{ ex1i=+b.dataset.i; drawEx1(); drawGrid(); window.scrollTo(0,0); };
+  });
+}
+$("k1e-prev").onclick=()=>{ if(ex1i>0){ ex1i--; drawEx1(); drawGrid(); window.scrollTo(0,0);} };
+$("k1e-next").onclick=()=>{ if(ex1i<ex1.length-1){ ex1i++; drawEx1(); drawGrid(); window.scrollTo(0,0);} };
+$("k1e-submit").onclick=()=>{
+  const blank=ex1ans.filter(a=>a===null).length;
+  if(blank && !confirm(blank+" soalan belum dijawab. Hantar kertas sekarang?")) return;
+  stopExam(); gradeEx1();
+};
+function gradeEx1(){
+  let sc=0;
+  const byBab={};
+  ex1.forEach((q,i)=>{
+    const ok=(ex1ans[i]===q.a); if(ok) sc++;
+    const k=q.f+":"+q.b; byBab[k]=byBab[k]||{n:0,r:0}; byBab[k].n++; if(ok) byBab[k].r++;
+  });
+  k1Score=sc;
+  $("k1e-run").classList.add("hidden");
+  const pct=Math.round(sc/40*100);
+  let h="<p class=\"score\">"+sc+"<small>/40</small></p><p class=\"grade\">"+pct+"% · "+gradeOf(pct)+"</p>"
+   +"<p class=\"tagline flush\">Markah ini dikira semula bersama Kertas 2 apabila anda menjawab kertas penuh Kertas 2.</p>"
+   +"<h2>Pecahan mengikut bab</h2><table><tr><th>Bab</th><th style=\"text-align:right\">Betul</th></tr>";
+  Object.keys(byBab).sort((a,b)=>{const[x1,y1]=a.split(":").map(Number),[x2,y2]=b.split(":").map(Number);return x1-x2||y1-y2;}).forEach(k=>{
+    const [f,b]=k.split(":");
+    h+="<tr><td>T"+f+" B"+b+" — "+esc(BAB[f][b-1])+"</td><td class=\"n\">"+byBab[k].r+"/"+byBab[k].n+"</td></tr>";
+  });
+  h+="</table><h2>Semakan jawapan</h2>";
+  ex1.forEach((q,i)=>{
+    const ok=(ex1ans[i]===q.a);
+    if(ok) return;
+    h+="<div class=\"review\"><p class=\"qq\">"+(i+1)+". "+esc(q.q)+"</p>"
+      +"<p class=\"ln\"><span>Jawapan anda:</span> "+(ex1ans[i]===null?"tiada jawapan":LET[ex1ans[i]]+" — "+esc(q.o[ex1ans[i]]))+"</p>"
+      +"<p class=\"ln\"><span>Jawapan betul:</span> "+LET[q.a]+" — "+esc(q.o[q.a])+"</p>"
+      +"<p class=\"ln\"><span>"+esc(BAB[q.f][q.b-1])+"</span></p><p class=\"ln\">"+esc(q.e)+"</p></div>";
+  });
+  if(sc===40) h+="<p>Semua 40 jawapan betul.</p>";
+  h+="<div class=\"nav\"><button class=\"act\" id=\"k1e-again\">Kertas baharu</button></div>";
+  $("k1e-done").innerHTML=h;
+  $("k1e-done").classList.remove("hidden");
+  $("k1e-again").onclick=()=>{ $("k1e-done").classList.add("hidden"); $("k1e-setup").classList.remove("hidden"); window.scrollTo(0,0); };
+  window.scrollTo(0,0);
+}
+
+/* =======================================================================
+   KERTAS 2 — LATIHAN IKUT BAB
+   ======================================================================= */
+let lat2Timed=false;
+
+$("s-start").onclick = () => {
+  const {s,e}=pick2();
+  if(!s.length && !e.length){ $("s-count").textContent="Tiada soalan untuk pilihan ini. Pilih bab lain."; return; }
+  const mv=$("s-mins").value;
+  const mins = mv==="auto" ? Math.min(180, s.length*15 + e.length*30) : +mv;
+  lat2Timed = mins>0;
+  let h="";
+  if(s.length){
+    h+="<h3 class=\"sec\">Soalan struktur</h3><p class=\"secnote\">Setiap soalan 10 markah, seperti Bahagian A.</p>";
+    s.forEach((q,i)=>{ h+=cardStr(q,"ps"+i,i+1); });
+  }
+  if(e.length){
+    h+="<h3 class=\"sec\">Soalan esei</h3><p class=\"secnote\">Setiap soalan 20 markah, seperti Bahagian B. Rangka jawapan disediakan.</p>";
+    e.forEach((q,i)=>{ h+=cardEsei(q,"pe"+i,i+1); });
+  }
+  $("s-body").innerHTML=h;
+  wireReveal($("s-body"));
+  $("k2l-setup").classList.add("hidden");
+  $("k2l-done").classList.add("hidden");
+  $("k2l-run").classList.remove("hidden");
+  if(lat2Timed) startExam("Latihan Kertas 2 · "+(s.length+e.length)+" soalan", mins*60, endLat2);
+  window.scrollTo(0,0);
+};
+$("s-end").onclick = () => {
+  if(lat2Timed && examOn){ if(!confirm("Tamatkan latihan dan buka semua skema?")) return; stopExam(); }
+  endLat2(false);
+};
+function endLat2(expired){
+  if(expired) alert("Masa tamat. Semua skema jawapan kini dibuka.");
+  if(examOn) stopExam();
+  lat2Timed=false;
+  $("s-body").querySelectorAll(".skema,.rangka").forEach(el=>el.classList.remove("hidden"));
+  $("s-body").querySelectorAll("button.rev").forEach(b=>b.classList.add("hidden"));
+  $("s-end").classList.add("hidden");
+  $("k2l-done").innerHTML="<h2>Semak jawapan anda</h2>"
+   +"<p class=\"tagline flush\">Semua rangka dan cadangan skema di atas kini dibuka. Bandingkan jawapan anda, "
+   +"dan beri markah secara tegas: fakta tanpa huraian tidak diberi markah penuh apabila soalan meminta anda menjelaskan.</p>"
+   +"<div class=\"nav\"><button class=\"act\" id=\"s-again\">Latihan baharu</button></div>";
+  $("k2l-done").classList.remove("hidden");
+  $("s-again").onclick=()=>{
+    $("k2l-done").classList.add("hidden");
+    $("k2l-run").classList.add("hidden");
+    $("s-end").classList.remove("hidden");
+    $("k2l-setup").classList.remove("hidden");
+    window.scrollTo(0,0);
+  };
+  window.scrollTo(0,0);
+}
+function cardStr(q,uid,no){
+  let h="<div class=\"scard\"><h4>"+no+". "+esc(q.t)+"</h4>"
+   +"<p class=\"tagline flush\">Tingkatan "+q.f+" · Bab "+q.b+" — "+esc(BAB[q.f][q.b-1])+" · 10 markah</p>"
+   +"<div class=\"stim flush\">"+esc(q.s)+"</div>";
+  q.parts.forEach((p,pi)=>{
+    h+="<div class=\"part\"><div class=\"pq\"><span class=\"pl\">"+ABC[pi]+"</span><span>"+esc(p.q)
+     +" <span class=\"mk\">["+p.m+" markah]</span></span></div>"
+     +"<textarea rows=\"3\" placeholder=\"Tulis jawapan anda di sini\"></textarea>"
+     +"<div><button class=\"ghost rev\" data-t=\""+uid+"-"+pi+"\" style=\"margin-top:8px\">Tunjuk cadangan jawapan</button></div>"
+     +"<div class=\"skema hidden\" id=\""+uid+"-"+pi+"\"><span class=\"lab\">Cadangan jawapan ["+p.m+" markah]</span><ul>"
+     +p.ans.map(a=>"<li>"+esc(a)+"</li>").join("")+"</ul></div></div>";
+  });
+  return h+"</div>";
+}
+function cardEsei(q,uid,no){
+  let h="<div class=\"scard\"><h4>"+no+". "+esc(q.t)+"</h4>"
+   +"<p class=\"tagline flush\">Tingkatan "+q.f+" · Bab "+q.b+" — "+esc(BAB[q.f][q.b-1])+" · 20 markah</p>"
+   +"<div class=\"stim flush\">"+esc(q.s)+"</div>"
+   +"<div><button class=\"ghost rev\" data-t=\""+uid+"-r\">Tunjuk rangka jawapan</button></div>"
+   +"<div class=\"rangka hidden\" id=\""+uid+"-r\"><span class=\"lab\">Rangka jawapan</span>"
+   +"<p><b>Pendahuluan.</b> "+esc(q.rangka.pendahuluan)+"</p>"
+   +"<p><b>Isi.</b></p><ol>"+q.rangka.isi.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ol>"
+   +"<p><b>Penutup.</b> "+esc(q.rangka.penutup)+"</p></div>";
+  q.parts.forEach((p,pi)=>{
+    h+="<div class=\"part\"><div class=\"pq\"><span class=\"pl\">"+ABC[pi]+"</span><span>"+esc(p.q)
+     +" <span class=\"mk\">["+p.m+" markah]</span></span></div>"
+     +"<textarea rows=\"5\" placeholder=\"Tulis jawapan anda di sini\"></textarea>"
+     +"<div><button class=\"ghost rev\" data-t=\""+uid+"-"+pi+"\" style=\"margin-top:8px\">Tunjuk cadangan isi</button></div>"
+     +"<div class=\"skema hidden\" id=\""+uid+"-"+pi+"\"><span class=\"lab\">Cadangan isi ["+p.m+" markah]</span><ul>"
+     +p.ans.map(a=>"<li>"+esc(a)+"</li>").join("")+"</ul></div></div>";
+  });
+  return h+"</div>";
+}
+function wireReveal(root){
+  root.querySelectorAll("button.rev").forEach(btn=>{
+    const base=btn.textContent;
+    btn.onclick=()=>{
+      const el=$(btn.dataset.t), show=el.classList.contains("hidden");
+      el.classList.toggle("hidden");
+      btn.textContent = show ? base.replace("Tunjuk","Sembunyikan") : base;
+    };
+  });
+}
+
+/* =======================================================================
+   KERTAS 2 — KERTAS PENUH BERTIMER (2 jam 30 minit)
+   ======================================================================= */
+let ex2A=[], ex2B=[];
+
+$("k2e-start").onclick = () => {
+  if(!confirm("Masa dua jam 30 minit akan bermula sekarang dan soalan akan dipaparkan.\n\nAnda tidak boleh berhenti sementara. Teruskan?")) return;
+  const t4s=shuffle(STR.filter(q=>q.f===4)).slice(0,2);
+  const t5s=shuffle(STR.filter(q=>q.f===5)).slice(0,2);
+  ex2A=[t4s[0],t4s[1],t5s[0],t5s[1]];
+  const t4e=shuffle(ESEI.filter(q=>q.f===4));
+  const t5e=shuffle(ESEI.filter(q=>q.f===5));
+  ex2B=[t4e[0], t4e[1], (Math.random()<0.5? t4e[2] : t5e[2]), t5e[0], t5e[1]];
+  let h="<h3 class=\"sec\">Bahagian A [40 markah]</h3>"
+   +"<p class=\"secnote\">Jawab semua soalan. Cadangan masa 60 minit.</p>";
+  ex2A.forEach((q,i)=>{ h+=examCardStr(q,"ea"+i,i+1); });
+  h+="<h3 class=\"sec\">Bahagian B [60 markah]</h3>"
+   +"<p class=\"secnote\">Jawab tiga soalan sahaja. Cadangan masa 90 minit, iaitu 30 minit bagi setiap esei.</p>";
+  ex2B.forEach((q,i)=>{ h+=examCardEsei(q,"eb"+i,i+5); });
+  $("k2e-body").innerHTML=h;
+  $("k2e-setup").classList.add("hidden");
+  $("k2e-done").classList.add("hidden");
+  $("k2e-run").classList.remove("hidden");
+  startExam("Kertas 2 · Bahagian A dan B", 150*60, autoEnd2);
+  window.scrollTo(0,0);
+};
+function examCardStr(q,uid,no){
+  let h="<div class=\"scard\"><h4>Soalan "+no+" · Tingkatan "+q.f+" [10 markah]</h4>"
+   +"<p class=\"tagline flush\">"+esc(q.t)+"</p>"
+   +"<div class=\"stim flush\">"+esc(q.s)+"</div>";
+  q.parts.forEach((p,pi)=>{
+    h+="<div class=\"part\"><div class=\"pq\"><span class=\"pl\">"+ABC[pi]+"</span><span>"+esc(p.q)
+     +" <span class=\"mk\">["+p.m+" markah]</span></span></div>"
+     +"<textarea rows=\"3\" placeholder=\"Tulis jawapan anda di sini\"></textarea>"
+     +"<div class=\"skema hidden\" id=\""+uid+"-"+pi+"\"><span class=\"lab\">Cadangan jawapan ["+p.m+" markah]</span><ul>"
+     +p.ans.map(a=>"<li>"+esc(a)+"</li>").join("")+"</ul></div></div>";
+  });
+  h+="<div class=\"selfmark hidden\" id=\""+uid+"-sm\"><span>Markah saya untuk soalan "+no+" (0-10)</span>"
+   +"<input class=\"mk sm\" type=\"number\" min=\"0\" max=\"10\" step=\"1\" value=\"0\" data-max=\"10\"></div>";
+  return h+"</div>";
+}
+function examCardEsei(q,uid,no){
+  let h="<div class=\"scard\"><h4>Soalan "+no+" · Tingkatan "+q.f+" [20 markah]</h4>"
+   +"<p class=\"tagline flush\">"+esc(q.t)+"</p>"
+   +"<div class=\"stim flush\">"+esc(q.s)+"</div>";
+  q.parts.forEach((p,pi)=>{
+    h+="<div class=\"part\"><div class=\"pq\"><span class=\"pl\">"+ABC[pi]+"</span><span>"+esc(p.q)
+     +" <span class=\"mk\">["+p.m+" markah]</span></span></div>"
+     +"<textarea rows=\"5\" placeholder=\"Jawab hanya jika anda memilih soalan ini\"></textarea>"
+     +"<div class=\"skema hidden\" id=\""+uid+"-"+pi+"\"><span class=\"lab\">Cadangan isi ["+p.m+" markah]</span><ul>"
+     +p.ans.map(a=>"<li>"+esc(a)+"</li>").join("")+"</ul></div></div>";
+  });
+  h+="<div class=\"rangka hidden\" id=\""+uid+"-r\"><span class=\"lab\">Rangka jawapan</span>"
+   +"<p><b>Pendahuluan.</b> "+esc(q.rangka.pendahuluan)+"</p>"
+   +"<p><b>Isi.</b></p><ol>"+q.rangka.isi.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ol>"
+   +"<p><b>Penutup.</b> "+esc(q.rangka.penutup)+"</p></div>"
+   +"<div class=\"selfmark hidden\" id=\""+uid+"-sm\"><span>Markah saya untuk soalan "+no+" (0-20, kosongkan jika tidak dijawab)</span>"
+   +"<input class=\"mk sm\" type=\"number\" min=\"0\" max=\"20\" step=\"1\" value=\"0\" data-max=\"20\"></div>";
+  return h+"</div>";
+}
+function autoEnd2(expired){
+  if(expired) alert("Masa tamat. Skema jawapan kini dipaparkan.");
+  revealPaper2();
+}
+$("k2e-submit").onclick=()=>{
+  if(!confirm("Tamatkan kertas dan paparkan skema jawapan?")) return;
+  stopExam(); revealPaper2();
+};
+function revealPaper2(){
+  $("k2e-body").querySelectorAll(".skema,.rangka,.selfmark").forEach(el=>el.classList.remove("hidden"));
+  $("k2e-submit").classList.add("hidden");
+  let h="<h2>Semak sendiri</h2>"
+   +"<p class=\"tagline flush\">Bandingkan jawapan anda dengan cadangan di atas, kemudian isi markah bagi setiap soalan. "
+   +"Bahagian B dikira daripada tiga esei terbaik anda sahaja.</p>"
+   +"<div class=\"nav\"><button class=\"act\" id=\"k2e-total\">Kira jumlah markah</button></div><div id=\"k2e-out\"></div>";
+  $("k2e-done").innerHTML=h;
+  $("k2e-done").classList.remove("hidden");
+  $("k2e-total").onclick=tallyPaper2;
+  window.scrollTo(0,0);
+}
+function tallyPaper2(){
+  let a=0;
+  for(let i=0;i<4;i++){
+    const el=$("ea"+i+"-sm").querySelector("input");
+    a += Math.min(10, Math.max(0, +el.value||0));
+  }
+  const bs=[];
+  for(let i=0;i<5;i++){
+    const el=$("eb"+i+"-sm").querySelector("input");
+    bs.push(Math.min(20, Math.max(0, +el.value||0)));
+  }
+  const b = bs.sort((x,y)=>y-x).slice(0,3).reduce((s,v)=>s+v,0);
+  const k2=a+b;
+  let h="<h2>Keputusan Kertas 2</h2><table>"
+   +"<tr><td>Bahagian A</td><td class=\"n\">"+a+"/40</td></tr>"
+   +"<tr><td>Bahagian B (tiga esei terbaik)</td><td class=\"n\">"+b+"/60</td></tr>"
+   +"<tr><td><b>Jumlah Kertas 2</b></td><td class=\"n\"><b>"+k2+"/100</b></td></tr></table>";
+  if(k1Score!==null){
+    const tot=k1Score+k2, pct=Math.round(tot/140*100);
+    h+="<h2>Gabungan Kertas 1 dan Kertas 2</h2><table>"
+     +"<tr><td>Kertas 1</td><td class=\"n\">"+k1Score+"/40</td></tr>"
+     +"<tr><td>Kertas 2</td><td class=\"n\">"+k2+"/100</td></tr>"
+     +"<tr><td><b>Jumlah</b></td><td class=\"n\"><b>"+tot+"/140</b></td></tr></table>"
+     +"<p class=\"score\">"+pct+"<small>%</small></p><p class=\"grade\">"+gradeOf(pct)+"</p>";
+  } else {
+    const pct=Math.round(k2/100*100);
+    h+="<p class=\"score\">"+pct+"<small>%</small></p><p class=\"grade\">"+gradeOf(pct)+" (Kertas 2 sahaja)</p>"
+     +"<p class=\"tagline flush\">Jawab kertas penuh Kertas 1 dalam sesi yang sama untuk melihat gred gabungan daripada 140 markah.</p>";
+  }
+  h+="<div class=\"nav\"><button class=\"act\" id=\"k2e-again\">Kertas baharu</button></div>";
+  $("k2e-out").innerHTML=h;
+  $("k2e-again").onclick=()=>{
+    $("k2e-done").classList.add("hidden");
+    $("k2e-submit").classList.remove("hidden");
+    $("k2e-run").classList.add("hidden");
+    $("k2e-setup").classList.remove("hidden");
+    window.scrollTo(0,0);
+  };
+}
+
+window.addEventListener("beforeunload", e => { if(examOn){ e.preventDefault(); e.returnValue=""; } });
+</script>
+</body>
+</html>
